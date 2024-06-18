@@ -7,7 +7,7 @@
 struct ScoreEntry {
     std::string name;
     int score;
-	 std::string date;
+	std::string date;
 };
 
 const int SCORES_PER_PAGE = 10; // Adjust as needed
@@ -26,9 +26,9 @@ public:
 	void Terminate() override;
 	void BackOnClick(int stage);
 	std::vector<ScoreEntry> ReadScores(const std::string& filename);
-   void ShowPage(int page);
-   void NextPageOnClick();
-   void PrevPageOnClick();
+	void ShowPage(int page);
+	void NextPageOnClick();
+	void PrevPageOnClick();
 	void ClearScoreLabels();
 };
 
