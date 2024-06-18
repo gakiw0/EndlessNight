@@ -1,0 +1,13 @@
+{
+  "configurations": [
+      {
+          "name": "Win64",
+          "includePath": [
+              "${workspaceFolder}/**",
+              "C:/allegro/include"
+          ],
+          "cppStandard": "c++17"
+      }
+  ],
+  "version": 4
+}
