@@ -5,13 +5,17 @@
 #include "Player/Player.hpp"
 #include "UI/Component/Label.hpp"
 #include "Bullet/Bullet.hpp"
+#include "Engine/Point.hpp"
 #include <vector>
 #include <string>
 
 class PlayScene : public Engine::IScene
 {
 private:
-    int w, h;
+    int sw, sh;
+    Engine::Point cameraTopLeft, cameraDownRight;
+    Engine::Point cameraD;
+    Engine::Point camera;
     Player *player1;
     Engine::Label *healthLabel;
     float remainingTime;
@@ -52,9 +56,11 @@ public:
     int MapId;
     Group* TileMapGroup;
     Group* ObstacleGroup;
+    Group* NonObstacleGroup;
     Group *BulletGroup;
     Group *EnemyGroup;
     Group *PlayerGroup;
+    Group *LabelGroup;
     std::vector<std::vector<TileType>> mapState;
     explicit PlayScene();
     static Engine::Point GetClientSize();

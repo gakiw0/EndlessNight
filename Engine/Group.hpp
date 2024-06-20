@@ -80,6 +80,7 @@ namespace Engine {
 		/// Delegate the key down event to all controls.
 		/// </summary>
 		/// <param name="keyCode">The keycode of pressed key.</param>
+		void MoveCamera(Point camera);
 		void OnKeyDown(int keyCode) override;
 		/// <summary>
 		/// Delegate the key up event to all controls.

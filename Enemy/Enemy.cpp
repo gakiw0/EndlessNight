@@ -5,11 +5,9 @@
 #include <cmath>
 
 Enemy::Enemy(float x, float y)
-    : Engine::Sprite("play/enemy-1.png", x, y), hp(100), speed(50), damage(5),timeSinceLastAttack(0), attackCooldown(2.0f)
+    : Engine::Sprite("play/enemy-1.png", x, y), hp(100), speed(50), damage(5), timeSinceLastAttack(0), attackCooldown(2.0f)
 {
-    scaleX = 2.0f;
-    scaleY = 2.0f;
-    CollisionRadius = 40;
+    CollisionRadius = 10;
 }
 
 PlayScene *Enemy::getPlayScene()
@@ -24,13 +22,11 @@ void Enemy::Update(float deltaTime)
     Velocity.x = cos(Rotation) * speed;
     Velocity.y = sin(Rotation) * speed;
 
-    if(timeSinceLastAttack <= attackCooldown)
-    timeSinceLastAttack += deltaTime;
-    if (IsOverlapWithPlayer())
-    {
-        Velocity.x *= -1;
-        Velocity.y *= -1;
-    }
+    if (timeSinceLastAttack <= attackCooldown)
+        timeSinceLastAttack += deltaTime;
+    IsOverlapWithPlayer(deltaTime);
+
+    IsOverlapWithObstacle(deltaTime);
 
     Sprite::Update(deltaTime);
 }
@@ -44,24 +40,46 @@ void Enemy::Hit(float damage)
     }
 }
 
-bool Enemy::IsOverlapWithPlayer()
+void Enemy::IsOverlapWithPlayer(float deltaTime)
 {
     PlayScene *scene = getPlayScene();
-
     for (auto &it : scene->PlayerGroup->GetObjects())
     {
         Player *player = dynamic_cast<Player *>(it);
         if (Engine::Collider::IsCircleOverlap(Position, CollisionRadius, player->Position, player->CollisionRadius))
         {
-            if(timeSinceLastAttack >= attackCooldown)
+            if (timeSinceLastAttack >= attackCooldown)
             {
-                Velocity.x *= -10;
-                Velocity.y *= -10;
+                Velocity.x *= 5;
+                Velocity.y *= 5;
                 player->TakeDamage(damage);
                 timeSinceLastAttack = 0;
             }
-            return true;
+            Velocity.x = -Velocity.x;
+            Velocity.y = -Velocity.y;
+            return;
         }
     }
-    return false;
+}
+
+void Enemy::IsOverlapWithObstacle(float deltaTime)
+{
+    Engine::Point nextPosition;
+    nextPosition.x = Position.x + Velocity.x * deltaTime;
+    nextPosition.y = Position.y + Velocity.y * deltaTime;
+    PlayScene *scene = getPlayScene();
+    for (auto &it : scene->ObstacleGroup->GetObjects())
+    {
+        Image *obstacle = dynamic_cast<Image *>(it);
+        if (Engine::Collider::IsRectOverlap(Position - Size / 2, Position + Size / 2, obstacle->Position - obstacle->Size / 2, obstacle->Position + obstacle->Size / 2))
+        {
+            return;
+        }
+        else if (Engine::Collider::IsRectOverlap(nextPosition - Size / 2, nextPosition + Size / 2, obstacle->Position - obstacle->Size / 2, obstacle->Position + obstacle->Size / 2))
+        {
+            Velocity.x = 0;
+            Velocity.y = 0;
+            return;
+        }
+    }
 }

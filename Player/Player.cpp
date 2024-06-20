@@ -1,18 +1,21 @@
 #include "Player.hpp"
 #include "Engine/GameEngine.hpp"
+#include "Engine/Collider.hpp"
 #include "Engine/Point.hpp"
 #include "Engine/Resources.hpp"
 #include "Scene/PlayScene.hpp"
+
+#include <iostream>
 
 #include <string>
 
 using namespace std;
 
 Player::Player(float x, float y, int hp)
-    : Engine::Sprite("PixelArt/RightLeftWalk/pixil-frame-0.png", x, y, 0, 0, 0.5f, 0.5f, 0, 0, 0, 255, 255, 255, 255, 2.0f, 2.0f), hp(hp), frame(0), elapsedTime(0), timeSinceLastShot(0), shootCooldown(0.5f)
+    : Engine::Sprite("PixelArt/RightLeftWalk/pixil-frame-0.png", x, y, 0, 0, 0.5f, 0.5f, 0, 0, 0, 255, 255, 255, 255), hp(hp), frame(0), elapsedTime(0), timeSinceLastShot(0), shootCooldown(0.5f)
 {
     Anchor = Engine::Point(0.5f, 0.5f);
-    CollisionRadius = 40;
+    CollisionRadius = 10;
 
     // Initialize the list of image paths for different directions
     rightLeftWalkImages = {
@@ -51,7 +54,7 @@ void Player::Update(float deltaTime)
     if (gameEngine.IsKeyDown(Engine::GameEngine::GetInstance().GetKeyMapping("MoveUp")))
     {
         newRotation = 3 * ALLEGRO_PI / 2; // Up (W)
-        Velocity.y -= speed;
+        Velocity.y = -speed;
         moving = true;
         imagePath = upWalkImages;
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
@@ -59,7 +62,7 @@ void Player::Update(float deltaTime)
     else if (gameEngine.IsKeyDown(Engine::GameEngine::GetInstance().GetKeyMapping("MoveDown")))
     {
         newRotation = ALLEGRO_PI / 2; // Down (S)
-        Velocity.y += speed;
+        Velocity.y = speed;
         moving = true;
         imagePath = downWalkImages;
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
@@ -67,7 +70,7 @@ void Player::Update(float deltaTime)
     else if (gameEngine.IsKeyDown(Engine::GameEngine::GetInstance().GetKeyMapping("MoveLeft")))
     {
         newRotation = ALLEGRO_PI; // Left (A)
-        Velocity.x -= speed;
+        Velocity.x = -speed;
         moving = true;
         imagePath = rightLeftWalkImages;
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
@@ -76,7 +79,7 @@ void Player::Update(float deltaTime)
     else if (gameEngine.IsKeyDown(Engine::GameEngine::GetInstance().GetKeyMapping("MoveRight")))
     {
         newRotation = 0; // Right (D)
-        Velocity.x += speed;
+        Velocity.x = speed;
         moving = true;
         imagePath = rightLeftWalkImages;
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
@@ -133,16 +136,18 @@ void Player::Update(float deltaTime)
         timeSinceLastShot = 0; // Reset the timer after shooting
     }
 
+    IsOverlapWithObstacle(deltaTime);
+    if(Position.x + Velocity.x * deltaTime - Size.x / 2 < 0 || Position.x + Velocity.x * deltaTime + Size.x / 2 > PlayScene::GetClientSize().x) 
+        Velocity.x = 0;
+    if(Position.y + Velocity.y * deltaTime - Size.y / 2 < 0 || Position.y + Velocity.y * deltaTime + Size.y / 2 > PlayScene::GetClientSize().y) 
+        Velocity.y = 0;
+		
     Engine::Sprite::Update(deltaTime);
 }
 
 void Player::TakeDamage(int damage)
 {
     hp -= damage;
-    if(hp <= 0)
-    {
-        Engine::GameEngine::GetInstance().ChangeScene("lose");
-    }
 }
 
 int Player::GetHealth() const
@@ -160,4 +165,28 @@ void Player::Shoot()
     // Create a new bullet and set its direction based on the player's current rotation
     Bullet *bullet = new Bullet(Position.x, Position.y, fakeRotation, 500);
     getPlayScene()->BulletGroup->AddNewObject(bullet);
+}
+
+void Player::IsOverlapWithObstacle(float deltaTime)
+{
+    Engine::Point nextPosition;
+    nextPosition.x = Position.x + Velocity.x * deltaTime;
+    nextPosition.y = Position.y + Velocity.y * deltaTime;
+    PlayScene *scene = getPlayScene();
+    for (auto &it : scene->ObstacleGroup->GetObjects())
+    {
+        Image *obstacle = dynamic_cast<Image *>(it);
+        if (Engine::Collider::IsRectOverlap(Position - Size / 2, Position + Size / 2, obstacle->Position - obstacle->Size / 2, obstacle->Position + obstacle->Size / 2))
+        {
+            Velocity.x = -abs(Velocity.x);
+            Velocity.y = -abs(Velocity.y);
+            return;
+        }
+        else if (Engine::Collider::IsRectOverlap(nextPosition - Size / 2, nextPosition + Size / 2, obstacle->Position - obstacle->Size / 2, obstacle->Position + obstacle->Size / 2))
+        {
+            Velocity.x = 0;
+            Velocity.y = 0;
+            return;
+        }
+    }
 }

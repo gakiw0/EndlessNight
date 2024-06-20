@@ -9,9 +9,9 @@
 T = tombstone.png
 P = poletile.png
 s = stone.png
-b = box.png
+b = boxtile.png
 c = car.png
-d = debris.png
+d = debris1.png
 l = log.png
 A = path0.png
 B = path1.png

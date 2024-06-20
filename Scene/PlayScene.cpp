@@ -3,37 +3,51 @@
 #include <string>
 #include "PlayScene.hpp"
 #include "Engine/GameEngine.hpp"
+#include "Engine/Collider.hpp"
 #include "Enemy/Enemy.hpp" // Include the Enemy header
-
+#include <iostream>
 using namespace std;
 
-const int PlayScene::MapWidth = 20, PlayScene::MapHeight = 20;
+const int PlayScene::MapWidth = 30, PlayScene::MapHeight = 20;
 const int PlayScene::BlockSize = 64;
 
 PlayScene::PlayScene() {}
 
 void PlayScene::Initialize()
 {
-    MapId = 2;
-    w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    int halfW = w / 2;
-    int halfH = h / 2;
 
-    remainingTime = 10.0f;
+    mapState.clear();
+    cameraD.x = 0;
+    cameraD.y = 0;
+    sw = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    sh = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    int halfW = sw / 2;
+    int halfH = sh / 2;
+    cameraTopLeft = Engine::Point(sw / 2, sh / 2);
+    cameraDownRight = Engine::Point(MapWidth * BlockSize - sw / 2, MapHeight * BlockSize - sh / 2);
+    camera.x = sw / 2;
+    camera.y = sh / 2;
+    MapId = 2;
+
+    remainingTime = 60.0f;
 
     AddNewObject(BulletGroup = new Group());
     AddNewObject(EnemyGroup = new Group());
     AddNewObject(PlayerGroup = new Group());
+    AddNewObject(TileMapGroup = new Group());
+    AddNewObject(ObstacleGroup = new Group());
+    AddNewObject(NonObstacleGroup = new Group());
+    AddNewObject(LabelGroup = new Group());
+    ReadMap();
+
     player1 = new Player(halfW, halfH, 50);
     PlayerGroup->AddNewObject(player1);
     // Initialize one Enemy at specific location
-    EnemyGroup->AddNewObject(new Enemy(halfW, halfH - 100));
     timerLabel = new Engine::Label(to_string((int)remainingTime), "pirulen.ttf", 120, halfW, halfH / 3 + 50, 255, 255, 255, 255, 0.5, 0.5);
-    AddNewObject(timerLabel);
+    LabelGroup->AddNewObject(timerLabel);
 
     healthLabel = new Engine::Label("HP: " + to_string(player1->GetHealth()), "pirulen.ttf", 60, 0, 0, 255, 255, 255, 255, 0, 0);
-    AddNewObject(healthLabel);
+    LabelGroup->AddNewObject(healthLabel);
 }
 
 Engine::Point PlayScene::GetClientSize()
@@ -44,19 +58,26 @@ Engine::Point PlayScene::GetClientSize()
 void PlayScene::Update(float deltaTime)
 {
     IScene::Update(deltaTime);
-    for (auto &enemy : EnemyGroup->GetObjects())
+    camera = camera + player1->Velocity * deltaTime;
+    if ((camera.x >= cameraTopLeft.x && camera.x <= cameraDownRight.x) || (camera.y >= cameraTopLeft.y && camera.y <= cameraDownRight.y))
     {
-        enemy->Update(deltaTime);
+        cameraD.x = (camera.x >= cameraTopLeft.x && camera.x <= cameraDownRight.x) ? player1->Velocity.x * deltaTime : 0.0f;
+        cameraD.y = (camera.y >= cameraTopLeft.y && camera.y <= cameraDownRight.y) ? player1->Velocity.y * deltaTime : 0.0f;
+        BulletGroup->MoveCamera(cameraD);
+        EnemyGroup->MoveCamera(cameraD);
+        ObstacleGroup->MoveCamera(cameraD);
+        NonObstacleGroup->MoveCamera(cameraD);
+        TileMapGroup->MoveCamera(cameraD);
+        PlayerGroup->MoveCamera(cameraD);
     }
-
     remainingTime -= deltaTime;
     static float spawnTimer = 1.0f;
     spawnTimer -= deltaTime;
     if (spawnTimer <= 0 && remainingTime > 0)
     {
         spawnTimer = 1.0f;
-        int randomX = rand() % w;
-        int randomY = rand() % h;
+        int randomX = rand() % sw;
+        int randomY = rand() % sh;
         EnemyGroup->AddNewObject(new Enemy(randomX, randomY));
     }
     if (remainingTime < 0)
@@ -65,11 +86,25 @@ void PlayScene::Update(float deltaTime)
     }
     timerLabel->Text = to_string((int)remainingTime);
     healthLabel->Text = "HP: " + to_string(player1->GetHealth());
+    for (auto &it : PlayerGroup->GetObjects())
+    {
+        Player *player = dynamic_cast<Player *>(it);
+        if (player->GetHealth() > 0)
+            break;
+        if (it == PlayerGroup->GetObjects().back())
+            Engine::GameEngine::GetInstance().ChangeScene("lose");
+    }
 }
 
 void PlayScene::Draw() const
 {
     IScene::Draw();
+    ObstacleGroup->Draw();
+    BulletGroup->Draw();
+    PlayerGroup->Draw();
+    EnemyGroup->Draw();
+    NonObstacleGroup->Draw();
+    LabelGroup->Draw();
 }
 
 void PlayScene::Terminate()
@@ -86,6 +121,8 @@ void PlayScene::ReadMap()
     size_t idx = 0;
     while (fin >> c && idx < MapHeight)
     {
+        if (mapState[idx].size() == MapWidth)
+            ++idx;
         switch (c)
         {
         case '1':
@@ -173,7 +210,6 @@ void PlayScene::ReadMap()
         case '\r':
             if (static_cast<int>(mapState[idx].size()) / MapHeight != 0)
                 throw ios_base::failure("Map data is corrupted.");
-            ++idx;
             break;
         default:
             throw ios_base::failure("Map data is corrupted.");
@@ -185,68 +221,113 @@ void PlayScene::ReadMap()
     {
         for (int j = 0; j < MapWidth; j++)
         {
-            string imagePath = "Tiles/";
+            int positionX = j * BlockSize;
+            int positionY = i * BlockSize;
+            int ObjectHeight = BlockSize;
+            int ObjectWidth = BlockSize;
+            string mapTilePath = "Tiles/";
+            string mapObstaclePath = "Tiles/";
+            string mapNonObstaclePath = "Tiles/";
             switch (mapState[i][j])
-            { 
+            {
             case TILE_DIRT1:
-                
+                mapTilePath += "dirt1.png";
                 break;
             case TILE_DIRT2:
+                mapTilePath += "dirt2.png";
                 break;
             case TILE_DIRT3:
+                mapTilePath += "dirt3.png";
                 break;
             case TILE_DIRT4:
+                mapTilePath += "dirt4.png";
                 break;
             case TILE_GRASS1:
+                mapTilePath += "grass1.png";
                 break;
             case TILE_GRASS2:
+                mapTilePath += "grass2.png";
                 break;
             case TILE_GRASS3:
+                mapTilePath += "grass3.png";
                 break;
             case TILE_BUSH:
+                mapTilePath += "bush.png";
                 break;
             case TILE_TOMBSTONE:
+                mapTilePath += "dirt1.png";
+                mapNonObstaclePath += "tombstone.png";
                 break;
             case TILE_POLETILE:
+                mapTilePath += "dirt1.png";
+                NonObstacleGroup->AddNewObject(new Engine::Sprite(mapNonObstaclePath + "stopsign.png", positionX + ObjectWidth / 2, positionY + ObjectHeight / 2 - BlockSize, ObjectWidth, ObjectHeight));
+                mapObstaclePath += "poletile.png";
                 break;
             case TILE_STONE:
+                mapTilePath += "dirt1.png";
+                mapObstaclePath += "stone.png";
                 break;
             case TILE_BOX:
+                mapTilePath += "dirt1.png";
+                mapObstaclePath += "boxtile.png";
                 break;
             case TILE_CAR:
+                mapTilePath += "dirt1.png";
+                ObjectWidth *= 2;
+                mapObstaclePath += "car.png";
                 break;
             case TILE_DEBRIS:
+                mapTilePath += "dirt1.png";
+                mapObstaclePath += "debris1.png";
                 break;
             case TILE_LOG:
+                mapTilePath += "dirt1.png";
+                mapObstaclePath += "log.png";
                 break;
             case TILE_PATH0:
+                mapTilePath += "path0.png";
                 break;
             case TILE_PATH1:
+                mapTilePath += "path1.png";
                 break;
             case TILE_PATH2:
+                mapTilePath += "path2.png";
                 break;
             case TILE_PATH3:
+                mapTilePath += "path3.png";
                 break;
             case TILE_PATH4:
+                mapTilePath += "path4.png";
                 break;
             case TILE_PATH5:
+                mapTilePath += "path5.png";
                 break;
             case TILE_PATH6:
+                mapTilePath += "path6.png";
                 break;
             case TILE_PATH7:
+                mapTilePath += "path7.png";
                 break;
             case TILE_PATH8:
+                mapTilePath += "path8.png";
                 break;
             case TILE_PATH9:
+                mapTilePath += "path9.png";
                 break;
             case TILE_PATH10:
+                mapTilePath += "path10.png";
                 break;
             case TILE_PATH11:
+                mapTilePath += "path11.png";
                 break;
             default:
-                // デフォルトの動作（必要に応じて）
                 break;
             }
+            if (mapObstaclePath != "Tiles/")
+                ObstacleGroup->AddNewObject(new Engine::Sprite(mapObstaclePath, positionX + ObjectWidth / 2, positionY + ObjectHeight / 2, ObjectWidth, ObjectHeight));
+            if (mapNonObstaclePath != "Tiles/")
+                NonObstacleGroup->AddNewObject(new Engine::Sprite(mapNonObstaclePath, positionX + ObjectWidth / 2, positionY + ObjectHeight / 2, ObjectWidth, ObjectHeight));
+            TileMapGroup->AddNewObject(new Engine::Image(mapTilePath, positionX, positionY, BlockSize, BlockSize));
         }
     }
 }

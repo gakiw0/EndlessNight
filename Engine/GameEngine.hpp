@@ -47,6 +47,8 @@ namespace Engine
 		// The scene to change to at next update.
 		std::string nextScene{};
 
+		
+
 		/// <summary>
 		/// Initialize allegro5 library. Creates game window & event queue,
 		/// install peripherals and initialize add-ons.
