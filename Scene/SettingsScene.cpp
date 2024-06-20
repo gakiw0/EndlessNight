@@ -55,8 +55,7 @@ void SettingsScene::Initialize()
     btn = new Engine::ImageButton("stage-select/Play_Unpressed.png", "stage-select/Play_Pressed.png", halfW - 240, halfH + 200 - 20, 320, 160);
     btn->SetOnClickCallback(std::bind(&SettingsScene::BackOnClick, this, 2));
     AddNewControlObject(btn);
-    //AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4 - 30, 0, 0, 0, 255, 0.5, 0.5));
-    
+    // AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4 - 30, 0, 0, 0, 255, 0.5, 0.5));
 
     up = new Engine::TextButton("stage-select/border.png", "stage-select/border.png", halfW - 248, halfH - 48, 96, 96);
     AddNewControlObject(up);
@@ -161,9 +160,10 @@ void SettingsScene::OnKeyDown(int keyCode)
 
     if (up->clicked)
     {
-        if (keyCode >= ALLEGRO_KEY_A && keyCode <= ALLEGRO_KEY_Z)
+        Engine::GameEngine::GetInstance().SetKeyMapping("MoveUp", ALLEGRO_KEY_UNKNOWN);
+        if (keyCode >= ALLEGRO_KEY_A && keyCode <= ALLEGRO_KEY_Z && !IsKeyInUse(keyCode))
         {
-
+            
             Engine::GameEngine::GetInstance().SetKeyMapping("MoveUp", keyCode);
             upKey = Engine::GameEngine::GetInstance().GetKey("MoveUp");
             upLabel->Text = upKey;
@@ -172,7 +172,8 @@ void SettingsScene::OnKeyDown(int keyCode)
     }
     if (down->clicked)
     {
-        if (keyCode >= ALLEGRO_KEY_A && keyCode <= ALLEGRO_KEY_Z)
+        Engine::GameEngine::GetInstance().SetKeyMapping("MoveDown", ALLEGRO_KEY_UNKNOWN);
+        if (keyCode >= ALLEGRO_KEY_A && keyCode <= ALLEGRO_KEY_Z && !IsKeyInUse(keyCode))
         {
             Engine::GameEngine::GetInstance().SetKeyMapping("MoveDown", keyCode);
             downKey = Engine::GameEngine::GetInstance().GetKey("MoveDown");
@@ -182,7 +183,8 @@ void SettingsScene::OnKeyDown(int keyCode)
     }
     if (left->clicked)
     {
-        if (keyCode >= ALLEGRO_KEY_A && keyCode <= ALLEGRO_KEY_Z)
+        Engine::GameEngine::GetInstance().SetKeyMapping("MoveDown", ALLEGRO_KEY_UNKNOWN);
+        if (keyCode >= ALLEGRO_KEY_A && keyCode <= ALLEGRO_KEY_Z && !IsKeyInUse(keyCode))
         {
             Engine::GameEngine::GetInstance().SetKeyMapping("MoveLeft", keyCode);
             leftKey = Engine::GameEngine::GetInstance().GetKey("MoveLeft");
@@ -192,7 +194,8 @@ void SettingsScene::OnKeyDown(int keyCode)
     }
     if (right->clicked)
     {
-        if (keyCode >= ALLEGRO_KEY_A && keyCode <= ALLEGRO_KEY_Z)
+        Engine::GameEngine::GetInstance().SetKeyMapping("MoveDown", ALLEGRO_KEY_UNKNOWN);
+        if (keyCode >= ALLEGRO_KEY_A && keyCode <= ALLEGRO_KEY_Z && !IsKeyInUse(keyCode))
         {
             Engine::GameEngine::GetInstance().SetKeyMapping("MoveRight", keyCode);
             rightKey = Engine::GameEngine::GetInstance().GetKey("MoveRight");
@@ -216,4 +219,14 @@ void SettingsScene::OnMouseMove(int mx, int my)
 void SettingsScene::OnMouseUp(int button, int mx, int my)
 {
     IScene::OnMouseUp(button, mx, my);
+}
+
+bool SettingsScene::IsKeyInUse(int keyCode)
+{
+    // Check if the keyCode is already assigned to any other action
+
+    return (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveUp") ||
+            keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveDown") ||
+            keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveLeft") ||
+            keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveRight"));
 }
