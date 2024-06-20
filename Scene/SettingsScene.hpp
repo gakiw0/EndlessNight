@@ -40,6 +40,7 @@ public:
 	void OnMouseMove(int mx, int my) override;
 	void OnMouseUp(int button, int mx, int my) override;
     void OnKeyDown(int keyCode) override;
+    bool IsKeyInUse(int keyCode);
     
     std::map<std::string, int> customKeyMappings;
     
