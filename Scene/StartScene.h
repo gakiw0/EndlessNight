@@ -34,6 +34,7 @@ public:
     Engine::ImageButton *btn1;
     Engine::Label *play;
     Engine::Label *settings;
+    Engine::Image *border;
 };
 
 #endif // INC_ENDLESS_NIGHTS_STARTSCENE_H

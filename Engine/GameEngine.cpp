@@ -74,7 +74,7 @@ namespace Engine
 		event_queue = al_create_event_queue();
 		if (!event_queue)
 			throw Allegro5Exception("failed to create event queue");
-		
+
 		// Check how many mouse buttons are supported.
 		const unsigned m_buttons = al_get_mouse_num_buttons();
 		LOG(INFO) << "There are total " << m_buttons << " supported mouse buttons";
@@ -220,9 +220,16 @@ namespace Engine
 		LOG(INFO) << "Changed to " << name << " scene";
 	}
 	void GameEngine::Start(const std::string &firstSceneName, int fps, int screenW, int screenH,
-						   int reserveSamples, const char *title, const char *icon, bool freeMemoryOnSceneChanged, float deltaTimeThreshold)
+								  int reserveSamples, const char *title, const char *icon, bool freeMemoryOnSceneChanged, float deltaTimeThreshold)
 	{
+
 		LOG(INFO) << "Game Initializing...";
+
+		// Set default keys
+		keyMappings["MoveUp"] = ALLEGRO_KEY_W;
+		keyMappings["MoveDown"] = ALLEGRO_KEY_S;
+		keyMappings["MoveLeft"] = ALLEGRO_KEY_A;
+		keyMappings["MoveRight"] = ALLEGRO_KEY_D;
 
 		// Update Allegro5 configs.
 		this->fps = fps;
@@ -303,5 +310,23 @@ namespace Engine
 		// The classic way to lazy initialize a Singleton.
 		static GameEngine instance;
 		return instance;
+	}
+
+	int GameEngine::GetKeyMapping(const std::string &action) const
+	{
+		if (keyMappings.find(action) != keyMappings.end())
+		{
+			return keyMappings.at(action);
+		}
+	}
+
+	void GameEngine::SetKeyMapping(const std::string &action, int keyCode)
+	{
+		keyMappings[action] = keyCode;
+	}
+
+	std::string GameEngine::GetKey(const std::string &action) const
+	{
+		return al_keycode_to_name(GetKeyMapping(action));
 	}
 }

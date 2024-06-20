@@ -8,6 +8,7 @@
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
 #include "UI/Component/ImageButton.hpp"
+#include "UI/Component/Image.hpp"
 #include "UI/Component/Label.hpp"
 #include "PlayScene.hpp"
 #include "Engine/Point.hpp"
@@ -27,28 +28,30 @@ void StartScene::Initialize()
        "StartZombie/pixil-frame-0.png",
        "StartZombie/pixil-frame-1.png",
        "StartZombie/pixil-frame-2.png",
-       "StartZombie/pixil-frame-3.png"
-       };
+       "StartZombie/pixil-frame-3.png"};
 
    for (const auto &path : imagePaths)
    {
-      auto img = std::make_shared<Engine::Image>(path, halfW, halfH / 2 + 125, 0, 0, 0.5f, 0.5f, 2.5f, 2.5f);
+      auto img = std::make_shared<Engine::Image>(path, halfW, halfH / 2 + 48, 0, 0, 0.5f, 0.5f, 2.5f, 2.5f);
       zombieFrames.push_back(img);
    }
 
-   btn1 = new Engine::ImageButton("play/play2.png", "play/play5.png", halfW - 250, halfH / 2 + 150, 500, 200.25);
+   btn1 = new Engine::ImageButton("stage-select/mainbutton.png", "stage-select/mainbutton2.png", halfW - 281, halfH / 2 + 110, 562, 220);
    btn1->SetOnClickCallback(std::bind(&StartScene::PlayOnClick, this, 1));
    AddNewControlObject(btn1);
 
-   play = new Engine::Label("Play", "pirulen.ttf", 48, halfW, halfH / 2 + 250, 0, 0, 0, 255, 0.5, 0.5);
+   play = new Engine::Label("Play", "pirulen.ttf", 96, halfW, halfH / 2 + 196, 0, 0, 0, 255, 0.5, 0.5);
    AddNewObject(play);
 
-   btn = new Engine::ImageButton("play/play2.png", "play/play5.png", halfW - 250, halfH * 3 / 2 - 75 - move, 500, 200.25);
+   //border = new Engine::Image("stage-select/border.png", w - 96, 32);
+   //AddNewObject(border);
+
+   btn = new Engine::ImageButton("stage-select/settings3.png", "stage-select/settings4.png", w - 96, 32, 64, 64);
    btn->SetOnClickCallback(std::bind(&StartScene::SettingsOnClick, this, 2));
    AddNewControlObject(btn);
 
-   settings = new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH * 3 / 2 + 25 - move, 0, 0, 0, 255, 0.5, 0.5);
-   AddNewObject(settings);
+   // settings = new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH * 3 / 2 + 25 - move, 0, 0, 0, 255, 0.5, 0.5);
+   // AddNewObject(settings);
 }
 
 void StartScene::Update(float deltaTime)
@@ -69,10 +72,11 @@ void StartScene::Draw() const
    {
       zombieFrames[currentFrame]->Draw();
    }
+
    btn1->Draw();
    play->Draw();
+   //border->Draw();
    btn->Draw();
-   settings->Draw();
 }
 
 void StartScene::Terminate()
@@ -88,10 +92,11 @@ void StartScene::PlayOnClick(int stage)
 
 void StartScene::SettingsOnClick(int stage)
 {
-   // Engine::GameEngine::GetInstance().ChangeScene("settings");
+   Engine::GameEngine::GetInstance().ChangeScene("settings");
 }
 
 void StartScene::OnMouseDown(int button, int mx, int my)
 {
    IScene::OnMouseDown(button, mx, my);
 }
+

@@ -14,8 +14,6 @@ namespace Engine {
         void Draw() const override;
         int GetBitmapWidth() const;
         int GetBitmapHeight() const;
-
-    private:
         float scaleX;
         float scaleY;
     };

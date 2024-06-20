@@ -3,6 +3,8 @@
 #include <allegro5/allegro.h>
 #include <string>
 #include <unordered_map>
+#include <map>
+#include <vector>
 
 #include "Point.hpp"
 #include "User.hpp"
@@ -10,12 +12,14 @@
 /// <summary>
 /// All general classes are under this namespace for clarity.
 /// </summary>
-namespace Engine {
+namespace Engine
+{
 	class IScene;
 	/// <summary>
 	/// The one and only GameEngine for the entire program. Responsible for low-level initialization and window events.
 	/// </summary>
-	class GameEngine final {
+	class GameEngine final
+	{
 	private:
 		// Allegro5 settings, frames per second, screen width, screen height, maximum simultaneous audio samples.
 		int fps{}, screenW{}, screenH{}, reserveSamples{};
@@ -25,21 +29,21 @@ namespace Engine {
 		float deltaTimeThreshold{};
 		// All scenes are stored in hash table for easy access.
 		// Reference: Data Structure - Hash table
-		std::unordered_map<std::string, IScene*> scenes;
+		std::unordered_map<std::string, IScene *> scenes;
 		// The active scene that occupies the game's update, draw and various events.
-		IScene* activeScene{};
+		IScene *activeScene{};
 		// Allegro5 display for window creation.
-		ALLEGRO_DISPLAY* display{};
+		ALLEGRO_DISPLAY *display{};
 		// Allegro5 event queue.
-		ALLEGRO_EVENT_QUEUE* event_queue{};
+		ALLEGRO_EVENT_QUEUE *event_queue{};
 		// Allegro5 timer to inject update & draw event into the event queue.
-		ALLEGRO_TIMER* update_timer{};
+		ALLEGRO_TIMER *update_timer{};
 		// Allegro5 cursor
 		ALLEGRO_MOUSE_CURSOR *new_cursor{};
 		// The window's title text.
-		const char* title{};
+		const char *title{};
 		// The window's icon.
-		const char* icon{};
+		const char *icon{};
 		// The scene to change to at next update.
 		std::string nextScene{};
 
@@ -77,17 +81,18 @@ namespace Engine {
 		/// the scene. Since this call destroys everything initialized.
 		/// </summary>
 		/// <param name="name">The name of the scene you want to change to.</param>
-		void changeScene(const std::string& name);
+		void changeScene(const std::string &name);
+
 	public:
 		// Note: We'll ignore C++11's move constructor, move assignment operator in this project for simplicity.
 		/// <summary>
 		/// Copy constructor is deleted, no copying allowed.
 		/// </summary>
-		GameEngine(GameEngine const&) = delete;
+		GameEngine(GameEngine const &) = delete;
 		/// <summary>
 		/// Copy assignment operator is deleted, no copy assignment allowed.
 		/// </summary>
-		GameEngine& operator=(GameEngine const&) = delete;
+		GameEngine &operator=(GameEngine const &) = delete;
 		/// <summary>
 		/// Start the game loop until exit, scenes should be added before starting.
 		/// </summary>
@@ -99,10 +104,10 @@ namespace Engine {
 		/// <param name="title">Window's title text.</param>
 		/// <param name="icon">Window's icon image path.</param>
 		/// <param name="freeMemoryOnSceneChanged">Determines whether to free memory between scenes.</param>
-		void Start(const std::string& firstSceneName, int fps = 60, int screenW = 800, int screenH = 600, int reserveSamples = 1000,
-				   const char* title = "Tower Defense (I2P(II)_2024 Mini Project 2))",
-				   const char* icon = "icon.png", bool freeMemoryOnSceneChanged = false,
-				   float deltaTimeThreshold = 0.05);
+		void Start(const std::string &firstSceneName, int fps = 60, int screenW = 800, int screenH = 600, int reserveSamples = 1000,
+					  const char *title = "Tower Defense (I2P(II)_2024 Mini Project 2))",
+					  const char *icon = "icon.png", bool freeMemoryOnSceneChanged = false,
+					  float deltaTimeThreshold = 0.05);
 		/// <summary>
 		/// Add a new scene to the game. Should only be called once for each scene.
 		/// Use inline-new when adding scene in order to support polymorphism,
@@ -110,23 +115,23 @@ namespace Engine {
 		/// </summary>
 		/// <param name="name">The unique name of your scene for later access.</param>
 		/// <param name="scene">The pointer to the scene you want to add.</param>
-		void AddNewScene(const std::string& name, IScene* scene);
+		void AddNewScene(const std::string &name, IScene *scene);
 		/// <summary>
 		/// Change to another scene. The scene will be changed at next update.
 		/// </summary>
 		/// <param name="name">The name of the scene you want to change to.</param>
-		void ChangeScene(const std::string& name);
+		void ChangeScene(const std::string &name);
 		/// <summary>
 		/// Get the pointer of the active scene.
 		/// </summary>
 		/// <returns>Pointer to active scene.</returns>
-		IScene* GetActiveScene() const;
+		IScene *GetActiveScene() const;
 		/// <summary>
 		/// Get scene by name.
 		/// </summary>
 		/// <param name="name">The scene's name.</param>
 		/// <returns>Pointer to scene.</returns>
-		IScene* GetScene(const std::string& name);
+		IScene *GetScene(const std::string &name);
 		/// <summary>
 		/// Get screen size.
 		/// </summary>
@@ -156,7 +161,18 @@ namespace Engine {
 		/// Typical function to retrieve Singleton instance and supports lazy initialization.
 		/// </summary>
 		/// <returns>The Singleton instance of GameEngine.</returns>
-		static GameEngine& GetInstance();
+		static GameEngine &GetInstance();
+
+		// Function to get the key code for a specific action
+		int GetKeyMapping(const std::string &action) const;
+
+		// Function to set a new key mapping for an action
+		void SetKeyMapping(const std::string &action, int keyCode);
+
+		// Function to get the key name (string) for an action
+		std::string GetKey(const std::string &action) const;
+
+		std::map<std::string, int> keyMappings;
 	};
 }
 #endif // GAMEENGINE_HPP

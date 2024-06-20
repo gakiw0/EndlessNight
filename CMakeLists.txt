@@ -67,6 +67,10 @@ add_executable(EndlessNights
     Scene/WinScene.hpp
     Scene/LoseScene.cpp
     Scene/LoseScene.hpp
+    Scene/StartScene.h
+    Scene/StartScene.cpp
+    Scene/SettingsScene.hpp
+    Scene/SettingsScene.cpp
 
     #Players
     Player/Player.hpp

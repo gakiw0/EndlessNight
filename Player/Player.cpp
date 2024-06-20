@@ -48,7 +48,7 @@ void Player::Update(float deltaTime)
     float newRotation = fakeRotation; // Use existing fakeRotation from the Sprite class.
 
     // WASD key movements for straight directions only
-    if (gameEngine.IsKeyDown(ALLEGRO_KEY_W))
+    if (gameEngine.IsKeyDown(Engine::GameEngine::GetInstance().GetKeyMapping("MoveUp")))
     {
         newRotation = 3 * ALLEGRO_PI / 2; // Up (W)
         Velocity.y -= speed;
@@ -56,7 +56,7 @@ void Player::Update(float deltaTime)
         imagePath = upWalkImages;
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
     }
-    else if (gameEngine.IsKeyDown(ALLEGRO_KEY_S))
+    else if (gameEngine.IsKeyDown(Engine::GameEngine::GetInstance().GetKeyMapping("MoveDown")))
     {
         newRotation = ALLEGRO_PI / 2; // Down (S)
         Velocity.y += speed;
@@ -64,7 +64,7 @@ void Player::Update(float deltaTime)
         imagePath = downWalkImages;
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
     }
-    else if (gameEngine.IsKeyDown(ALLEGRO_KEY_A))
+    else if (gameEngine.IsKeyDown(Engine::GameEngine::GetInstance().GetKeyMapping("MoveLeft")))
     {
         newRotation = ALLEGRO_PI; // Left (A)
         Velocity.x -= speed;
@@ -73,7 +73,7 @@ void Player::Update(float deltaTime)
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
         scaleX = abs(scaleX);
     }
-    else if (gameEngine.IsKeyDown(ALLEGRO_KEY_D))
+    else if (gameEngine.IsKeyDown(Engine::GameEngine::GetInstance().GetKeyMapping("MoveRight")))
     {
         newRotation = 0; // Right (D)
         Velocity.x += speed;
