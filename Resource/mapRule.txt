@@ -1,0 +1,29 @@
+1 = dirt1.png
+2 = dirt2.png
+3 = dirt3.png
+4 = dirt4.png
+5 = grass1.png
+6 = grass2.png
+7 = grass3.png
+8 = bush.png
+T = tombstone.png
+P = poletile.png
+s = stone.png
+b = box.png
+c = car.png
+d = debris.png
+l = log.png
+A = path0.png
+B = path1.png
+C = path2.png
+D = path3.png
+E = path4.png
+F = path5.png
+G = path6.png
+H = path7.png
+I = path8.png
+J = path9.png
+K = path10.png
+L = path11.png
+
+Lowercase alphabets are objects(both zombie and player cannot move against)

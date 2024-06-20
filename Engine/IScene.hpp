@@ -15,6 +15,7 @@ namespace Engine {
 		/// The interface cannot be instantiated directly, must be inherited.
 		/// </summary>
 		explicit IScene() = default;
+
 	public:
 		/// <summary>
 		/// Copy constructor is deleted, no copying allowed.

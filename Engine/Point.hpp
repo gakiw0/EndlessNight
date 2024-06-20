@@ -69,8 +69,6 @@ namespace Engine {
 		/// </summary>
 		/// <returns>Magnitude of vector.</returns>
 		float Magnitude() const;
-		float Distance(const Point &other) const;
-
 	};
 	Point operator*(const float& lhs, const Point& rhs);
 }

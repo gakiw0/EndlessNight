@@ -30,7 +30,7 @@ namespace Engine
          clicked = !clicked;
          if(clicked) bmp = this->imgIn;
          else bmp = imgOut;
-         getPlayScene()->PauseGame();
+         
 
          // mouseIn = Collider::IsPointInBitmap(Point((mx - Position.x) * GetBitmapWidth() / Size.x + Anchor.x * GetBitmapWidth(), (my - Position.y) * GetBitmapHeight() / Size.y + Anchor.y * GetBitmapHeight()), bmp);
          // if (!mouseIn || !Enabled) bmp = imgOut;

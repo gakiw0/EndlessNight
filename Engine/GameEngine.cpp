@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <string>
 #include <utility>
+#include <cctype>
 
 #include "Allegro5Exception.hpp"
 #include "GameEngine.hpp"
@@ -18,49 +19,62 @@
 #include "Point.hpp"
 #include "Resources.hpp"
 
-namespace Engine {
-	void GameEngine::initAllegro5() {
-		if (!al_init()) throw Allegro5Exception("failed to initialize allegro");
+namespace Engine
+{
+	void GameEngine::initAllegro5()
+	{
+		if (!al_init())
+			throw Allegro5Exception("failed to initialize allegro");
 
 		// Initialize add-ons.
-		if (!al_init_primitives_addon()) throw Allegro5Exception("failed to initialize primitives add-on");
+		if (!al_init_primitives_addon())
+			throw Allegro5Exception("failed to initialize primitives add-on");
 		al_init_font_addon();
 		// Use the code below if you're using a newer version or Allegro5, the code above is for compatibility.
-		//if (!al_init_font_addon()) throw Allegro5Exception("failed to initialize font add-on");
-		if (!al_init_ttf_addon()) throw Allegro5Exception("failed to initialize ttf add-on");
-		if (!al_init_image_addon()) throw Allegro5Exception("failed to initialize image add-on");
+		// if (!al_init_font_addon()) throw Allegro5Exception("failed to initialize font add-on");
+		if (!al_init_ttf_addon())
+			throw Allegro5Exception("failed to initialize ttf add-on");
+		if (!al_init_image_addon())
+			throw Allegro5Exception("failed to initialize image add-on");
 		// Enable antialias by linear interpolation.
 		al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
-		if (!al_install_audio()) throw Allegro5Exception("failed to initialize audio add-on");
-		if (!al_init_acodec_addon()) throw Allegro5Exception("failed to initialize audio codec add-on");
-		if (!al_reserve_samples(reserveSamples)) throw Allegro5Exception("failed to reserve samples");
+		if (!al_install_audio())
+			throw Allegro5Exception("failed to initialize audio add-on");
+		if (!al_init_acodec_addon())
+			throw Allegro5Exception("failed to initialize audio codec add-on");
+		if (!al_reserve_samples(reserveSamples))
+			throw Allegro5Exception("failed to reserve samples");
 		// Can initialize other add-ons here, such as video, ...
 		// Install peripherals.
-		if (!al_install_keyboard()) throw Allegro5Exception("failed to install keyboard");
-		if (!al_install_mouse()) throw Allegro5Exception("failed to install mouse");
+		if (!al_install_keyboard())
+			throw Allegro5Exception("failed to install keyboard");
+		if (!al_install_mouse())
+			throw Allegro5Exception("failed to install mouse");
 
 		// Setup game display.
 		display = al_create_display(screenW, screenH);
-		if (!display) throw Allegro5Exception("failed to create display");
+		if (!display)
+			throw Allegro5Exception("failed to create display");
 		al_set_window_title(display, title);
 		// Set alpha blending mode.
 		al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 
 		// Load and set window icon.
-		if (icon) {
+		if (icon)
+		{
 			static std::shared_ptr<ALLEGRO_BITMAP> iconReference = Resources::GetInstance().GetBitmap(icon);
 			al_set_display_icon(display, iconReference.get());
 			LOG(INFO) << "Loaded window icon from: " << icon;
 		}
-
 		// Setup update timer.
 		update_timer = al_create_timer(1.0f / fps);
-		if (!update_timer) throw Allegro5Exception("failed to create timer");
-
+		if (!update_timer)
+			throw Allegro5Exception("failed to create timer");
 		// Setup event queue.
 		event_queue = al_create_event_queue();
-		if (!event_queue) throw Allegro5Exception("failed to create event queue");
-
+		if (!event_queue)
+			throw Allegro5Exception("failed to create event queue");
+		
 		// Check how many mouse buttons are supported.
 		const unsigned m_buttons = al_get_mouse_num_buttons();
 		LOG(INFO) << "There are total " << m_buttons << " supported mouse buttons";
@@ -75,14 +89,17 @@ namespace Engine {
 		// Start the timer to update and draw the game.
 		al_start_timer(update_timer);
 	}
-	void GameEngine::startEventLoop() {
+	void GameEngine::startEventLoop()
+	{
 		bool done = false;
 		ALLEGRO_EVENT event;
 		int redraws = 0;
 		auto timestamp = std::chrono::steady_clock::now();
-		while (!done) {
+		while (!done)
+		{
 			al_wait_for_event(event_queue, &event);
-			switch (event.type) {
+			switch (event.type)
+			{
 			case ALLEGRO_EVENT_DISPLAY_CLOSE:
 				// Event for clicking the window close button.
 				LOG(VERBOSE) << "Window close button clicked";
@@ -115,12 +132,14 @@ namespace Engine {
 				activeScene->OnMouseUp(event.mouse.button, event.mouse.x, event.mouse.y);
 				break;
 			case ALLEGRO_EVENT_MOUSE_AXES:
-				if (event.mouse.dx != 0 || event.mouse.dy != 0) {
+				if (event.mouse.dx != 0 || event.mouse.dy != 0)
+				{
 					// Event for mouse move.
 					LOG(VERBOSE) << "Mouse move to (" << event.mouse.x << ", " << event.mouse.y << ")";
 					activeScene->OnMouseMove(event.mouse.x, event.mouse.y);
 				}
-				else if (event.mouse.dz != 0) {
+				else if (event.mouse.dz != 0)
+				{
 					// Event for mouse scroll.
 					LOG(VERBOSE) << "Mouse scroll at (" << event.mouse.x << ", " << event.mouse.y << ") with delta " << event.mouse.dz;
 					activeScene->OnMouseScroll(event.mouse.x, event.mouse.y, event.mouse.dz);
@@ -143,7 +162,8 @@ namespace Engine {
 			// Can process more events and call callbacks by adding more cases.
 
 			// Redraw the scene.
-			if (redraws > 0 && al_is_event_queue_empty(event_queue)) {
+			if (redraws > 0 && al_is_event_queue_empty(event_queue))
+			{
 				if (redraws > 1)
 					LOG(VERBOSE) << redraws - 1 << " frame(s) dropped";
 				// Calculate the timeElapsed and update the timestamp.
@@ -157,8 +177,10 @@ namespace Engine {
 			}
 		}
 	}
-	void GameEngine::update(float deltaTime) {
-		if (!nextScene.empty()) {
+	void GameEngine::update(float deltaTime)
+	{
+		if (!nextScene.empty())
+		{
 			changeScene(nextScene);
 			nextScene = "";
 		}
@@ -167,20 +189,24 @@ namespace Engine {
 			deltaTime = deltaTimeThreshold;
 		activeScene->Update(deltaTime);
 	}
-	void GameEngine::draw() const {
+	void GameEngine::draw() const
+	{
 		activeScene->Draw();
 		al_flip_display();
 	}
-	void GameEngine::destroy() {
+	void GameEngine::destroy()
+	{
 		// Destroy allegro5 window resources.
 		al_destroy_timer(update_timer);
 		al_destroy_event_queue(event_queue);
 		al_destroy_display(display);
+		al_destroy_mouse_cursor(new_cursor);
 		// Free all scenes.
 		for (const auto &pair : scenes)
 			delete pair.second;
 	}
-	void GameEngine::changeScene(const std::string& name) {
+	void GameEngine::changeScene(const std::string &name)
+	{
 		if (scenes.count(name) == 0)
 			throw std::invalid_argument("Cannot change to a unknown scene.");
 		// Terminate the old scene.
@@ -193,9 +219,11 @@ namespace Engine {
 		activeScene->Initialize();
 		LOG(INFO) << "Changed to " << name << " scene";
 	}
-	void GameEngine::Start(const std::string& firstSceneName, int fps, int screenW, int screenH,
-		int reserveSamples, const char* title, const char* icon, bool freeMemoryOnSceneChanged, float deltaTimeThreshold) {
+	void GameEngine::Start(const std::string &firstSceneName, int fps, int screenW, int screenH,
+						   int reserveSamples, const char *title, const char *icon, bool freeMemoryOnSceneChanged, float deltaTimeThreshold)
+	{
 		LOG(INFO) << "Game Initializing...";
+
 		// Update Allegro5 configs.
 		this->fps = fps;
 		this->screenW = screenW;
@@ -226,42 +254,52 @@ namespace Engine {
 		LOG(INFO) << "Game end";
 		destroy();
 	}
-	void GameEngine::AddNewScene(const std::string& name, IScene* scene) {
+	void GameEngine::AddNewScene(const std::string &name, IScene *scene)
+	{
 		if (scenes.count(name) != 0)
 			throw std::invalid_argument("Cannot add scenes with the same name.");
 		scenes[name] = scene;
 	}
-	void GameEngine::ChangeScene(const std::string& name) {
+	void GameEngine::ChangeScene(const std::string &name)
+	{
 		nextScene = name;
 	}
-	IScene* GameEngine::GetActiveScene() const {
+	IScene *GameEngine::GetActiveScene() const
+	{
 		return activeScene;
 	}
-	IScene* GameEngine::GetScene(const std::string& name) {
+	IScene *GameEngine::GetScene(const std::string &name)
+	{
 		if (scenes.count(name) == 0)
 			throw std::invalid_argument("Cannot get scenes that aren't added.");
 		return scenes[name];
 	}
-	Point GameEngine::GetScreenSize() const {
+	Point GameEngine::GetScreenSize() const
+	{
 		return Point(screenW, screenH);
 	}
-	int GameEngine::GetScreenWidth() const {
+	int GameEngine::GetScreenWidth() const
+	{
 		return screenW;
 	}
-	int GameEngine::GetScreenHeight() const {
+	int GameEngine::GetScreenHeight() const
+	{
 		return screenH;
 	}
-	Point GameEngine::GetMousePosition() const {
+	Point GameEngine::GetMousePosition() const
+	{
 		ALLEGRO_MOUSE_STATE state;
 		al_get_mouse_state(&state);
 		return Point(state.x, state.y);
 	}
-	bool GameEngine::IsKeyDown(int keyCode) const {
+	bool GameEngine::IsKeyDown(int keyCode) const
+	{
 		ALLEGRO_KEYBOARD_STATE state;
 		al_get_keyboard_state(&state);
 		return al_key_down(&state, keyCode);
 	}
-	GameEngine& GameEngine::GetInstance() {
+	GameEngine &GameEngine::GetInstance()
+	{
 		// The classic way to lazy initialize a Singleton.
 		static GameEngine instance;
 		return instance;

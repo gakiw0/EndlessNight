@@ -5,6 +5,7 @@
 
 #include "IControl.hpp"
 #include "IObject.hpp"
+#include "User.hpp"
 
 namespace Engine {
 	/// <summary>
@@ -196,6 +197,7 @@ namespace Engine {
 		/// </summary>
 		/// <returns>A linked-list of all controls contained.</returns>
 		std::list<IControl*> GetControls();
+
 	};
 }
 #endif // GROUP_HPP
