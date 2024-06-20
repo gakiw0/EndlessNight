@@ -52,10 +52,10 @@ void SettingsScene::Initialize()
     //                       0.5));
 
     Engine::ImageButton *btn;
-    btn = new Engine::ImageButton("play/play2.png", "play/play5.png", halfW - 240, halfH + 200 - 20, 500, 202.5);
+    btn = new Engine::ImageButton("stage-select/Play_Unpressed.png", "stage-select/Play_Pressed.png", halfW - 240, halfH + 200 - 20, 320, 160);
     btn->SetOnClickCallback(std::bind(&SettingsScene::BackOnClick, this, 2));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4 - 30, 0, 0, 0, 255, 0.5, 0.5));
+    //AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4 - 30, 0, 0, 0, 255, 0.5, 0.5));
     
 
     up = new Engine::TextButton("stage-select/border.png", "stage-select/border.png", halfW - 248, halfH - 48, 96, 96);

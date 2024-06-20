@@ -36,12 +36,12 @@ void StartScene::Initialize()
       zombieFrames.push_back(img);
    }
 
-   btn1 = new Engine::ImageButton("stage-select/mainbutton.png", "stage-select/mainbutton2.png", halfW - 281, halfH / 2 + 110, 562, 220);
+   btn1 = new Engine::ImageButton("stage-select/Play_Unpressed.png", "stage-select/Play_Pressed.png", halfW - 281, halfH / 2 + 110, 562, 220);
    btn1->SetOnClickCallback(std::bind(&StartScene::PlayOnClick, this, 1));
    AddNewControlObject(btn1);
 
-   play = new Engine::Label("Play", "pirulen.ttf", 96, halfW, halfH / 2 + 196, 0, 0, 0, 255, 0.5, 0.5);
-   AddNewObject(play);
+   // play = new Engine::Label("Play", "pirulen.ttf", 96, halfW, halfH / 2 + 196, 0, 0, 0, 255, 0.5, 0.5);
+   // AddNewObject(play);
 
    //border = new Engine::Image("stage-select/border.png", w - 96, 32);
    //AddNewObject(border);
@@ -74,7 +74,7 @@ void StartScene::Draw() const
    }
 
    btn1->Draw();
-   play->Draw();
+   //play->Draw();
    //border->Draw();
    btn->Draw();
 }
