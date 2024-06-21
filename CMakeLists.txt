@@ -42,6 +42,8 @@ add_executable(EndlessNights
     Engine/Resources.hpp
     Engine/Sprite.cpp
     Engine/Sprite.hpp
+    Engine/AutoScroller.hpp
+    Engine/AutoScroller.cpp
 
     # UI Components
     UI/Component/Image.cpp

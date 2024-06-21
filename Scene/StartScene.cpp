@@ -14,6 +14,7 @@
 #include "Engine/Point.hpp"
 #include "Engine/Resources.hpp"
 #include "UI/Component/Slider.hpp"
+#include "Engine/AutoScroller.hpp"
 
 #define move 25
 
@@ -23,6 +24,10 @@ void StartScene::Initialize()
    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
    int halfW = w / 2;
    int halfH = h / 2;
+
+   background = new AutoScroller("stage-select/reback.png", 20.0f);
+   // AddNewObject(background);
+   background->SetZoom(1.0f);
 
    std::vector<std::string> imagePaths = {
        "StartZombie/pixil-frame-0.png",
@@ -43,8 +48,8 @@ void StartScene::Initialize()
    // play = new Engine::Label("Play", "pirulen.ttf", 96, halfW, halfH / 2 + 196, 0, 0, 0, 255, 0.5, 0.5);
    // AddNewObject(play);
 
-   //border = new Engine::Image("stage-select/border.png", w - 96, 32);
-   //AddNewObject(border);
+   // border = new Engine::Image("stage-select/border.png", w - 96, 32);
+   // AddNewObject(border);
 
    btn = new Engine::ImageButton("stage-select/settings3.png", "stage-select/settings4.png", w - 96, 32, 64, 64);
    btn->SetOnClickCallback(std::bind(&StartScene::SettingsOnClick, this, 2));
@@ -63,25 +68,31 @@ void StartScene::Update(float deltaTime)
       currentFrame = (currentFrame + 1) % zombieFrames.size();
       animationTime = 0.0f;
    }
+   background->Update(deltaTime);
+   // float zoomFactor = 1.0f + 0.2f * sin(al_get_time());
+   // background->SetZoom(zoomFactor);
 }
 
 void StartScene::Draw() const
 {
    IScene::Draw();
+   background->Draw();
    if (!zombieFrames.empty())
    {
       zombieFrames[currentFrame]->Draw();
    }
 
    btn1->Draw();
-   //play->Draw();
-   //border->Draw();
+   // play->Draw();
+   // border->Draw();
    btn->Draw();
 }
 
 void StartScene::Terminate()
 {
+   delete background;
    IScene::Terminate();
+
    // ZombieAnimation's destructor will handle frame cleanup
 }
 
@@ -99,4 +110,3 @@ void StartScene::OnMouseDown(int button, int mx, int my)
 {
    IScene::OnMouseDown(button, mx, my);
 }
-

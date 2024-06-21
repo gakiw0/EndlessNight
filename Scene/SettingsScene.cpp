@@ -52,7 +52,7 @@ void SettingsScene::Initialize()
     //                       0.5));
 
     Engine::ImageButton *btn;
-    btn = new Engine::ImageButton("stage-select/Play_Unpressed.png", "stage-select/Play_Pressed.png", halfW - 240, halfH + 200 - 20, 320, 160);
+    btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 144, halfH + 216, 288, 96);
     btn->SetOnClickCallback(std::bind(&SettingsScene::BackOnClick, this, 2));
     AddNewControlObject(btn);
     // AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4 - 30, 0, 0, 0, 255, 0.5, 0.5));
@@ -61,14 +61,22 @@ void SettingsScene::Initialize()
     AddNewControlObject(up);
     upLabel = new Engine::Label(upKey, "pirulen.ttf", 36, halfW - 248 + 48, halfH, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(upLabel);
+    Engine::ImageButton *upborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png", w/4 - 144, halfH - 48, 288, 96);
+    AddNewObject(upborder);
     AddNewObject(
         new Engine::Label("UP", "pirulen.ttf", 36, w / 5, halfH, 255, 255, 255, 255, 0.5,
                           0.5));
 
-    down = new Engine::TextButton("stage-select/border.png", "stage-select/border.png", halfW + 248 - 48, halfH - 48, 96, 96);
+    down = new Engine::TextButton("stage-select/border.png", "stage-select/border.png", halfW + 248 - 96, halfH - 48, 96, 96);
     AddNewControlObject(down);
-    downLabel = new Engine::Label(downKey, "pirulen.ttf", 36, halfW + 248, halfH, 255, 255, 255, 255, 0.5, 0.5);
+    downLabel = new Engine::Label(downKey, "pirulen.ttf", 36, halfW + 248 - 48, halfH, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(downLabel);
+    Engine::ImageButton *downborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png", 3 * w/4 - 144, halfH - 48, 288, 96);
+    AddNewObject(downborder);
+    AddNewObject(
+        new Engine::Label("DOWN", "pirulen.ttf",36 , halfW + 248 + 152, halfH, 255, 255, 255, 255, 0.5,
+                          0.5));
+
 
     left = new Engine::TextButton("stage-select/border.png", "stage-select/border.png", halfW - 248, halfH + 96, 96, 96);
     AddNewControlObject(left);

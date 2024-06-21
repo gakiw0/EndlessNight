@@ -10,6 +10,7 @@
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "UI/Component/Image.hpp"
+#include "Engine/AutoScroller.hpp"
 
 class StartScene final : public Engine::IScene {
 private:
@@ -35,6 +36,7 @@ public:
     Engine::Label *play;
     Engine::Label *settings;
     Engine::Image *border;
+    AutoScroller* background;
 };
 
 #endif // INC_ENDLESS_NIGHTS_STARTSCENE_H
