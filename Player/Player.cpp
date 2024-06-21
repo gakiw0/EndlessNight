@@ -12,7 +12,7 @@
 using namespace std;
 
 Player::Player(float x, float y, int hp)
-    : Engine::Sprite("PixelArt/RightLeftWalk/pixil-frame-0.png", x, y, 0, 0, 0.5f, 0.5f, 0, 0, 0, 255, 255, 255, 255), hp(hp), frame(0), elapsedTime(0), timeSinceLastShot(0), shootCooldown(0.5f)
+    : Engine::Sprite("PixelArt/RightLeftWalk/pixil-frame-0.png", x, y, 0, 0, 0.5f, 0.5f, 0, 0, 0, 255, 255, 255, 255), hp(hp), bulletDmg(50), frame(0), elapsedTime(0), timeSinceLastShot(0), shootCooldown(0.5f)
 {
     Anchor = Engine::Point(0.5f, 0.5f);
     CollisionRadius = 10;
@@ -122,7 +122,7 @@ void Player::Update(float deltaTime)
         timeSinceLastShot = 0; // Reset the timer after shooting
     }
 
-    IsOverlapWithObstacle(deltaTime);
+    HandleOverlapWithObstacle(deltaTime);
     if (Position.x + Velocity.x * deltaTime - Size.x / 2 < 0 || Position.x + Velocity.x * deltaTime + Size.x / 2 > PlayScene::GetClientSize().x)
         Velocity.x = 0;
     if (Position.y + Velocity.y * deltaTime - Size.y / 2 < 0 || Position.y + Velocity.y * deltaTime + Size.y / 2 > PlayScene::GetClientSize().y)
@@ -153,11 +153,11 @@ float Player::GetSpeed() const
 void Player::Shoot()
 {
     // Create a new bullet and set its direction based on the player's current rotation
-    Bullet *bullet = new Bullet(Position.x, Position.y, imgRotation, 500);
+    Bullet *bullet = new Bullet(Position.x, Position.y, imgRotation, 500, bulletDmg);
     getPlayScene()->BulletGroup->AddNewObject(bullet);
 }
 
-void Player::IsOverlapWithObstacle(float deltaTime)
+void Player::HandleOverlapWithObstacle(float deltaTime)
 {
     Engine::Point nextPosition;
     nextPosition.x = Position.x + Velocity.x * deltaTime;
@@ -276,4 +276,9 @@ void Player::StopMove(int keyCode)
             moving = false;
         }
     }
+}
+
+void Player::AddBulletDmg(float dmg)
+{
+    bulletDmg += dmg;
 }

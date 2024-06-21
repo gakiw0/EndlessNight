@@ -7,8 +7,8 @@
 
 #include <iostream>
 
-Bullet::Bullet(float x, float y, float rotation, float speed)
-    : Sprite("play/bullet-1.png", x, y, 0, 0, 0.5, 0.5, 0, 255, 255, 255, 255), speed(speed), damage(50)
+Bullet::Bullet(float x, float y, float rotation, float speed, float dmg)
+    : Sprite("play/bullet-1.png", x, y, 0, 0, 0.5, 0.5, 0, 255, 255, 255, 255), speed(speed), damage(dmg)
 {
   this->Velocity.x = std::cos(rotation) * speed;
   this->Velocity.y = std::sin(rotation) * speed;

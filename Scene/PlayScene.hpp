@@ -8,6 +8,7 @@
 #include "Engine/Point.hpp"
 #include <vector>
 #include <string>
+#include <map>
 
 class PlayScene : public Engine::IScene
 {
@@ -20,6 +21,12 @@ private:
     Engine::Label *healthLabel;
     float remainingTime;
     Engine::Label *timerLabel;
+
+    enum ItemType
+    {
+        NONE,
+        COIN
+    };
     enum TileType
     {
         TILE_DIRT1,
@@ -50,6 +57,7 @@ private:
         TILE_PATH10,
         TILE_PATH11,
     };
+    std::vector<double> ItemProbabilities;
 
 public:
     static const int MapWidth, MapHeight;
@@ -62,6 +70,7 @@ public:
     Group *EnemyGroup;
     Group *PlayerGroup;
     Group *LabelGroup;
+    Group *ItemGroup;
     std::vector<std::vector<TileType>> mapState;
     explicit PlayScene();
     static Engine::Point GetClientSize();
@@ -72,6 +81,8 @@ public:
     void ReadMap();
     void OnKeyDown(int keyCode) override;
     void OnKeyUp(int keyCode) override;
+    int generateRandomItemValue();
+    void generateItem(int index, float x, float y);
 };
 
 #endif // PLAYSCENE_HPP

@@ -86,6 +86,12 @@ add_executable(EndlessNights
     Bullet/Bullet.hpp
     Bullet/Bullet.cpp
 
+    #Item
+    Item/Item.hpp
+    Item/Item.cpp
+    Item/Coin.hpp
+    Item/Coin.cpp
+
     # Main
     main.cpp
 )

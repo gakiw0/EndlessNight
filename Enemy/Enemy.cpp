@@ -24,9 +24,10 @@ void Enemy::Update(float deltaTime)
 
     if (timeSinceLastAttack <= attackCooldown)
         timeSinceLastAttack += deltaTime;
-    IsOverlapWithPlayer(deltaTime);
 
-    IsOverlapWithObstacle(deltaTime);
+    HandleOverlapWithPlayer(deltaTime);
+
+    HandleOverlapWithObstacle(deltaTime);
 
     Sprite::Update(deltaTime);
 }
@@ -36,11 +37,13 @@ void Enemy::Hit(float damage)
     hp -= damage;
     if (hp <= 0)
     {
+        int index = getPlayScene()->generateRandomItemValue();
+        getPlayScene()->generateItem(index, Position.x, Position.y);
         getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
     }
 }
 
-void Enemy::IsOverlapWithPlayer(float deltaTime)
+void Enemy::HandleOverlapWithPlayer(float deltaTime)
 {
     PlayScene *scene = getPlayScene();
     for (auto &it : scene->PlayerGroup->GetObjects())
@@ -62,8 +65,8 @@ void Enemy::IsOverlapWithPlayer(float deltaTime)
     }
 }
 
-void Enemy::IsOverlapWithObstacle(float deltaTime)
-{   
+void Enemy::HandleOverlapWithObstacle(float deltaTime)
+{
     Engine::Point PositionPlusX = Engine::Point(Position.x + Velocity.x * deltaTime, Position.y);
     Engine::Point PositionPlusY = Engine::Point(Position.x, Position.y + Velocity.y * deltaTime);
 
@@ -81,7 +84,7 @@ void Enemy::IsOverlapWithObstacle(float deltaTime)
                 Velocity.x = 0;
             if (Engine::Collider::IsRectOverlap(PositionPlusY - Size / 2, PositionPlusY + Size / 2, obstacle->Position - obstacle->Size / 2, obstacle->Position + obstacle->Size / 2))
                 Velocity.y = 0;
-            return;
+            return; 
         }
     }
 }

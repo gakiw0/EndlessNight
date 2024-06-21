@@ -1,13 +1,15 @@
 #ifndef COIN_HPP
 #define COIN_HPP
 
-#include "Engine/Sprite.hpp"
+#include "Item.hpp"
 
-class Coin : public Engine::Sprite{
+class Coin : public Item{
 private:
     
 public:
     Coin (float x, float y);
+    void Update(float deltaTime) override;
+    void HandleOverlapWithPlayer(float deltaTime);
 };
 
 #endif // COIN_HPP

@@ -1,12 +1,13 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <random>
 #include "PlayScene.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Collider.hpp"
 #include "Enemy/Enemy.hpp" // Include the Enemy header
 #include "Player/Player.hpp"
-#include <iostream>
+#include "Item/Coin.hpp"
 using namespace std;
 
 const int PlayScene::MapWidth = 30, PlayScene::MapHeight = 20;
@@ -16,7 +17,6 @@ PlayScene::PlayScene() {}
 
 void PlayScene::Initialize()
 {
-
     mapState.clear();
     cameraD.x = 0;
     cameraD.y = 0;
@@ -39,7 +39,10 @@ void PlayScene::Initialize()
     AddNewObject(ObstacleGroup = new Group());
     AddNewObject(NonObstacleGroup = new Group());
     AddNewObject(LabelGroup = new Group());
+    AddNewObject(ItemGroup = new Group());
     ReadMap();
+    ItemProbabilities.push_back(0.5); //NONE
+    ItemProbabilities.push_back(0.5); //COIN
 
     player1 = new Player(halfW, halfH, 50);
     PlayerGroup->AddNewObject(player1);
@@ -49,6 +52,8 @@ void PlayScene::Initialize()
 
     healthLabel = new Engine::Label("HP: " + to_string(player1->GetHealth()), "pirulen.ttf", 60, 0, 0, 255, 255, 255, 255, 0, 0);
     LabelGroup->AddNewObject(healthLabel);
+
+    ItemGroup->AddNewObject(new Coin(halfW, halfH + 100));
 }
 
 Engine::Point PlayScene::GetClientSize()
@@ -69,6 +74,7 @@ void PlayScene::Update(float deltaTime)
         ObstacleGroup->MoveCamera(cameraD);
         NonObstacleGroup->MoveCamera(cameraD);
         TileMapGroup->MoveCamera(cameraD);
+        ItemGroup->MoveCamera(cameraD);
         PlayerGroup->MoveCamera(cameraD);
     }
     remainingTime -= deltaTime;
@@ -100,6 +106,7 @@ void PlayScene::Update(float deltaTime)
 void PlayScene::Draw() const
 {
     IScene::Draw();
+    ItemGroup->Draw();
     ObstacleGroup->Draw();
     BulletGroup->Draw();
     PlayerGroup->Draw();
@@ -372,5 +379,26 @@ void PlayScene::ReadMap()
                 NonObstacleGroup->AddNewObject(new Engine::Sprite(mapNonObstaclePath, positionX + ObjectWidth / 2, positionY + ObjectHeight / 2, ObjectWidth, ObjectHeight));
             TileMapGroup->AddNewObject(new Engine::Image(mapTilePath, positionX, positionY, BlockSize, BlockSize));
         }
+    }
+}
+
+int PlayScene::generateRandomItemValue()
+{
+    random_device rd;
+    mt19937 gen(rd());
+    discrete_distribution<> dis(ItemProbabilities.begin(), ItemProbabilities.end());
+
+    return dis(gen);
+}
+
+void PlayScene::generateItem(int index, float x, float y)
+{
+    switch (index)
+    {
+        case COIN:
+            ItemGroup->AddNewObject(new Coin(x, y));
+            break;
+        default:
+            break;
     }
 }
