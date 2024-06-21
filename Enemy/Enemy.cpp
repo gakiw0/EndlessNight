@@ -63,7 +63,7 @@ void Enemy::IsOverlapWithPlayer(float deltaTime)
 }
 
 void Enemy::IsOverlapWithObstacle(float deltaTime)
-{
+{   
     Engine::Point PositionPlusX = Engine::Point(Position.x + Velocity.x * deltaTime, Position.y);
     Engine::Point PositionPlusY = Engine::Point(Position.x, Position.y + Velocity.y * deltaTime);
 

@@ -20,6 +20,7 @@ Player::Player(float x, float y, int hp)
 
     // Initialize the list of image paths for different directions
     rightLeftWalkImages = {
+        "PixelArt/RightLeftWalk/pixil-frame-0.png",
         "PixelArt/RightLeftWalk/pixil-frame-1.png",
         "PixelArt/RightLeftWalk/pixil-frame-2.png"};
 
@@ -29,8 +30,16 @@ Player::Player(float x, float y, int hp)
         "PixelArt/UpWalk/pixil-frame-2.png"};
 
     downWalkImages = {
+        "PixelArt/DownWalk/pixil-frame-0.png",
         "PixelArt/DownWalk/pixil-frame-1.png",
         "PixelArt/DownWalk/pixil-frame-2.png"};
+
+    for (auto imgPath : rightLeftWalkImages)
+        bmp = Engine::Resources::GetInstance().GetBitmap(imgPath);
+    for (auto imgPath : upWalkImages)
+        bmp = Engine::Resources::GetInstance().GetBitmap(imgPath);
+    for (auto imgPath : downWalkImages)
+        bmp = Engine::Resources::GetInstance().GetBitmap(imgPath);
 
     // Use right-left walk images as the default
     imagePath = rightLeftWalkImages;
@@ -46,33 +55,32 @@ void Player::Update(float deltaTime)
 
     Engine::GameEngine &gameEngine = Engine::GameEngine::GetInstance();
 
-    if(Velocity.x > 0)
+    if (Velocity.x > 0)
     {
         imgRotation = 0; // Right (D)
         imagePath = rightLeftWalkImages;
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
         scaleX = -abs(scaleX);
     }
-    else if(Velocity.x < 0)
+    else if (Velocity.x < 0)
     {
         imgRotation = ALLEGRO_PI; // Left (A)
         imagePath = rightLeftWalkImages;
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
         scaleX = abs(scaleX);
     }
-    else if(Velocity.y > 0)
+    else if (Velocity.y > 0)
     {
         imgRotation = ALLEGRO_PI / 2; // Down (S)
         imagePath = downWalkImages;
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
     }
-    else if(Velocity.y < 0)
+    else if (Velocity.y < 0)
     {
         imgRotation = 3 * ALLEGRO_PI / 2; // Up (W)
         imagePath = upWalkImages;
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
     }
-
 
     if (moving)
     {
@@ -80,35 +88,29 @@ void Player::Update(float deltaTime)
         if (elapsedTime >= frameDuration)
         {
             // Toggle between specific frames for up-walk animation
-            if (imagePath == upWalkImages)
-            {
-                frame = (frame == 1) ? 2 : 1;
-            }
-            else
-            {
-                frame = (frame + 1) % imagePath.size();
-            }
+            frame = (frame == 1) ? 2 : 1;
             bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
             elapsedTime = 0; // Reset elapsed time
         }
     }
     else
     {
+        frame = 0;
         if (imgRotation < ALLEGRO_PI / 4 || imgRotation >= 7 * ALLEGRO_PI / 4)
         {
-            bmp = Engine::Resources::GetInstance().GetBitmap("PixelArt/RightLeftWalk/pixil-frame-0.png"); // Facing right
+            bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]); // Facing right
         }
         else if (imgRotation >= ALLEGRO_PI / 4 && imgRotation < 3 * ALLEGRO_PI / 4)
         {
-            bmp = Engine::Resources::GetInstance().GetBitmap("PixelArt/DownWalk/pixil-frame-0.png"); // Facing down
+            bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]); // Facing down
         }
         else if (imgRotation >= 3 * ALLEGRO_PI / 4 && imgRotation < 5 * ALLEGRO_PI / 4)
         {
-            bmp = Engine::Resources::GetInstance().GetBitmap("PixelArt/RightLeftWalk/pixil-frame-0.png"); // Facing left
+            bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]); // Facing left
         }
         else if (imgRotation >= 5 * ALLEGRO_PI / 4 && imgRotation < 7 * ALLEGRO_PI / 4)
         {
-            bmp = Engine::Resources::GetInstance().GetBitmap("PixelArt/UpWalk/pixil-frame-0.png"); // Facing up
+            bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]); // Facing up
         }
         elapsedTime = frameDuration;
     }

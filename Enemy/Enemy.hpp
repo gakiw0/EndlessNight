@@ -18,7 +18,7 @@ public:
     PlayScene* getPlayScene();
     void Hit(float damage);
     void IsOverlapWithPlayer(float deltaTime);
-    void IsOverlapWithObstacle(float deltaTime);
+    void     IsOverlapWithObstacle(float deltaTime);
 };
 
 #endif // ENEMY_HPP
