@@ -20,7 +20,8 @@ private:
     Engine::Label *healthLabel;
     float remainingTime;
     Engine::Label *timerLabel;
-    enum TileType {
+    enum TileType
+    {
         TILE_DIRT1,
         TILE_DIRT2,
         TILE_DIRT3,
@@ -54,9 +55,9 @@ public:
     static const int MapWidth, MapHeight;
     static const int BlockSize;
     int MapId;
-    Group* TileMapGroup;
-    Group* ObstacleGroup;
-    Group* NonObstacleGroup;
+    Group *TileMapGroup;
+    Group *ObstacleGroup;
+    Group *NonObstacleGroup;
     Group *BulletGroup;
     Group *EnemyGroup;
     Group *PlayerGroup;
@@ -69,7 +70,8 @@ public:
     void Update(float deltaTime) override;
     void Draw() const override;
     void ReadMap();
-    
+    void OnKeyDown(int keyCode) override;
+    void OnKeyUp(int keyCode) override;
 };
 
 #endif // PLAYSCENE_HPP

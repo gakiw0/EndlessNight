@@ -64,9 +64,9 @@ void Enemy::IsOverlapWithPlayer(float deltaTime)
 
 void Enemy::IsOverlapWithObstacle(float deltaTime)
 {
-    Engine::Point nextPosition;
-    nextPosition.x = Position.x + Velocity.x * deltaTime;
-    nextPosition.y = Position.y + Velocity.y * deltaTime;
+    Engine::Point PositionPlusX = Engine::Point(Position.x + Velocity.x * deltaTime, Position.y);
+    Engine::Point PositionPlusY = Engine::Point(Position.x, Position.y + Velocity.y * deltaTime);
+
     PlayScene *scene = getPlayScene();
     for (auto &it : scene->ObstacleGroup->GetObjects())
     {
@@ -75,10 +75,12 @@ void Enemy::IsOverlapWithObstacle(float deltaTime)
         {
             return;
         }
-        else if (Engine::Collider::IsRectOverlap(nextPosition - Size / 2, nextPosition + Size / 2, obstacle->Position - obstacle->Size / 2, obstacle->Position + obstacle->Size / 2))
+        else if (Engine::Collider::IsRectOverlap(PositionPlusX - Size / 2, PositionPlusX + Size / 2, obstacle->Position - obstacle->Size / 2, obstacle->Position + obstacle->Size / 2) || Engine::Collider::IsRectOverlap(PositionPlusY - Size / 2, PositionPlusY + Size / 2, obstacle->Position - obstacle->Size / 2, obstacle->Position + obstacle->Size / 2))
         {
-            Velocity.x = 0;
-            Velocity.y = 0;
+            if (Engine::Collider::IsRectOverlap(PositionPlusX - Size / 2, PositionPlusX + Size / 2, obstacle->Position - obstacle->Size / 2, obstacle->Position + obstacle->Size / 2))
+                Velocity.x = 0;
+            if (Engine::Collider::IsRectOverlap(PositionPlusY - Size / 2, PositionPlusY + Size / 2, obstacle->Position - obstacle->Size / 2, obstacle->Position + obstacle->Size / 2))
+                Velocity.y = 0;
             return;
         }
     }

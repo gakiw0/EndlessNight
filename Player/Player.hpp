@@ -13,8 +13,10 @@ class Player : public Engine::Sprite
 private:
     int hp;    // Player's HP
     int frame; // Animation frame index
+    bool moving;
+    bool movingU, movingD, movingL, movingR;
     float speed = 200.0f;
-    float fakeRotation;
+    float imgRotation;
     std::vector<std::string> imagePath;           // List of current image paths for animation
     std::vector<std::string> rightLeftWalkImages; // Image paths for right-left walking
     std::vector<std::string> upWalkImages;        // Image paths for up-down walking
@@ -33,6 +35,8 @@ public:
     float GetSpeed() const;
     void Shoot();
     void IsOverlapWithObstacle(float deltaTime);
+    void StartMove(int keyCode);
+    void StopMove(int keyCode);
 };
 
 #endif // PLAYER_HPP

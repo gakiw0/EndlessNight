@@ -16,6 +16,7 @@ Player::Player(float x, float y, int hp)
 {
     Anchor = Engine::Point(0.5f, 0.5f);
     CollisionRadius = 10;
+    moving = movingU = movingD = movingL = movingR = false;
 
     // Initialize the list of image paths for different directions
     rightLeftWalkImages = {
@@ -42,54 +43,37 @@ PlayScene *Player::getPlayScene()
 
 void Player::Update(float deltaTime)
 {
+
     Engine::GameEngine &gameEngine = Engine::GameEngine::GetInstance();
-    Velocity.x = 0;
-    Velocity.y = 0;
-    bool moving = false;
 
-    // Define radians for each direction using Allegro's constants
-    float newRotation = fakeRotation; // Use existing fakeRotation from the Sprite class.
-
-    // WASD key movements for straight directions only
-    if (gameEngine.IsKeyDown(Engine::GameEngine::GetInstance().GetKeyMapping("MoveUp")))
+    if(Velocity.x > 0)
     {
-        newRotation = 3 * ALLEGRO_PI / 2; // Up (W)
-        Velocity.y = -speed;
-        moving = true;
-        imagePath = upWalkImages;
-        bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
-    }
-    else if (gameEngine.IsKeyDown(Engine::GameEngine::GetInstance().GetKeyMapping("MoveDown")))
-    {
-        newRotation = ALLEGRO_PI / 2; // Down (S)
-        Velocity.y = speed;
-        moving = true;
-        imagePath = downWalkImages;
-        bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
-    }
-    else if (gameEngine.IsKeyDown(Engine::GameEngine::GetInstance().GetKeyMapping("MoveLeft")))
-    {
-        newRotation = ALLEGRO_PI; // Left (A)
-        Velocity.x = -speed;
-        moving = true;
-        imagePath = rightLeftWalkImages;
-        bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
-        scaleX = abs(scaleX);
-    }
-    else if (gameEngine.IsKeyDown(Engine::GameEngine::GetInstance().GetKeyMapping("MoveRight")))
-    {
-        newRotation = 0; // Right (D)
-        Velocity.x = speed;
-        moving = true;
+        imgRotation = 0; // Right (D)
         imagePath = rightLeftWalkImages;
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
         scaleX = -abs(scaleX);
     }
+    else if(Velocity.x < 0)
+    {
+        imgRotation = ALLEGRO_PI; // Left (A)
+        imagePath = rightLeftWalkImages;
+        bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
+        scaleX = abs(scaleX);
+    }
+    else if(Velocity.y > 0)
+    {
+        imgRotation = ALLEGRO_PI / 2; // Down (S)
+        imagePath = downWalkImages;
+        bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
+    }
+    else if(Velocity.y < 0)
+    {
+        imgRotation = 3 * ALLEGRO_PI / 2; // Up (W)
+        imagePath = upWalkImages;
+        bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
+    }
 
-    // Set the new rotation to the Player's fakeRotation (radians)
-    fakeRotation = newRotation;
 
-    // Update animation frame based on elapsed time
     if (moving)
     {
         elapsedTime += deltaTime;
@@ -110,19 +94,19 @@ void Player::Update(float deltaTime)
     }
     else
     {
-        if (fakeRotation < ALLEGRO_PI / 4 || fakeRotation >= 7 * ALLEGRO_PI / 4)
+        if (imgRotation < ALLEGRO_PI / 4 || imgRotation >= 7 * ALLEGRO_PI / 4)
         {
             bmp = Engine::Resources::GetInstance().GetBitmap("PixelArt/RightLeftWalk/pixil-frame-0.png"); // Facing right
         }
-        else if (fakeRotation >= ALLEGRO_PI / 4 && fakeRotation < 3 * ALLEGRO_PI / 4)
+        else if (imgRotation >= ALLEGRO_PI / 4 && imgRotation < 3 * ALLEGRO_PI / 4)
         {
             bmp = Engine::Resources::GetInstance().GetBitmap("PixelArt/DownWalk/pixil-frame-0.png"); // Facing down
         }
-        else if (fakeRotation >= 3 * ALLEGRO_PI / 4 && fakeRotation < 5 * ALLEGRO_PI / 4)
+        else if (imgRotation >= 3 * ALLEGRO_PI / 4 && imgRotation < 5 * ALLEGRO_PI / 4)
         {
             bmp = Engine::Resources::GetInstance().GetBitmap("PixelArt/RightLeftWalk/pixil-frame-0.png"); // Facing left
         }
-        else if (fakeRotation >= 5 * ALLEGRO_PI / 4 && fakeRotation < 7 * ALLEGRO_PI / 4)
+        else if (imgRotation >= 5 * ALLEGRO_PI / 4 && imgRotation < 7 * ALLEGRO_PI / 4)
         {
             bmp = Engine::Resources::GetInstance().GetBitmap("PixelArt/UpWalk/pixil-frame-0.png"); // Facing up
         }
@@ -137,12 +121,16 @@ void Player::Update(float deltaTime)
     }
 
     IsOverlapWithObstacle(deltaTime);
-    if(Position.x + Velocity.x * deltaTime - Size.x / 2 < 0 || Position.x + Velocity.x * deltaTime + Size.x / 2 > PlayScene::GetClientSize().x) 
+    if (Position.x + Velocity.x * deltaTime - Size.x / 2 < 0 || Position.x + Velocity.x * deltaTime + Size.x / 2 > PlayScene::GetClientSize().x)
         Velocity.x = 0;
-    if(Position.y + Velocity.y * deltaTime - Size.y / 2 < 0 || Position.y + Velocity.y * deltaTime + Size.y / 2 > PlayScene::GetClientSize().y) 
+    if (Position.y + Velocity.y * deltaTime - Size.y / 2 < 0 || Position.y + Velocity.y * deltaTime + Size.y / 2 > PlayScene::GetClientSize().y)
         Velocity.y = 0;
-		
+
     Engine::Sprite::Update(deltaTime);
+
+    // Velocity.x = 0;
+    // Velocity.y = 0;
+    bool moving = false;
 }
 
 void Player::TakeDamage(int damage)
@@ -163,7 +151,7 @@ float Player::GetSpeed() const
 void Player::Shoot()
 {
     // Create a new bullet and set its direction based on the player's current rotation
-    Bullet *bullet = new Bullet(Position.x, Position.y, fakeRotation, 500);
+    Bullet *bullet = new Bullet(Position.x, Position.y, imgRotation, 500);
     getPlayScene()->BulletGroup->AddNewObject(bullet);
 }
 
@@ -187,6 +175,103 @@ void Player::IsOverlapWithObstacle(float deltaTime)
             Velocity.x = 0;
             Velocity.y = 0;
             return;
+        }
+    }
+}
+
+void Player::StartMove(int keyCode)
+{
+
+    if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveLeft"))
+    {
+        if (movingU || movingD)
+            Velocity.y = 0;
+        Velocity.x = -speed;
+        moving = movingL = true;
+    }
+    else if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveRight"))
+    {
+        if (movingU || movingD)
+            Velocity.y = 0;
+        Velocity.x = speed;
+        moving = movingR = true;
+    }
+    else if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveUp"))
+    {
+        if (movingL || movingR)
+            Velocity.x = 0;
+        Velocity.y = -speed;
+        moving = movingU = true;
+    }
+    else if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveDown"))
+    {
+        if (movingL || movingR)
+            Velocity.x = 0;
+        Velocity.y = speed;
+        moving = movingD = true;
+    }
+}
+
+void Player::StopMove(int keyCode)
+{
+    if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveUp"))
+    {
+        Velocity.y = 0;
+        movingU = false;
+        if (movingL)
+            Velocity.x = -speed;
+        else if (movingR)
+            Velocity.x = speed;
+        else if (movingD)
+            Velocity.y = -speed;
+        else
+        {
+            moving = false;
+        }
+    }
+    else if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveDown"))
+    {
+        Velocity.y = 0;
+        movingD = false;
+        if (movingL)
+            Velocity.x = -speed;
+        else if (movingR)
+            Velocity.x = speed;
+        else if (movingU)
+            Velocity.y = speed;
+        else
+        {
+            moving = false;
+        }
+    }
+    else if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveLeft"))
+    {
+        Velocity.x = 0;
+        movingL = false;
+        if (movingU)
+            Velocity.y = -speed;
+        else if (movingD)
+            Velocity.y = speed;
+        else if (movingR)
+            Velocity.x = speed;
+        else
+        {
+            moving = false;
+        }
+    }
+    else if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveRight"))
+    {
+        Velocity.x = 0;
+        movingR = false;
+        if (movingU)
+            Velocity.y = -speed;
+        else if (movingD)
+            Velocity.y = speed;
+        else if (movingL)
+            Velocity.x = -speed;
+        else
+        {
+            moving = false;
         }
     }
 }

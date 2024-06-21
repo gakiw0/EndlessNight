@@ -5,6 +5,7 @@
 #include "Engine/GameEngine.hpp"
 #include "Engine/Collider.hpp"
 #include "Enemy/Enemy.hpp" // Include the Enemy header
+#include "Player/Player.hpp"
 #include <iostream>
 using namespace std;
 
@@ -105,6 +106,48 @@ void PlayScene::Draw() const
     EnemyGroup->Draw();
     NonObstacleGroup->Draw();
     LabelGroup->Draw();
+}
+
+void PlayScene::OnKeyDown(int keyCode)
+{
+    IScene::OnKeyDown(keyCode);
+
+    if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveUp"))
+    {
+        player1->StartMove(keyCode);
+    }
+    else if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveDown"))
+    {
+        player1->StartMove(keyCode);
+    }
+    else if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveLeft"))
+    {
+        player1->StartMove(keyCode);
+    }
+    else if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveRight"))
+    {
+        player1->StartMove(keyCode);
+    }
+}
+
+void PlayScene::OnKeyUp(int keyCode)
+{
+    if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveUp"))
+    {
+        player1->StopMove(keyCode);
+    }
+    else if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveDown"))
+    {
+        player1->StopMove(keyCode);
+    }
+    else if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveLeft"))
+    {
+        player1->StopMove(keyCode);
+    }
+    else if (keyCode == Engine::GameEngine::GetInstance().GetKeyMapping("MoveRight"))
+    {
+        player1->StopMove(keyCode);
+    }
 }
 
 void PlayScene::Terminate()
