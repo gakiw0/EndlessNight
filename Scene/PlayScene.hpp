@@ -21,6 +21,8 @@ private:
     Engine::Label *healthLabel;
     float remainingTime;
     Engine::Label *timerLabel;
+    int score;
+    Engine::Label *scoreLabel;
 
     enum ItemType
     {
@@ -58,7 +60,6 @@ private:
         TILE_PATH11,
     };
     std::vector<double> ItemProbabilities;
-
 public:
     static const int MapWidth, MapHeight;
     static const int BlockSize;
@@ -83,6 +84,7 @@ public:
     void OnKeyUp(int keyCode) override;
     int generateRandomItemValue();
     void generateItem(int index, float x, float y);
+    void IncreaseKill();
 };
 
 #endif // PLAYSCENE_HPP

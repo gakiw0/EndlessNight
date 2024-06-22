@@ -11,6 +11,7 @@ protected:
     float speed;
     int hp;
     int damage;
+    float imgRotation;
     float attackCooldown;
     float timeSinceLastAttack;
 

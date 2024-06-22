@@ -31,6 +31,7 @@ void PlayScene::Initialize()
     MapId = 2;
 
     remainingTime = 60.0f;
+    score = 0;
 
     AddNewObject(BulletGroup = new Group());
     AddNewObject(EnemyGroup = new Group());
@@ -52,6 +53,9 @@ void PlayScene::Initialize()
 
     healthLabel = new Engine::Label("HP: " + to_string(player1->GetHealth()), "pirulen.ttf", 60, 0, 0, 255, 255, 255, 255, 0, 0);
     LabelGroup->AddNewObject(healthLabel);
+
+    scoreLabel = new Engine::Label("Kill: " + to_string(score), "pirulen.ttf", 60, sw, 0, 255, 255, 255, 255, 1.0, 0);
+    LabelGroup->AddNewObject(scoreLabel);
 
     ItemGroup->AddNewObject(new Coin(halfW, halfH + 100));
 }
@@ -93,6 +97,7 @@ void PlayScene::Update(float deltaTime)
     }
     timerLabel->Text = to_string((int)remainingTime);
     healthLabel->Text = "HP: " + to_string(player1->GetHealth());
+    scoreLabel->Text = "Kill: " + to_string(score);
     for (auto &it : PlayerGroup->GetObjects())
     {
         Player *player = dynamic_cast<Player *>(it);
@@ -401,4 +406,9 @@ void PlayScene::generateItem(int index, float x, float y)
         default:
             break;
     }
+}
+
+void PlayScene::IncreaseKill()
+{
+    ++score;
 }

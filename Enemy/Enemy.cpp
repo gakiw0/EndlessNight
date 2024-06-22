@@ -18,9 +18,9 @@ PlayScene *Enemy::getPlayScene()
 void Enemy::Update(float deltaTime)
 {
     auto target = getPlayScene()->PlayerGroup->GetObjects().front();
-    Rotation = atan2((target->Position.y - Position.y), (target->Position.x - Position.x));
-    Velocity.x = cos(Rotation) * speed;
-    Velocity.y = sin(Rotation) * speed;
+    imgRotation = atan2((target->Position.y - Position.y), (target->Position.x - Position.x));
+    Velocity.x = cos(imgRotation) * speed;
+    Velocity.y = sin(imgRotation) * speed;
 
     if (timeSinceLastAttack <= attackCooldown)
         timeSinceLastAttack += deltaTime;
@@ -39,6 +39,7 @@ void Enemy::Hit(float damage)
     {
         int index = getPlayScene()->generateRandomItemValue();
         getPlayScene()->generateItem(index, Position.x, Position.y);
+        getPlayScene()->IncreaseKill();
         getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
     }
 }
