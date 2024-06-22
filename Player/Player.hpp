@@ -29,6 +29,7 @@ private:
     PlayScene *getPlayScene();
 
 public:
+    
     Player(float x, float y, int hp);
     void Update(float deltaTime) override;
     void TakeDamage(int damage);

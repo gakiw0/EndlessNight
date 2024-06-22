@@ -47,7 +47,9 @@ void Coin::HandleOverlapWithPlayer(float deltaTime)
         {
             player->AddBulletDmg(10.0f);
             scene->ItemGroup->RemoveObject(objectIterator);
+            scene->updateScore();
             return;
         }
     }
+    
 }

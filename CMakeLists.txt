@@ -75,6 +75,8 @@ add_executable(EndlessNights
     Scene/SettingsScene.cpp
     Scene/StoryScene.hpp
     Scene/StoryScene.cpp
+    Scene/ScoreBoardScene.hpp
+    Scene/ScoreBoardScene.cpp
 
     #Players
     Player/Player.hpp

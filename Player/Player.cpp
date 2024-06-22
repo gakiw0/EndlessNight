@@ -138,6 +138,7 @@ void Player::Update(float deltaTime)
 void Player::TakeDamage(int damage)
 {
     hp -= damage;
+    getPlayScene()->DestroyHeart();
 }
 
 int Player::GetHealth() const

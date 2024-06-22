@@ -13,6 +13,8 @@ using namespace std;
 const int PlayScene::MapWidth = 30, PlayScene::MapHeight = 20;
 const int PlayScene::BlockSize = 64;
 
+int finalScore;
+
 PlayScene::PlayScene() {}
 
 void PlayScene::Initialize()
@@ -31,6 +33,7 @@ void PlayScene::Initialize()
     MapId = 2;
 
     remainingTime = 60.0f;
+    finalScore = 0;
     score = 0;
 
     AddNewObject(BulletGroup = new Group());
@@ -41,20 +44,42 @@ void PlayScene::Initialize()
     AddNewObject(NonObstacleGroup = new Group());
     AddNewObject(LabelGroup = new Group());
     AddNewObject(ItemGroup = new Group());
+    AddNewControlObject(UILife = new Group());
     ReadMap();
-    ItemProbabilities.push_back(0.5); //NONE
-    ItemProbabilities.push_back(0.5); //COIN
+
+    ItemProbabilities.push_back(0.5); // NONE
+    ItemProbabilities.push_back(0.5); // COIN
 
     player1 = new Player(halfW, halfH, 50);
     PlayerGroup->AddNewObject(player1);
+
+    ConstructHeart();
     // Initialize one Enemy at specific location
     timerLabel = new Engine::Label(to_string((int)remainingTime), "pirulen.ttf", 120, halfW, halfH / 3 + 50, 255, 255, 255, 255, 0.5, 0.5);
     LabelGroup->AddNewObject(timerLabel);
 
-    healthLabel = new Engine::Label("HP: " + to_string(player1->GetHealth()), "pirulen.ttf", 60, 0, 0, 255, 255, 255, 255, 0, 0);
-    LabelGroup->AddNewObject(healthLabel);
+    // healthLabel = new Engine::Label("HP: " + to_string(player1->GetHealth()), "pirulen.ttf", 60, 0, 0, 255, 255, 255, 255, 0, 0);
+    // LabelGroup->AddNewObject(healthLabel);
 
-    scoreLabel = new Engine::Label("Kill: " + to_string(score), "pirulen.ttf", 60, sw, 0, 255, 255, 255, 255, 1.0, 0);
+    Engine::Image *coinUI;
+    // coinUI = new Engine::Image("PixelArt/Coin/coin0.png", )
+    std::vector<std::string> imagePaths = {
+        "PixelArt/Coin/coin0.png",
+        "PixelArt/Coin/coin1.png",
+        "PixelArt/Coin/coin2.png",
+        "PixelArt/Coin/coin3.png",
+        "PixelArt/Coin/coin4.png",
+        "PixelArt/Coin/coin5.png",
+        "PixelArt/Coin/coin6.png",
+        "PixelArt/Coin/coin7.png"};
+
+    for (const auto &path : imagePaths)
+    {
+        auto img = std::make_shared<Engine::Image>(path, 9 * sw / 10, 28, 0, 0, 0.5f, 0.5f, 2.0f, 2.0f);
+        coinFrames.push_back(img);
+    }
+
+    scoreLabel = new Engine::Label(to_string(score), "pirulen.ttf", 28, sw - 56, 12, 255, 255, 255, 255, 1.0, 0);
     LabelGroup->AddNewObject(scoreLabel);
 
     ItemGroup->AddNewObject(new Coin(halfW, halfH + 100));
@@ -68,6 +93,14 @@ Engine::Point PlayScene::GetClientSize()
 void PlayScene::Update(float deltaTime)
 {
     IScene::Update(deltaTime);
+
+    animationTime += deltaTime;
+    if (animationTime >= 0.1f)
+    { // Change frame every frameDuration seconds
+        currentFrame = (currentFrame + 1) % coinFrames.size();
+        animationTime = 0.0f;
+    }
+
     camera = camera + player1->Velocity * deltaTime;
     if ((camera.x >= cameraTopLeft.x && camera.x <= cameraDownRight.x) || (camera.y >= cameraTopLeft.y && camera.y <= cameraDownRight.y))
     {
@@ -96,8 +129,8 @@ void PlayScene::Update(float deltaTime)
         Engine::GameEngine::GetInstance().ChangeScene("win");
     }
     timerLabel->Text = to_string((int)remainingTime);
-    healthLabel->Text = "HP: " + to_string(player1->GetHealth());
-    scoreLabel->Text = "Kill: " + to_string(score);
+    // healthLabel->Text = "HP: " + to_string(player1->GetHealth());
+    scoreLabel->Text = to_string(score);
     for (auto &it : PlayerGroup->GetObjects())
     {
         Player *player = dynamic_cast<Player *>(it);
@@ -106,6 +139,7 @@ void PlayScene::Update(float deltaTime)
         if (it == PlayerGroup->GetObjects().back())
             Engine::GameEngine::GetInstance().ChangeScene("lose");
     }
+    // ConstructHeart();
 }
 
 void PlayScene::Draw() const
@@ -118,6 +152,11 @@ void PlayScene::Draw() const
     EnemyGroup->Draw();
     NonObstacleGroup->Draw();
     LabelGroup->Draw();
+    UILife->Draw();
+    if (!coinFrames.empty())
+    {
+        coinFrames[currentFrame]->Draw();
+    }
 }
 
 void PlayScene::OnKeyDown(int keyCode)
@@ -164,6 +203,7 @@ void PlayScene::OnKeyUp(int keyCode)
 
 void PlayScene::Terminate()
 {
+    heartImages.clear();
     IScene::Terminate();
 }
 
@@ -400,15 +440,41 @@ void PlayScene::generateItem(int index, float x, float y)
 {
     switch (index)
     {
-        case COIN:
-            ItemGroup->AddNewObject(new Coin(x, y));
-            break;
-        default:
-            break;
+    case COIN:
+        ItemGroup->AddNewObject(new Coin(x, y));
+        break;
+    default:
+        break;
     }
 }
 
 void PlayScene::IncreaseKill()
 {
+    // ++score;
+    // ++finalScore;
+}
+
+void PlayScene::ConstructHeart()
+{
+    Engine::ImageButton *lifebtn;
+    int health = player1->GetHealth();
+    for (int i = 0; i < health / 5; i++)
+    {
+        lifebtn = new Engine::ImageButton("play/heart.png", "play/heart.png", i * 48 + 4, 6, 56, 56);
+        UILife->AddNewControlObject(lifebtn);
+        heartImages.push_back(lifebtn);
+    }
+}
+
+void PlayScene::DestroyHeart()
+{
+    Engine::ImageButton *lastHeart = heartImages.back();
+    UILife->RemoveObject(lastHeart->GetObjectIterator());
+    heartImages.pop_back();
+}
+
+void PlayScene::updateScore()
+{
     ++score;
+    finalScore += 50;
 }

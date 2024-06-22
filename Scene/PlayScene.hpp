@@ -6,6 +6,7 @@
 #include "UI/Component/Label.hpp"
 #include "Bullet/Bullet.hpp"
 #include "Engine/Point.hpp"
+#include "UI/Component/ImageButton.hpp"
 #include <vector>
 #include <string>
 #include <map>
@@ -23,6 +24,9 @@ private:
     Engine::Label *timerLabel;
     int score;
     Engine::Label *scoreLabel;
+    std::vector<std::shared_ptr<Engine::Image>> coinFrames;
+    int currentFrame; // Current frame of animation
+    float animationTime; // Time accumulator for animation
 
     enum ItemType
     {
@@ -60,6 +64,8 @@ private:
         TILE_PATH11,
     };
     std::vector<double> ItemProbabilities;
+    std::vector<Engine::ImageButton *> heartImages;
+
 public:
     static const int MapWidth, MapHeight;
     static const int BlockSize;
@@ -72,6 +78,7 @@ public:
     Group *PlayerGroup;
     Group *LabelGroup;
     Group *ItemGroup;
+    Group *UILife;
     std::vector<std::vector<TileType>> mapState;
     explicit PlayScene();
     static Engine::Point GetClientSize();
@@ -85,6 +92,9 @@ public:
     int generateRandomItemValue();
     void generateItem(int index, float x, float y);
     void IncreaseKill();
+    void updateScore();
+    void ConstructHeart();
+    void DestroyHeart();
 };
 
 #endif // PLAYSCENE_HPP

@@ -98,7 +98,7 @@ void StartScene::Terminate()
 
 void StartScene::PlayOnClick(int stage)
 {
-   Engine::GameEngine::GetInstance().ChangeScene("story");
+   Engine::GameEngine::GetInstance().ChangeScene("play");
 }
 
 void StartScene::SettingsOnClick(int stage)

@@ -9,6 +9,7 @@
 #include "Scene/LoseScene.hpp"
 #include "Scene/SettingsScene.hpp"
 #include "Scene/StoryScene.hpp"
+#include "Scene/ScoreBoardScene.hpp"
 
 #include <iostream>
 
@@ -28,6 +29,7 @@ int main(int argc, char **argv) {
 	game.AddNewScene("play", new PlayScene());	
 	game.AddNewScene("win", new WinScene());
 	game.AddNewScene("lose", new LoseScene());
+	game.AddNewScene("scoreboard", new ScoreBoardScene());
 	
 
 	game.Start("start", 60, 1600, 832);
