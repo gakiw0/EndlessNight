@@ -9,6 +9,7 @@ StoryScene::StoryScene(const std::vector<std::string> &storyLines)
 
 void StoryScene::Initialize()
 {
+   
 }
 
 void StoryScene::Update(float deltaTime)

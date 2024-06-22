@@ -28,11 +28,11 @@ void SettingsScene::Initialize()
     AddNewObject(stoneWall);
 
     AddNewObject(
-        new Engine::Label("Settings", "pirulen.ttf", 48, halfW + 24, 120, 255, 255, 255, 255, 0.5,
+        new Engine::Label("Settings", "pirulen.ttf", 48, halfW, 120, 255, 255, 255, 255, 0.5,
                           0.5));
 
     Engine::ImageButton *music;
-    music = new Engine::ImageButton("settings/music.png", "settings/music.png", halfW - 200, 250 - 48, 96, 96);
+    music = new Engine::ImageButton("settings/music.png", "settings/music.png", halfW - 144, 250 - 48 + 16, 64, 64);
     AddNewControlObject(music);
 
     Slider *sliderBGM, *sliderSFX;
@@ -55,7 +55,7 @@ void SettingsScene::Initialize()
     btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 144, halfH + 216, 288, 96);
     btn->SetOnClickCallback(std::bind(&SettingsScene::BackOnClick, this, 2));
     AddNewControlObject(btn);
-    // AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4 - 30, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH + 216 + 48, 255, 255, 255, 255, 0.5, 0.5));
 
     up = new Engine::TextButton("stage-select/border.png", "stage-select/border.png", halfW - 248, halfH - 48, 96, 96);
     AddNewControlObject(up);
@@ -64,7 +64,7 @@ void SettingsScene::Initialize()
     Engine::ImageButton *upborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png", w/4 - 144, halfH - 48, 288, 96);
     AddNewObject(upborder);
     AddNewObject(
-        new Engine::Label("UP", "pirulen.ttf", 36, w / 5, halfH, 255, 255, 255, 255, 0.5,
+        new Engine::Label("UP", "pirulen.ttf", 36, halfW - 248 - 152, halfH, 255, 255, 255, 255, 0.5,
                           0.5));
 
     down = new Engine::TextButton("stage-select/border.png", "stage-select/border.png", halfW + 248 - 96, halfH - 48, 96, 96);
@@ -74,7 +74,7 @@ void SettingsScene::Initialize()
     Engine::ImageButton *downborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png", 3 * w/4 - 144, halfH - 48, 288, 96);
     AddNewObject(downborder);
     AddNewObject(
-        new Engine::Label("DOWN", "pirulen.ttf",36 , halfW + 248 + 152, halfH, 255, 255, 255, 255, 0.5,
+        new Engine::Label("DOWN", "pirulen.ttf", 36, halfW + 248 + 152, halfH, 255, 255, 255, 255, 0.5,
                           0.5));
 
 
@@ -82,11 +82,23 @@ void SettingsScene::Initialize()
     AddNewControlObject(left);
     leftLabel = new Engine::Label(leftKey, "pirulen.ttf", 36, halfW - 248 + 48, halfH + 150 - 6, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(leftLabel);
+    Engine::ImageButton *leftborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png", w/4 - 144, halfH + 96, 288, 96);
+    AddNewObject(leftborder);
+    AddNewObject(
+        new Engine::Label("LEFT", "pirulen.ttf", 36, halfW - 248 - 152, halfH + 150 - 6, 255, 255, 255, 255, 0.5,
+                          0.5));
 
-    right = new Engine::TextButton("stage-select/border.png", "stage-select/border.png", halfW + 248 - 48, halfH + 96, 96, 96);
+
+    right = new Engine::TextButton("stage-select/border.png", "stage-select/border.png", halfW + 248 - 96, halfH + 96, 96, 96);
     AddNewControlObject(right);
-    rightLabel = new Engine::Label(rightKey, "pirulen.ttf", 36, halfW + 248, halfH + 150 - 6, 255, 255, 255, 255, 0.5, 0.5);
+    rightLabel = new Engine::Label(rightKey, "pirulen.ttf", 36, halfW + 248 - 48, halfH + 150 - 6, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(rightLabel);
+    Engine::ImageButton *rightborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png",3 * w/4 - 144, halfH + 96, 288, 96);
+    AddNewObject(rightborder);
+    AddNewObject(
+        new Engine::Label("RIGHT", "pirulen.ttf", 36, halfW + 248 + 152, halfH + 150 - 6, 255, 255, 255, 255, 0.5,
+                          0.5));
+
 
     // Not safe if release resource while playing, however we only free while change scene, so it's fine.
     bgmInstance = AudioHelper::PlaySample("select.ogg", true, AudioHelper::BGMVolume);
@@ -191,7 +203,7 @@ void SettingsScene::OnKeyDown(int keyCode)
     }
     if (left->clicked)
     {
-        Engine::GameEngine::GetInstance().SetKeyMapping("MoveDown", ALLEGRO_KEY_UNKNOWN);
+        Engine::GameEngine::GetInstance().SetKeyMapping("MoveLeft", ALLEGRO_KEY_UNKNOWN);
         if (keyCode >= ALLEGRO_KEY_A && keyCode <= ALLEGRO_KEY_Z && !IsKeyInUse(keyCode))
         {
             Engine::GameEngine::GetInstance().SetKeyMapping("MoveLeft", keyCode);
@@ -202,7 +214,7 @@ void SettingsScene::OnKeyDown(int keyCode)
     }
     if (right->clicked)
     {
-        Engine::GameEngine::GetInstance().SetKeyMapping("MoveDown", ALLEGRO_KEY_UNKNOWN);
+        Engine::GameEngine::GetInstance().SetKeyMapping("MoveRight", ALLEGRO_KEY_UNKNOWN);
         if (keyCode >= ALLEGRO_KEY_A && keyCode <= ALLEGRO_KEY_Z && !IsKeyInUse(keyCode))
         {
             Engine::GameEngine::GetInstance().SetKeyMapping("MoveRight", keyCode);

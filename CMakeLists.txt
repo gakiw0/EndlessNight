@@ -73,6 +73,8 @@ add_executable(EndlessNights
     Scene/StartScene.cpp
     Scene/SettingsScene.hpp
     Scene/SettingsScene.cpp
+    Scene/StoryScene.hpp
+    Scene/StoryScene.cpp
 
     #Players
     Player/Player.hpp

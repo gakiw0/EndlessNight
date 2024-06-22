@@ -8,12 +8,20 @@
 #include "Scene/WinScene.hpp"
 #include "Scene/LoseScene.hpp"
 #include "Scene/SettingsScene.hpp"
+#include "Scene/StoryScene.hpp"
 
 #include <iostream>
 
 int main(int argc, char **argv) {
 	Engine::LOG::SetConfig(true);
 	Engine::GameEngine& game = Engine::GameEngine::GetInstance();
+
+	std::vector<std::string> storyText = {
+        "HOW LONG WILL THE NIGHT BE?",
+        "NOW....",
+		  "WHO KNOWS?"
+    };
+   game.AddNewScene("story", new StoryScene(storyText));
 
 	game.AddNewScene("start", new StartScene());
 	game.AddNewScene("settings", new SettingsScene());
