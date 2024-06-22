@@ -25,8 +25,6 @@ Coin::Coin(float x, float y)
 
 void Coin::Update(float deltaTime)
 {
-    HandleOverlapWithPlayer(deltaTime);
-
     sinceLastCicle += deltaTime;
     if (sinceLastCicle >= frameDuration)
     {
@@ -34,9 +32,9 @@ void Coin::Update(float deltaTime)
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
         sinceLastCicle = 0; // Reset elapsed time
     }
-
     hoverEffect(deltaTime);
     Sprite::Update(deltaTime);
+    HandleOverlapWithPlayer(deltaTime);
 }
 
 void Coin::HandleOverlapWithPlayer(float deltaTime)

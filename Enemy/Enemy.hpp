@@ -16,7 +16,7 @@ protected:
     float attackCooldown;
     float timeSinceLastAttack;
     float elapsedTime;
-    const float frameDuration = 0.2f;
+    const float frameDuration = 0.1f;
     std::vector<std::string> imagePath;           // List of current image paths for animation
     std::vector<std::string> rightLeftWalkImages; // Image paths for right-left walking
     std::vector<std::string> upWalkImages;        // Image paths for up-down walking

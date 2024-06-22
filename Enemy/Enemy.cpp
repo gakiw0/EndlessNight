@@ -82,7 +82,7 @@ void Enemy::Update(float deltaTime)
     if (elapsedTime >= frameDuration)
     {
         // Toggle between specific frames for up-walk animation
-        frame = (frame + 1) % 2;
+        frame = (frame + 1) % 3;
         bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
         elapsedTime = 0; // Reset elapsed time
     }

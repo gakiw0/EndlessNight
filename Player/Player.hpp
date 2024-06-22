@@ -23,7 +23,7 @@ private:
     std::vector<std::string> upWalkImages;        // Image paths for up-down walking
     std::vector<std::string> downWalkImages;
     float elapsedTime;                // Time elapsed since last frame change
-    const float frameDuration = 0.2f; // Duration of each frame in seconds
+    const float frameDuration = 0.1f; // Duration of each frame in seconds
     float timeSinceLastShot;
     float shootCooldown;
     PlayScene *getPlayScene();
