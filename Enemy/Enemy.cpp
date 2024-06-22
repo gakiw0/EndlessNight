@@ -1,13 +1,39 @@
 #include "Enemy.hpp"
 #include "Scene/PlayScene.hpp"
 #include "Engine/GameEngine.hpp"
+#include "Engine/Resources.hpp"
 #include "Engine/Collider.hpp"
 #include <cmath>
 
 Enemy::Enemy(float x, float y)
-    : Engine::Sprite("play/enemy-1.png", x, y), hp(100), speed(50), damage(5), timeSinceLastAttack(0), attackCooldown(2.0f)
+    : Engine::Sprite("PixelArt/Zombie/RightLeftWalk/pixil-frame-0.png", x, y), hp(100), speed(50), damage(5), timeSinceLastAttack(0), attackCooldown(2.0f), frame(0), elapsedTime(0.0f)
 {
     CollisionRadius = 10;
+
+    rightLeftWalkImages = {
+        "PixelArt/Zombie/RightLeftWalk/pixil-frame-0.png",
+        "PixelArt/Zombie/RightLeftWalk/pixil-frame-1.png",
+        "PixelArt/Zombie/RightLeftWalk/pixil-frame-2.png"};
+
+    upWalkImages = {
+        "PixelArt/Zombie/UpWalk/pixil-frame-0.png",
+        "PixelArt/Zombie/UpWalk/pixil-frame-1.png",
+        "PixelArt/Zombie/UpWalk/pixil-frame-2.png"};
+
+    downWalkImages = {
+        "PixelArt/Zombie/DownWalk/pixil-frame-0.png",
+        "PixelArt/Zombie/DownWalk/pixil-frame-1.png",
+        "PixelArt/Zombie/DownWalk/pixil-frame-2.png"};
+
+    for (auto imgPath : rightLeftWalkImages)
+        bmp = Engine::Resources::GetInstance().GetBitmap(imgPath);
+    for (auto imgPath : upWalkImages)
+        bmp = Engine::Resources::GetInstance().GetBitmap(imgPath);
+    for (auto imgPath : downWalkImages)
+        bmp = Engine::Resources::GetInstance().GetBitmap(imgPath);
+
+    // Use right-left walk images as the default
+    imagePath = rightLeftWalkImages;
 }
 
 PlayScene *Enemy::getPlayScene()
@@ -21,6 +47,45 @@ void Enemy::Update(float deltaTime)
     imgRotation = atan2((target->Position.y - Position.y), (target->Position.x - Position.x));
     Velocity.x = cos(imgRotation) * speed;
     Velocity.y = sin(imgRotation) * speed;
+
+    if (Velocity.x > 20.0f)
+    {
+        imgRotation = 0; // Right (D)
+        imagePath = rightLeftWalkImages;
+        bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
+        scaleX = abs(scaleX);
+    }
+    else if (Velocity.x < -20.0f)
+    {
+        imgRotation = ALLEGRO_PI; // Left (A)
+        imagePath = rightLeftWalkImages;
+        bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
+        scaleX = -abs(scaleX);
+    }
+    else
+    {
+        if (Velocity.y > 0)
+        {
+            imgRotation = ALLEGRO_PI / 2; // Down (S)
+            imagePath = downWalkImages;
+            bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
+        }
+        else if (Velocity.y < 0)
+        {
+            imgRotation = 3 * ALLEGRO_PI / 2; // Up (W)
+            imagePath = upWalkImages;
+            bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
+        }
+    }
+
+    elapsedTime += deltaTime;
+    if (elapsedTime >= frameDuration)
+    {
+        // Toggle between specific frames for up-walk animation
+        frame = (frame + 1) % 2;
+        bmp = Engine::Resources::GetInstance().GetBitmap(imagePath[frame]);
+        elapsedTime = 0; // Reset elapsed time
+    }
 
     if (timeSinceLastAttack <= attackCooldown)
         timeSinceLastAttack += deltaTime;
@@ -85,7 +150,7 @@ void Enemy::HandleOverlapWithObstacle(float deltaTime)
                 Velocity.x = 0;
             if (Engine::Collider::IsRectOverlap(PositionPlusY - Size / 2, PositionPlusY + Size / 2, obstacle->Position - obstacle->Size / 2, obstacle->Position + obstacle->Size / 2))
                 Velocity.y = 0;
-            return; 
+            return;
         }
     }
 }
