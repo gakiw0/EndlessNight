@@ -16,7 +16,10 @@ private:
     int frame; // Animation frame index
     bool moving;
     bool movingU, movingD, movingL, movingR;
-    float speed = 200.0f;
+    float initialSpeed;
+    float speedUpDuration;
+    float sinceSpeedUpStart;
+    float speed;
     float bulletDmg;
     float imgRotation;
     std::vector<std::string> imagePath;           // List of current image paths for animation

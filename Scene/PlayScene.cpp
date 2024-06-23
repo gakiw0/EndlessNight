@@ -2,6 +2,9 @@
 #include <sstream>
 #include <string>
 #include <random>
+#include <chrono>
+#include <filesystem>
+
 #include "PlayScene.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Collider.hpp"
@@ -36,7 +39,7 @@ void PlayScene::Initialize()
     camera.y = MapHeight * BlockSize / 2;
     MapId = 2;
 
-    remainingTime = 60.0f;
+    remainingTime = 10.0f;
     finalScore = 0;
     score = 0;
     isHealing = false;
@@ -52,7 +55,6 @@ void PlayScene::Initialize()
     AddNewControlObject(UILife = new Group());
     ReadMap();
     AddNewObject(miniMap = new MiniMap());
-    
 
     ItemProbabilities.push_back(0.2); // NONE
     ItemProbabilities.push_back(0.3); // COIN
@@ -88,15 +90,14 @@ void PlayScene::Initialize()
     }
 
     std::vector<std::string> imagePaths1 = {
-            "PixelArt/Heal/heal0.png",
-            "PixelArt/Heal/heal1.png",
-            "PixelArt/Heal/heal2.png",
-            "PixelArt/Heal/heal3.png",
-            "PixelArt/Heal/heal4.png",
-            "PixelArt/Heal/heal5.png",
-            "PixelArt/Heal/heal6.png",
-            "PixelArt/Heal/heal0.png"};
-
+        "PixelArt/Heal/heal0.png",
+        "PixelArt/Heal/heal1.png",
+        "PixelArt/Heal/heal2.png",
+        "PixelArt/Heal/heal3.png",
+        "PixelArt/Heal/heal4.png",
+        "PixelArt/Heal/heal5.png",
+        "PixelArt/Heal/heal6.png",
+        "PixelArt/Heal/heal0.png"};
 
     scoreLabel = new Engine::Label(to_string(score), "pirulen.ttf", 28, sw - 56, 284, 255, 255, 255, 255, 1.0, 0);
     LabelGroup->AddNewObject(scoreLabel);
@@ -135,8 +136,7 @@ void PlayScene::Update(float deltaTime)
             if (healFrame < healFrames.size())
             {
                 healFrames[healFrame]->Draw();
-            }   
-            
+            }
 
             healFrame++;
 
@@ -160,7 +160,7 @@ void PlayScene::Update(float deltaTime)
         NonObstacleGroup->MoveCamera(cameraD);
         TileMapGroup->MoveCamera(cameraD);
         ItemGroup->MoveCamera(cameraD);
-        
+
         PlayerGroup->MoveCamera(cameraD);
     }
     remainingTime -= deltaTime;
@@ -175,6 +175,8 @@ void PlayScene::Update(float deltaTime)
     }
     if (remainingTime < 0)
     {
+        User::getInstance().setScore(score * 50);
+        WriteScoreBoard();
         Engine::GameEngine::GetInstance().ChangeScene("win");
     }
     timerLabel->Text = to_string((int)remainingTime);
@@ -505,7 +507,7 @@ void PlayScene::generateItem(int index, float x, float y)
         ItemGroup->AddNewObject(new DamageFlask(x, y));
         break;
     case SPEEDFLASK:
-        ItemGroup->AddNewObject(new SpeedFlask(x,y));
+        ItemGroup->AddNewObject(new SpeedFlask(x, y));
         break;
     default:
         break;
@@ -679,4 +681,79 @@ void PlayScene::HealAnim()
 bool PlayScene::RegenState()
 {
     return isHealing;
+}
+
+void PlayScene::ReadScoreBoard()
+{
+    std::string filename = "../Resource/scoreboard.txt";
+    std::ifstream fin(filename);
+
+    std::string line;
+    while (getline(fin, line))
+    {
+        std::istringstream iss(line);
+        std::string userName, scoreStr, dateStr, timeStr;
+
+        std::getline(iss, userName, ' ');
+        std::getline(iss, scoreStr, ' ');
+        std::getline(iss, dateStr, ' ');
+        std::getline(iss, timeStr, ' ');
+
+        int score = std::stoi(scoreStr);
+
+        // 日付と時刻をtime_pointに変換
+        std::tm tm = {};
+        std::istringstream ss(dateStr + " " + timeStr);
+        ss >> std::get_time(&tm, "%Y-%m-%d %H:%M");
+        auto date = std::chrono::system_clock::from_time_t(std::mktime(&tm));
+
+        scoreboard.push_back({userName, score, date});
+    }
+    fin.close();
+}
+
+void PlayScene::WriteScoreBoard()
+{
+    std::string userName = User::getInstance().getName();
+    int score = User::getInstance().getScore();
+
+    ReadScoreBoard(); 
+
+    bool updated = false;
+    std::string tempFilename = "../Resource/scoreboard.txt.tmp";
+    std::ofstream tempOut(tempFilename);
+
+    for (auto &data : scoreboard)
+    {
+        if (data.userName == userName)
+        {
+            if (data.score < score)
+            {
+                data.score = score;
+                data.date = std::chrono::system_clock::now(); // 日時を更新
+            }
+            updated = true;
+        }
+        // データを書き込む
+        auto time_t = std::chrono::system_clock::to_time_t(data.date);
+        std::tm tm = *std::localtime(&time_t);
+        tempOut << data.userName << " " << data.score << " "
+                << std::put_time(&tm, "%Y-%m-%d %H:%M") << std::endl;
+    }
+
+    if (!updated)
+    {
+        auto now = std::chrono::system_clock::now();
+        auto time_t = std::chrono::system_clock::to_time_t(now);
+        std::tm tm = *std::localtime(&time_t);
+
+        tempOut << userName << " " << score << " "
+                << std::put_time(&tm, "%Y-%m-%d %H:%M") << std::endl;
+    }
+    tempOut.close();
+
+    std::filesystem::remove("../Resource/scoreboard.txt");
+    std::filesystem::rename(tempFilename, "../Resource/scoreboard.txt");
+
+    scoreboard.clear();
 }

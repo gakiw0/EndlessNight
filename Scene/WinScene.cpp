@@ -21,17 +21,12 @@
 #include "Engine/Point.hpp"
 #include "WinScene.hpp"
 #include "Engine/Resources.hpp"
+#include "Engine/User.hpp"
 
-extern int finalScore;
-
-PlayScene *WinScene::getPlayScene()
-{
-    return dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetActiveScene());
-}
 
 void WinScene::Initialize()
 {
-
+	finalScore = User::getInstance().getScore();
 	ticks = 0;
 	int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
 	int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
@@ -41,7 +36,7 @@ void WinScene::Initialize()
 
 	// AddNewObject(new Engine::Image("win/benjamin-sad.png", halfW, halfH, 0, 0, 0.5, 0.5));
 	AddNewObject(new Engine::Label("You Win!", "pirulen.ttf", 48, halfW, halfH / 4 - 10, 255, 255, 255, 255, 0.5, 0.5));
-	AddNewObject(new Engine::Label("Enter Your Name", "pirulen.ttf", 30, halfW, halfH / 4 + 66 + 300, 255, 255, 255, 255, 0.5, 0.5));
+	// AddNewObject(new Engine::Label("Enter Your Name", "pirulen.ttf", 30, halfW, halfH / 4 + 66 + 300, 255, 255, 255, 255, 0.5, 0.5));
 	AddNewObject(new Engine::Label("Score", "pirulen.ttf", 30, halfW, halfH / 4 + 135, 255, 255, 255, 255, 0.5, 0.5));
 
 	scoreLabel = new Engine::Label("", "pirulen.ttf", 72, halfW, halfH / 4 + 200, 255, 255, 255, 255, 0.5, 0.5);
@@ -55,9 +50,9 @@ void WinScene::Initialize()
 	AddNewControlObject(btn);
 	AddNewObject(new Engine::Label("Enter", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
 
-	input = new Engine::TextButton("win/unclicked1.png", "win/clicked1.png", halfW - 200, halfH + 100, 400, 100);
+	// input = new Engine::TextButton("win/unclicked1.png", "win/clicked1.png", halfW - 200, halfH + 100, 400, 100);
 	// btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
-	AddNewControlObject(input);
+	// AddNewControlObject(input);
 	// AddNewObject(new Engine::Label("Enter", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
 
 	bgmId = AudioHelper::PlayAudio("win.wav");
@@ -66,8 +61,6 @@ void WinScene::Initialize()
 	// playerNameLabel = new Engine::Label("", "pirulen.ttf", 24, halfW, halfH / 2 + 65, 0, 0, 0, 255, 0.5, 0.5);
 	// AddNewObject(playerNameLabel);
 
-	playerName = "";
-	drawTextInputBox = true;
 	playerNameLabel = new Engine::Label("", "pirulen.ttf", 36, halfW, halfH + 150, 255, 255, 255, 255, 0.5, 0.5);
 	AddNewObject(playerNameLabel);
 }
@@ -101,56 +94,54 @@ void WinScene::Update(float deltaTime)
 }
 void WinScene::BackOnClick(int stage)
 {
-	drawTextInputBox = false;
-	SaveScoreToFile(playerName, finalScore);
 	Engine::GameEngine::GetInstance().ChangeScene("scoreboard");
 }
 
-void WinScene::TextClick()
-{
+// void WinScene::TextClick()
+// {
 
-}
+// }
 
 void WinScene::Draw() const
 {
 	IScene::Draw();
 }
 
-std::string WinScene::GetCurrentDateTime()
-{
-	// 1. Get current time point
-	auto now = std::chrono::system_clock::now();
+// std::string WinScene::GetCurrentDateTime()
+// {
+// 	// 1. Get current time point
+// 	auto now = std::chrono::system_clock::now();
 
-	// 2. Get time_t for the date and time
-	std::time_t t = std::chrono::system_clock::to_time_t(now);
-	std::tm *nowTM = std::localtime(&t);
+// 	// 2. Get time_t for the date and time
+// 	std::time_t t = std::chrono::system_clock::to_time_t(now);
+// 	std::tm *nowTM = std::localtime(&t);
 
-	// 3. Create a stringstream to format the output
-	std::stringstream ss;
+// 	// 3. Create a stringstream to format the output
+// 	std::stringstream ss;
 
-	// Format the date and time up to minutes
-	ss << std::put_time(nowTM, "%Y-%m-%d/%H:%M");
+// 	// Format the date and time up to minutes
+// 	ss << std::put_time(nowTM, "%Y-%m-%d/%H:%M");
 
-	return ss.str();
-}
+// 	return ss.str();
+// }
 
-void WinScene::SaveScoreToFile(const std::string &name, int score)
-{
-	std::string date = GetCurrentDateTime();
-	std::ofstream file("Resource/scoreboard.txt", std::ios::app);
-	if (file.is_open())
-	{
-		file << name << " " << finalScore << " " << date << "\n";
-		file.close();
-	}
+// void WinScene::SaveScoreToFile(const std::string &name, int score)
+// {
+// 	std::string date = GetCurrentDateTime();
+// 	std::ofstream file("Resource/scoreboard.txt", std::ios::app);
+// 	if (file.is_open())
+// 	{
+// 		file << name << " " << finalScore << " " << date << "\n";
+// 		file.close();
+// 	}
 
-	std::ofstream file1("../Resource/scoreboard.txt", std::ios::app);
-	if (file1.is_open())
-	{
-		file1 << name << " " << finalScore << " " << date << "\n";
-		file1.close();
-	}
-}
+// 	std::ofstream file1("../Resource/scoreboard.txt", std::ios::app);
+// 	if (file1.is_open())
+// 	{
+// 		file1 << name << " " << finalScore << " " << date << "\n";
+// 		file1.close();
+// 	}
+// }
 
 void WinScene::OnMouseDown(int button, int mx, int my)
 {
@@ -166,40 +157,40 @@ void WinScene::OnMouseUp(int button, int mx, int my)
 {
 	IScene::OnMouseUp(button, mx, my);
 }
-void WinScene::OnKeyDown(int keyCode)
-{
-	IScene::OnKeyDown(keyCode);
-	if (!input->clicked)
-		return;
-	switch (keyCode)
-	{
-	case ALLEGRO_KEY_SPACE:
-		break;
-	case ALLEGRO_KEY_ENTER:
-		drawTextInputBox = false;
-		SaveScoreToFile(playerName, finalScore);
-		Engine::GameEngine::GetInstance().ChangeScene("scoreboard");
-		break;
-	case ALLEGRO_KEY_BACKSPACE:
-		if (!playerName.empty())
-		{
-			playerName.pop_back();
-		}
-		playerNameLabel->Text = playerName;
-		break;
-	default:
-		if (keyCode >= ALLEGRO_KEY_A && keyCode <= ALLEGRO_KEY_Z)
-		{
-			// std::cout << "lol" << std::endl;
-			const char *keyName = al_keycode_to_name(keyCode);
-			// std::cout << keyName << std::endl;
-			if (playerName.size() < 8)
-			{
-				playerName += keyName;
-				// std::cout << playerName << std::endl;
-			}
-			playerNameLabel->Text = playerName;
-			break;
-		}
-	}
-}
+// void WinScene::OnKeyDown(int keyCode)
+// {
+// 	IScene::OnKeyDown(keyCode);
+// 	if (!input->clicked)
+// 		return;
+// 	switch (keyCode)
+// 	{
+// 	case ALLEGRO_KEY_SPACE:
+// 		break;
+// 	case ALLEGRO_KEY_ENTER:
+// 		drawTextInputBox = false;
+// 		SaveScoreToFile(playerName, finalScore);
+// 		Engine::GameEngine::GetInstance().ChangeScene("scoreboard");
+// 		break;
+// 	case ALLEGRO_KEY_BACKSPACE:
+// 		if (!playerName.empty())
+// 		{
+// 			playerName.pop_back();
+// 		}
+// 		playerNameLabel->Text = playerName;
+// 		break;
+// 	default:
+// 		if (keyCode >= ALLEGRO_KEY_A && keyCode <= ALLEGRO_KEY_Z)
+// 		{
+// 			// std::cout << "lol" << std::endl;
+// 			const char *keyName = al_keycode_to_name(keyCode);
+// 			// std::cout << keyName << std::endl;
+// 			if (playerName.size() < 8)
+// 			{
+// 				playerName += keyName;
+// 				// std::cout << playerName << std::endl;
+// 			}
+// 			playerNameLabel->Text = playerName;
+// 			break;
+// 		}
+// 	}
+// }

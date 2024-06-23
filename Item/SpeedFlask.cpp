@@ -44,7 +44,7 @@ void SpeedFlask::HandleOverlapWithPlayer(float deltaTime)
         Player *player = dynamic_cast<Player *>(it);
         if (Engine::Collider::IsCircleOverlap(Position, CollisionRadius, player->Position, player->CollisionRadius))
         {
-            player->TemporarySpeedBoost(50.0f);
+            player->TemporarySpeedBoost(2.0f);
             scene->ItemGroup->RemoveObject(objectIterator);
             return;
         }

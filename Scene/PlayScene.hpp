@@ -9,6 +9,7 @@
 #include "UI/Component/ImageButton.hpp"
 #include "Engine/Animation.hpp"
 #include "UI/Component/MiniMap.hpp"
+#include "ScoreBoardScene.hpp"
 #include <vector>
 #include <string>
 #include <map>
@@ -28,11 +29,12 @@ private:
     Engine::Label *scoreLabel;
     std::vector<std::shared_ptr<Engine::Image>> coinFrames;
     std::vector<std::shared_ptr<Engine::Image>> healFrames;
-    int currentFrame; // Current frame of animation
+    std::vector<ScoreData> scoreboard;
+    int currentFrame;    // Current frame of animation
     float animationTime; // Time accumulator for animation
-    bool isHealing; // Add the isHealing flag
-    float healAnimationTimer; 
-    int healFrame; 
+    bool isHealing;      // Add the isHealing flag
+    float healAnimationTimer;
+    int healFrame;
     MiniMap *miniMap;
 
     enum ItemType
@@ -75,7 +77,7 @@ private:
     };
     std::vector<double> ItemProbabilities;
     std::vector<Engine::ImageButton *> heartImages;
-    std::vector<Animation*> healAnimations;
+    std::vector<Animation *> healAnimations;
 
 public:
     static const int MapWidth, MapHeight;
@@ -108,7 +110,8 @@ public:
     void DestroyHeart();
     void HealAnim();
     bool RegenState();
-    
+    void ReadScoreBoard();
+    void WriteScoreBoard();
 };
 
 #endif // PLAYSCENE_HPP

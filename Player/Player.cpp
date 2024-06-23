@@ -12,8 +12,9 @@
 using namespace std;
 
 Player::Player(float x, float y, int hp)
-    : Engine::Sprite("PixelArt/RightLeftWalk/pixil-frame-0.png", x, y, 0, 0, 0.5f, 0.5f, 0, 0, 0, 255, 255, 255, 255), maxhp(75), hp(hp), bulletDmg(50), frame(0), elapsedTime(0), timeSinceLastShot(0), shootCooldown(0.5f)
+    : Engine::Sprite("PixelArt/RightLeftWalk/pixil-frame-0.png", x, y, 0, 0, 0.5f, 0.5f, 0, 0, 0, 255, 255, 255, 255), maxhp(75), hp(hp), bulletDmg(50), frame(0), elapsedTime(0), timeSinceLastShot(0), shootCooldown(0.5f), speedUpDuration(5.0f), sinceSpeedUpStart(5.1f)
 {
+    speed = initialSpeed = 200.0f;
     Anchor = Engine::Point(0.5f, 0.5f);
     CollisionRadius = 10;
     moving = movingU = movingD = movingL = movingR = false;
@@ -52,6 +53,14 @@ PlayScene *Player::getPlayScene()
 
 void Player::Update(float deltaTime)
 {
+    if (sinceSpeedUpStart + deltaTime <= speedUpDuration)
+        sinceSpeedUpStart += deltaTime;
+    else if (sinceSpeedUpStart <= speedUpDuration && sinceSpeedUpStart + deltaTime > speedUpDuration)
+    {
+        Velocity.x /= speed / initialSpeed;
+        Velocity.y /= speed / initialSpeed;
+        speed = initialSpeed;
+    }
 
     Engine::GameEngine &gameEngine = Engine::GameEngine::GetInstance();
 
@@ -298,10 +307,17 @@ void Player::Heal(float heal)
     {
         hp += heal;
     }
-    if(hp > maxhp) hp = maxhp;
+    if (hp > maxhp)
+        hp = maxhp;
 }
 
 void Player::TemporarySpeedBoost(float boost)
 {
-    speed += boost;
+    if (sinceSpeedUpStart > speedUpDuration)
+    {
+        Velocity.x *= boost;
+        Velocity.y *= boost;
+        speed *= boost;
+    }
+    sinceSpeedUpStart = 0.0f;
 }

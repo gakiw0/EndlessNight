@@ -1,54 +1,12 @@
-#include <allegro5/allegro_audio.h>
-#include <functional>
-#include <memory>
-#include <string>
 #include <fstream>
-#include <sstream>
-#include <vector>
 #include <algorithm>
-#include <cmath>
-#include <chrono>
-#include <ctime>
-#include <iomanip>
-#include <iostream>
-
-#include "Engine/AudioHelper.hpp"
+#include <sstream>
 #include "Engine/GameEngine.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
-#include "PlayScene.hpp"
-#include "Engine/Point.hpp"
-#include "Engine/Resources.hpp"
-#include "UI/Component/Slider.hpp"
 #include "ScoreBoardScene.hpp"
 
-Engine::Label *ScoreBoard;
-
-std::vector<ScoreEntry> ScoreBoardScene::ReadScores(const std::string &filename)
-{
-   std::ifstream file(filename);
-   std::vector<ScoreEntry> scores;
-   std::string line;
-
-   while (std::getline(file, line))
-   {
-      std::istringstream iss(line);
-      ScoreEntry entry;
-      if (!(iss >> entry.name >> entry.score >> entry.date))
-      {
-         break;
-      }
-      scores.push_back(entry);
-      std::cout << "Name: " << entry.name << ", Score: " << entry.score
-                << ", DateTime: " << entry.date << std::endl;
-   }
-
-   // Sort scores in descending order
-   std::sort(scores.begin(), scores.end(), [](const ScoreEntry &a, const ScoreEntry &b)
-             { return b.score < a.score; });
-
-   return scores;
-}
+using namespace std;
 
 void ScoreBoardScene::Initialize()
 {
@@ -56,45 +14,55 @@ void ScoreBoardScene::Initialize()
    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
    int halfW = w / 2;
    int halfH = h / 2;
-   AddNewObject(new Engine::Label("SCOREBOARD", "pirulen.ttf", 56, halfW, halfH / 6 + 10, 255, 255, 255, 255, 0.5, 0.5));
-
-   scores = ReadScores("Resource/scoreboard.txt");
-   currentPage = 0;
-   totalPages = std::ceil(scores.size() / static_cast<float>(SCORES_PER_PAGE));
-
-   for (int i = 0; i < 3 * SCORES_PER_PAGE; ++i)
-   {
-      Engine::Label *scoreLabel = new Engine::Label("", "pirulen.ttf", 32,
-                                                    halfW, halfH / 4 + 50 + i * 50,
-                                                    255, 255, 255, 255, 0.5, 0.5);
-      scoreLabels.push_back(scoreLabel);
-      AddNewObject(scoreLabel);
-   }
-
-   ShowPage(currentPage);
-
    Engine::ImageButton *btn;
-   
-   btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 187.5, halfH * 7 / 4 - 75, 375, 151.875);
-   btn->SetOnClickCallback(std::bind(&ScoreBoardScene::BackOnClick, this, 2));
+   numMap = 2;
+   currMap = 1;
+
+   AddNewObject(UITitle = new Engine::Label("Stage " + to_string(currMap), "pirulen.ttf", 48, halfW, 50, 0, 255, 0, 255, 0.5, 0.5));
+
+   // Backボタン
+   btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h - 150, 400, 100);
+   btn->SetOnClickCallback(std::bind(&ScoreBoardScene::BackOnClick, this, 1));
    AddNewControlObject(btn);
-   AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
+   AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, h - 100, 0, 0, 0, 255, 0.5, 0.5));
 
-   nextButton = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW + 500, halfH * 7 / 4 - 50, 250, 101.25);
-   nextButton->SetOnClickCallback(std::bind(&ScoreBoardScene::NextPageOnClick, this));
-   AddNewControlObject(nextButton);
-   AddNewObject(new Engine::Label("Next", "pirulen.ttf", 24, halfW + 625, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
+   // Prevボタン
+   btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 750, h - 150, 400, 100);
+   btn->SetOnClickCallback(std::bind(&ScoreBoardScene::PrevPageOnClick, this));
+   AddNewControlObject(btn);
+   AddNewObject(new Engine::Label("Prev", "pirulen.ttf", 48, halfW - 550, h - 100, 0, 0, 0, 255, 0.5, 0.5));
 
-   // Previous Page Button
-   prevButton = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 750, halfH * 7 / 4 - 50, 250, 101.25);
-   prevButton->SetOnClickCallback(std::bind(&ScoreBoardScene::PrevPageOnClick, this));
-   AddNewControlObject(prevButton);
-   AddNewObject(new Engine::Label("Prev", "pirulen.ttf", 24, halfW - 625, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
+   // Nextボタン
+   btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW + 350, h - 150, 400, 100);
+   btn->SetOnClickCallback(std::bind(&ScoreBoardScene::NextPageOnClick, this));
+   AddNewControlObject(btn);
+   AddNewObject(new Engine::Label("Next", "pirulen.ttf", 48, halfW + 550, h - 100, 0, 0, 0, 255, 0.5, 0.5));
+
+   // btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 750, 50, 100, 100);
+   // btn->SetOnClickCallback(std::bind(&ScoreBoardScene::PrevMapOnClick, this));
+   // AddNewControlObject(btn);
+   // AddNewObject(new Engine::Label("<", "pirulen.ttf", 48, halfW - 700, 100, 0, 0, 0, 255, 0.5, 0.5));
+
+   // Nextボタン
+   // btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW + 650, 50, 100, 100);
+   // btn->SetOnClickCallback(std::bind(&ScoreBoardScene::NextMapOnClick, this));
+   // AddNewControlObject(btn);
+   // AddNewObject(new Engine::Label(">", "pirulen.ttf", 48, halfW + 700, 100, 0, 0, 0, 255, 0.5, 0.5));
+
+   ReadScoreBoards();
+   // スコアボードのラベルを初期化
+   displayStart = 0;
+   UpdateScoreBoardDisplay();
 }
 
 void ScoreBoardScene::Terminate()
 {
-   scoreLabels.clear();
+   for (auto &scoreboard : scoreboards)
+   {
+      scoreboard.clear();
+   }
+   scoreboards.clear();
+   scoreboardLabels.clear();
    IScene::Terminate();
 }
 
@@ -103,83 +71,144 @@ void ScoreBoardScene::BackOnClick(int stage)
    Engine::GameEngine::GetInstance().ChangeScene("start");
 }
 
-void ScoreBoardScene::ShowPage(int page)
+void ScoreBoardScene::PrevPageOnClick()
 {
-   int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-   int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-   int halfW = w / 2;
-   int halfH = h / 2;
-
-   int startIndex = page * SCORES_PER_PAGE;
-   int endIndex = std::min(startIndex + SCORES_PER_PAGE, static_cast<int>(scores.size()));
-
-   int labelIndex = 0; // Keep track of label index
-
-   // Update and show labels for the current page
-   for (int i = startIndex; i < endIndex; ++i)
+   if (displayStart > 0)
    {
-      if (labelIndex < 3 * SCORES_PER_PAGE)
-      {
-         // 1. Set the Text FIRST (for both name and score labels)
-         scoreLabels[labelIndex]->Text = scores[i].name;
-         scoreLabels[labelIndex + 1]->Text = std::to_string(scores[i].score);
-         scoreLabels[labelIndex + 2]->Text = scores[i].date;
-
-         // 2. Calculate Text Widths using the Label's method
-         int nameWidth = scoreLabels[labelIndex]->GetTextWidth();
-         int scoreWidth = scoreLabels[labelIndex + 1]->GetTextWidth();
-         int dateWidth = scoreLabels[labelIndex + 2]->GetTextWidth();
-
-         // 3. Position the Name Label (Example: Left Aligned)
-         scoreLabels[labelIndex]->Position.x = halfW - nameWidth / 2 - 250;             // Adjust spacing as needed
-         scoreLabels[labelIndex]->Position.y = halfH / 4 + 50 + (labelIndex / 3) * 50; // Correct vertical spacing
-         scoreLabels[labelIndex]->Visible = true;
-
-         // 4. Position the Score Label (Example: Right Aligned)
-         scoreLabels[labelIndex + 1]->Position.x = halfW + scoreWidth / 2 - 50;            // Adjust spacing
-         scoreLabels[labelIndex + 1]->Position.y = halfH / 4 + 50 + (labelIndex / 3) * 50; // Correct vertical spacing
-         scoreLabels[labelIndex + 1]->Visible = true;
-
-         // 4. Position the Score Label (Example: Right Aligned)
-         scoreLabels[labelIndex + 2]->Position.x = halfW + dateWidth / 2 + 200;           // Adjust spacing
-         scoreLabels[labelIndex + 2]->Position.y = halfH / 4 + 50 + (labelIndex / 3) * 50; // Correct vertical spacing
-         scoreLabels[labelIndex + 2]->Visible = true;
-
-         labelIndex += 3;
-      }
-   }
-
-   // Hide any remaining labels
-   for (int i = labelIndex; i < 3 * SCORES_PER_PAGE; ++i)
-   {
-      scoreLabels[i]->Visible = false;
+      displayStart -= 10;
+      UpdateScoreBoardDisplay();
    }
 }
 
 void ScoreBoardScene::NextPageOnClick()
 {
-   if (currentPage < totalPages - 1)
+   if (displayStart + 10 < scoreboards[currMap - 1].size())
    {
-      currentPage++;
-      ShowPage(currentPage);
+      displayStart += 10;
+      UpdateScoreBoardDisplay();
    }
 }
 
-void ScoreBoardScene::PrevPageOnClick()
+// void ScoreBoardScene::PrevMapOnClick()
+// {
+//    if (currMap > 1)
+//    {
+//       displayStart = 0;
+//       currMap--;
+//       UITitle->Text = "Stage " + to_string(currMap);
+//       UpdateScoreBoardDisplay();
+//    }
+// }
+
+// void ScoreBoardScene::NextMapOnClick()
+// {
+//    if (currMap < numMap)
+//    {
+//       displayStart = 0;
+//       currMap++;
+//       UITitle->Text = "Stage " + to_string(currMap);
+//       UpdateScoreBoardDisplay();
+//    }
+// }
+
+void ScoreBoardScene::ReadScoreBoards()
 {
-   if (currentPage > 0)
+   for (int idx = 0; idx < numMap; idx++)
    {
-      currentPage--;
-      ShowPage(currentPage);
+      std::vector<ScoreData> scoreboard;
+      string filename = "../Resource/scoreboard.txt";
+      ifstream fin(filename);
+
+      string line;
+      while (getline(fin, line))
+      {
+         // スペースで区切って、ユーザー名、スコア、日付と時刻を取得
+         std::istringstream iss(line);
+         std::string userName, scoreStr, dateStr, timeStr;
+         std::getline(iss, userName, ' ');
+         std::getline(iss, scoreStr, ' ');
+         std::getline(iss, dateStr, ' ');
+         std::getline(iss, timeStr, ' ');
+
+         // スコアを整数に変換
+         int score = std::stoi(scoreStr);
+
+         // 日付と時刻をtime_pointに変換
+         std::tm tm = {};
+         std::istringstream ss(dateStr + " " + timeStr);
+         ss >> std::get_time(&tm, "%Y-%m-%d %H:%M");
+         auto date = std::chrono::system_clock::from_time_t(std::mktime(&tm));
+
+         // ScoreDataを作成して、scoreboardに追加
+         ScoreData data{userName, score, date};
+         scoreboard.push_back(data);
+      }
+      fin.close();
+      sort(scoreboard.begin(), scoreboard.end(), [](const ScoreData &a, const ScoreData &b)
+           { return a.score > b.score; });
+      scoreboards.push_back(scoreboard);
    }
 }
 
-void ScoreBoardScene::ClearScoreLabels()
+void ScoreBoardScene::UpdateScoreBoardDisplay()
 {
-   // // Delete each label and clear the vector
-   // for (size_t i = 0; i < scoreLabels.size(); ++i)
-   // {
-   //    delete scoreLabels[i]; // Release memory for the label
-   // }
-   // // scoreLabels.clear();
+   // 既存のスコアボードのラベルを削除
+   for (auto label : scoreboardLabels)
+   {
+      RemoveObject(label->GetObjectIterator());
+   }
+   scoreboardLabels.clear();
+
+   // 新しいスコアボードのラベルを作成・追加
+   int startY = 180;
+   int defaultFontSize = 36;
+   int lineHeight = 50;
+   int maxDisplayCount = 10;
+   int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+   int halfW = w / 2;
+
+   for (size_t i = displayStart; i < scoreboards[currMap - 1].size() && i < maxDisplayCount + displayStart; ++i)
+   {
+      const auto &data = scoreboards[currMap - 1][i];
+      int fontSize = defaultFontSize;
+
+      if (displayStart == 0)
+      {
+         if (i == 0)
+         {
+            fontSize = 60;
+         }
+         else if (i == 1)
+         {
+            fontSize = 50;
+         }
+         else if (i == 2)
+         {
+            fontSize = 40;
+         }
+      }
+
+      int x = 50;
+      Engine::Label *userNameLabel = new Engine::Label(data.userName, "pirulen.ttf", fontSize, x, startY, 255, 255, 255, 255, 0.0, 0.5);
+      AddNewObject(userNameLabel);
+      scoreboardLabels.push_back(userNameLabel);
+
+      x = halfW;
+      Engine::Label *scoreLabel = new Engine::Label(std::to_string(data.score), "pirulen.ttf", fontSize, x, startY, 255, 255, 255, 255, 0.5, 0.5);
+      AddNewObject(scoreLabel);
+      scoreboardLabels.push_back(scoreLabel);
+
+      // 日付と時刻を文字列に変換して表示
+      std::time_t t = std::chrono::system_clock::to_time_t(data.date);
+      std::tm tm = *std::localtime(&t);
+      char dateTimeStr[24];
+      std::strftime(dateTimeStr, sizeof(dateTimeStr), "%Y-%m-%d %H:%M", &tm);
+
+      x = w - 50; // 日付と時刻の位置を調整
+      Engine::Label *dateTimeLabel = new Engine::Label(dateTimeStr, "pirulen.ttf", defaultFontSize, x, startY, 255, 255, 255, 255, 1.0, 0.5);
+      AddNewObject(dateTimeLabel);
+      scoreboardLabels.push_back(dateTimeLabel);
+
+      startY += lineHeight;
+   }
 }
