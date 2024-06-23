@@ -136,6 +136,7 @@ void LoginScene::Draw() const
     btn->Draw();
     inputID->Draw();
     inputPass->Draw();
+    password->Draw();
     login->Draw();
     back->Draw();
     userId->Draw();

@@ -144,6 +144,7 @@ void RegisterScene::Draw() const
     inputID->Draw();
     inputPass->Draw();
     registerLabel->Draw();
+    password->Draw();
     back->Draw();
     userId->Draw();
     if (errorLabel)
