@@ -1,27 +1,29 @@
 #ifndef LOGINSCENE_HPP
 #define LOGINSCENE_HPP
 
+#include <memory>
+#include <string>
+#include <vector>
 #include "Engine/IScene.hpp"
-#include "Engine/GameEngine.hpp"
 #include "UI/Component/Label.hpp"
 #include "UI/Component/TextInput.hpp"
-#include "Firebase/FirebaseAuth.hpp"
+#include "Engine/User.hpp"
 
-class LoginScene : public Engine::IScene
+
+class LoginScene final : public Engine::IScene
 {
 private:
+    std::vector<User> UserDatas;
     Engine::TextInput *inputID;
     Engine::TextInput *inputPass;
-    Engine::Label *errorLabel = nullptr;
-    FirebaseAuth FirebaseAuth;
-    void LoginOnClick(int stage);
-    void BackOnClick(int stage);
-    void ShowErrorMessage(const std::string &message);
-
+    Engine::Label *errorLabel;
 public:
-    explicit LoginScene() : FirebaseAuth() {}
+    explicit LoginScene() = default;
     void Initialize() override;
     void Terminate() override;
+    void LoginOnClick(int stage);
+    void ReadUserData();
+    void BackOnClick(int stage);
 };
 
 #endif // LOGINSCENE_HPP

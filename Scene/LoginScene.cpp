@@ -1,9 +1,15 @@
+#include <fstream>
+#include <algorithm>
+
 #include "LoginScene.hpp"
 #include "Engine/GameEngine.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "UI/Component/TextInput.hpp"
-#include "Engine/UserManager.hpp"
+
+#include <iostream>
+
+using namespace std;
 
 void LoginScene::Initialize()
 {
@@ -12,6 +18,8 @@ void LoginScene::Initialize()
     int halfW = w / 2;
     int halfH = h / 2;
     Engine::ImageButton *btn;
+
+    ReadUserData();
 
     AddNewObject(new Engine::Label("USER ID", "pirulen.ttf", 80, halfW, halfH / 2, 255, 255, 255, 255, 0.5, 0.5));
     AddNewObject(new Engine::Label("PASSWORD", "pirulen.ttf", 80, halfW, h - halfH, 255, 255, 255, 255, 0.5, 0.5));
@@ -31,9 +39,9 @@ void LoginScene::Initialize()
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, 150, 100, 0, 0, 0, 255, 0.5, 0.5));
 }
-
 void LoginScene::Terminate()
 {
+    UserDatas.clear();
     IScene::Terminate();
 }
 
@@ -42,46 +50,73 @@ void LoginScene::BackOnClick(int stage)
     Engine::GameEngine::GetInstance().ChangeScene("loginOrRegister");
 }
 
-void LoginScene::ShowErrorMessage(const std::string &message)
+void LoginScene::ReadUserData()
 {
-    if (errorLabel)
-    {
-        RemoveObject(errorLabel->GetObjectIterator());
-    }
-    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    int halfW = w / 2;
-    int halfH = h / 2;
+    ifstream fin("../Resource/userDatas.txt");
+    string line;
 
-    errorLabel = new Engine::Label(message, "pirulen.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
-    AddNewObject(errorLabel);
+    while (getline(fin, line))
+    {
+        size_t pos = line.find(' ');
+
+        User data;
+        data.setName(line.substr(0, pos));
+        data.setPassword(line.substr(pos + 1));
+
+        UserDatas.push_back(data);
+    }
+    fin.close();
 }
 
 void LoginScene::LoginOnClick(int stage)
 {
-    std::string email = inputID->GetText();
-    std::string password = inputPass->GetText();
-
-    if (email.empty())
+    if (inputID->GetText() == "")
     {
-        ShowErrorMessage("Type your USER ID");
-        return;
+        if (errorLabel)
+        {
+            RemoveObject(errorLabel->GetObjectIterator());
+        }
+        int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+        int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+        int halfW = w / 2;
+        int halfH = h / 2;
+
+        errorLabel = new Engine::Label("Type your USER ID", "pirulen.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
+        AddNewObject(errorLabel);
     }
-    else if (password.empty())
+    else if (inputPass->GetText() == "")
     {
-        ShowErrorMessage("Type your Password");
-        return;
-    }
+        int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+        int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+        int halfW = w / 2;
+        int halfH = h / 2;
 
-    std::string response = FirebaseAuth.signIn(email, password);
-    std::string idToken = UserManager::getInstance().getIdToken();
-
-    if (!idToken.empty())
-    {
-        Engine::GameEngine::GetInstance().ChangeScene("start");
+        errorLabel = new Engine::Label("Type your Password", "pirulen.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
+        AddNewObject(errorLabel);
     }
     else
     {
-        ShowErrorMessage("Invalid USER ID or Password");
+        User::getInstance().setName(inputID->GetText());
+        User::getInstance().setPassword(inputPass->GetText());
+
+        if (find(UserDatas.begin(), UserDatas.end(), User::getInstance()) != UserDatas.end())
+        {
+            Engine::GameEngine::GetInstance().ChangeScene("start");
+        }
+        else
+        {
+            if (errorLabel)
+            {
+                RemoveObject(errorLabel->GetObjectIterator());
+            }
+            int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+            int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+            int halfW = w / 2;
+            int halfH = h / 2;
+
+            // エラーメッセージ用のラベルを作成し、表示
+            errorLabel = new Engine::Label("User cannot be found,", "pirulen.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
+            AddNewObject(errorLabel);
+        }
     }
 }

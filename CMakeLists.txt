@@ -46,6 +46,8 @@ add_executable(EndlessNights
     Engine/AutoScroller.cpp
     Engine/Animation.hpp
     Engine/Animation.cpp
+    Engine/User.hpp
+    Engine/User.cpp
 
     # UI Components
     UI/Component/Image.cpp
@@ -62,6 +64,8 @@ add_executable(EndlessNights
     UI/Component/Pause.hpp
     UI/Component/MiniMap.cpp
     UI/Component/MiniMap.hpp
+    UI/Component/TextInput.hpp
+    UI/Component/TextInput.cpp
 
     # UI Animations
 
@@ -80,7 +84,12 @@ add_executable(EndlessNights
     Scene/StoryScene.cpp
     Scene/ScoreBoardScene.hpp
     Scene/ScoreBoardScene.cpp
-
+    Scene/LoginScene.cpp
+    Scene/LoginScene.hpp
+    Scene/RegisterScene.cpp
+    Scene/RegisterScene.hpp
+    Scene/LoginOrRegisterScene.cpp
+    Scene/LoginOrRegisterScene.hpp
 
     #Players
     Player/Player.hpp

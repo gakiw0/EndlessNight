@@ -38,11 +38,11 @@ void StartScene::Initialize()
 
    for (const auto &path : imagePaths)
    {
-      auto img = std::make_shared<Engine::Image>(path, halfW, halfH / 2 + 48, 0, 0, 0.5f, 0.5f, 2.5f, 2.5f);
+      auto img = std::make_shared<Engine::Image>(path, halfW, halfH / 2 + 30, 0, 0, 0.5f, 0.5f, 2.5f, 2.5f);
       zombieFrames.push_back(img);
    }
 
-   btn1 = new Engine::ImageButton("stage-select/Play_Unpressed.png", "stage-select/Play_Pressed.png", halfW - 281, halfH / 2 + 110, 562, 220);
+   btn1 = new Engine::ImageButton("stage-select/Play_Unpressed.png", "stage-select/Play_Pressed.png", halfW, halfH, 562, 220, 0.5, 0.5);
    btn1->SetOnClickCallback(std::bind(&StartScene::PlayOnClick, this, 1));
    AddNewControlObject(btn1);
 
@@ -52,12 +52,17 @@ void StartScene::Initialize()
    // border = new Engine::Image("stage-select/border.png", w - 96, 32);
    // AddNewObject(border);
 
-   btn = new Engine::ImageButton("stage-select/settings3.png", "stage-select/settings4.png", w - 96, 32, 64, 64);
+   btn = new Engine::ImageButton("stage-select/settings3.png", "stage-select/settings4.png", w - 10, 10, 64, 64, 1, 0);
    btn->SetOnClickCallback(std::bind(&StartScene::SettingsOnClick, this, 2));
    AddNewControlObject(btn);
 
    // settings = new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH * 3 / 2 + 25 - move, 0, 0, 0, 255, 0.5, 0.5);
    // AddNewObject(settings);
+   
+
+   btn2 = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW, halfH, 250, 100, 0.5, 0.5);
+   btn2->SetOnClickCallback(std::bind(&StartScene::LogoutOnClick, this, 3));
+   AddNewControlObject(btn2);
 }
 
 void StartScene::Update(float deltaTime)
@@ -87,6 +92,8 @@ void StartScene::Draw() const
    // play->Draw();
    // border->Draw();
    btn->Draw();
+   btn2->Draw();
+   
 }
 
 void StartScene::Terminate()
@@ -110,4 +117,11 @@ void StartScene::SettingsOnClick(int stage)
 void StartScene::OnMouseDown(int button, int mx, int my)
 {
    IScene::OnMouseDown(button, mx, my);
+}
+
+void StartScene::LogoutOnClick(int stage)
+{
+    User::getInstance().setName("");
+    User::getInstance().setPassword("");
+    Engine::GameEngine::GetInstance().ChangeScene("loginOrRegister");
 }

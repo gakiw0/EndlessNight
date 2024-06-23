@@ -30,8 +30,10 @@ public:
     void PlayOnClick(int stage);
     void SettingsOnClick(int stage);
     void OnMouseDown(int button, int mx, int my) override;
+    void LogoutOnClick(int stage);
     Engine::ImageButton *btn;
     Engine::ImageButton *btn1;
+    Engine::ImageButton *btn2;
     Engine::Label *play;
     Engine::Label *settings;
     Engine::Image *border;

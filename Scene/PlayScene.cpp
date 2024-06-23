@@ -32,8 +32,8 @@ void PlayScene::Initialize()
     int halfH = sh / 2;
     cameraTopLeft = Engine::Point(sw / 2, sh / 2);
     cameraDownRight = Engine::Point(MapWidth * BlockSize - sw / 2, MapHeight * BlockSize - sh / 2);
-    camera.x = sw / 2;
-    camera.y = sh / 2;
+    camera.x = MapWidth * BlockSize / 2;
+    camera.y = MapHeight * BlockSize / 2;
     MapId = 2;
 
     remainingTime = 60.0f;
@@ -370,8 +370,8 @@ void PlayScene::ReadMap()
     {
         for (int j = 0; j < MapWidth; j++)
         {
-            int positionX = j * BlockSize;
-            int positionY = i * BlockSize;
+            int positionX = j * BlockSize - (MapWidth * BlockSize / 2 - cameraTopLeft.x);
+            int positionY = i * BlockSize - (MapHeight * BlockSize / 2 - cameraTopLeft.y);
             int ObjectHeight = BlockSize;
             int ObjectWidth = BlockSize;
             string mapTilePath = "Tiles/";
