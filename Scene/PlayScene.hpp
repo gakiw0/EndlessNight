@@ -23,10 +23,9 @@ private:
     Engine::Point camera;
     Player *player1;
     Engine::Label *healthLabel;
-    float remainingTime;
-    Engine::Label *timerLabel;
     int score;
     Engine::Label *scoreLabel;
+    Engine::Image *shade;
     std::vector<std::shared_ptr<Engine::Image>> coinFrames;
     std::vector<std::shared_ptr<Engine::Image>> healFrames;
     std::vector<ScoreData> scoreboard;

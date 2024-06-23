@@ -39,7 +39,6 @@ void PlayScene::Initialize()
     camera.y = MapHeight * BlockSize / 2;
     MapId = 2;
 
-    remainingTime = 10.0f;
     finalScore = 0;
     score = 0;
     isHealing = false;
@@ -67,8 +66,6 @@ void PlayScene::Initialize()
 
     ConstructHeart();
     // Initialize one Enemy at specific location
-    timerLabel = new Engine::Label(to_string((int)remainingTime), "pirulen.ttf", 120, halfW, halfH / 3 + 50, 255, 255, 255, 255, 0.5, 0.5);
-    LabelGroup->AddNewObject(timerLabel);
 
     // healthLabel = new Engine::Label("HP: " + to_string(player1->GetHealth()), "pirulen.ttf", 60, 0, 0, 255, 255, 255, 255, 0, 0);
     // LabelGroup->AddNewObject(healthLabel);
@@ -105,8 +102,12 @@ void PlayScene::Initialize()
     ItemGroup->AddNewObject(new Coin(halfW, halfH + 100));
     ItemGroup->AddNewObject(new Heal(halfW + 100, halfH + 100));
     ItemGroup->AddNewObject(new Heal(halfW + 140, halfH + 100));
-    ItemGroup->AddNewObject(new SpeedFlask(halfW + 180, halfH + 100));
-    ItemGroup->AddNewObject(new DamageFlask(halfW + 220, halfH + 100));
+    ItemGroup->AddNewObject(new DamageFlask(halfW + 180, halfH + 100));
+    ItemGroup->AddNewObject(new SpeedFlask(halfW + 220, halfH + 100));
+    ItemGroup->AddNewObject(new SpeedFlask(halfW + 330, halfH + 100));
+    ItemGroup->AddNewObject(new SpeedFlask(halfW + 440, halfH + 100));
+
+    shade = new Engine::Image("UI/dark_blur.png", sw / 2, sh / 2, 0.0, 0.0, 0.5, 0.5, 3.0, 3.0);
 }
 
 Engine::Point PlayScene::GetClientSize()
@@ -160,36 +161,28 @@ void PlayScene::Update(float deltaTime)
         NonObstacleGroup->MoveCamera(cameraD);
         TileMapGroup->MoveCamera(cameraD);
         ItemGroup->MoveCamera(cameraD);
-
         PlayerGroup->MoveCamera(cameraD);
     }
-    remainingTime -= deltaTime;
+    shade->Position = player1->Position;
     static float spawnTimer = 1.0f;
     spawnTimer -= deltaTime;
-    if (spawnTimer <= 0 && remainingTime > 0)
+    if (spawnTimer <= 0)
     {
         spawnTimer = 1.0f;
         int randomX = rand() % sw;
         int randomY = rand() % sh;
         EnemyGroup->AddNewObject(new Enemy(randomX, randomY));
     }
-    if (remainingTime < 0)
+
+    if (player1->GetHealth() <= 0)
     {
         User::getInstance().setScore(score * 50);
         WriteScoreBoard();
         Engine::GameEngine::GetInstance().ChangeScene("win");
     }
-    timerLabel->Text = to_string((int)remainingTime);
+
     // healthLabel->Text = "HP: " + to_string(player1->GetHealth());
     scoreLabel->Text = to_string(score);
-    for (auto &it : PlayerGroup->GetObjects())
-    {
-        Player *player = dynamic_cast<Player *>(it);
-        if (player->GetHealth() > 0)
-            break;
-        if (it == PlayerGroup->GetObjects().back())
-            Engine::GameEngine::GetInstance().ChangeScene("lose");
-    }
     // ConstructHeart();
 }
 
@@ -202,6 +195,7 @@ void PlayScene::Draw() const
     PlayerGroup->Draw();
     EnemyGroup->Draw();
     NonObstacleGroup->Draw();
+    shade->Draw();
     miniMap->Draw();
     LabelGroup->Draw();
     UILife->Draw();
@@ -717,7 +711,7 @@ void PlayScene::WriteScoreBoard()
     std::string userName = User::getInstance().getName();
     int score = User::getInstance().getScore();
 
-    ReadScoreBoard(); 
+    ReadScoreBoard();
 
     bool updated = false;
     std::string tempFilename = "../Resource/scoreboard.txt.tmp";

@@ -57,6 +57,7 @@ void Player::Update(float deltaTime)
         sinceSpeedUpStart += deltaTime;
     else if (sinceSpeedUpStart <= speedUpDuration && sinceSpeedUpStart + deltaTime > speedUpDuration)
     {
+        sinceSpeedUpStart += deltaTime;
         Velocity.x /= speed / initialSpeed;
         Velocity.y /= speed / initialSpeed;
         speed = initialSpeed;

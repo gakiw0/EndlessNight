@@ -45,7 +45,6 @@ void Coin::HandleOverlapWithPlayer(float deltaTime)
         Player *player = dynamic_cast<Player *>(it);
         if (Engine::Collider::IsCircleOverlap(Position, CollisionRadius, player->Position, player->CollisionRadius))
         {
-            player->AddBulletDmg(10.0f);
             scene->ItemGroup->RemoveObject(objectIterator);
             scene->updateScore();
             return;
