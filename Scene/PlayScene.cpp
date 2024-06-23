@@ -105,13 +105,6 @@ void PlayScene::Initialize()
     scoreLabel = new Engine::Label(to_string(score), "onesize.ttf", 28, sw - 56, 284, 255, 255, 255, 255, 1.0, 0);
     LabelGroup->AddNewObject(scoreLabel);
 
-    ItemGroup->AddNewObject(new Coin(halfW, halfH + 100));
-    ItemGroup->AddNewObject(new Heal(halfW + 40, halfH + 100));
-    ItemGroup->AddNewObject(new Heal(halfW + 140, halfH + 100));
-    ItemGroup->AddNewObject(new Coin(halfW + 180, halfH + 100));
-    ItemGroup->AddNewObject(new Coin(halfW + 220, halfH + 100));
-    ItemGroup->AddNewObject(new Coin(halfW + 330, halfH + 100));
-    ItemGroup->AddNewObject(new Coin(halfW + 440, halfH + 100));
     initialLightScale = 3.0f;
     shade = new Engine::Image("UI/dark_blur.png", sw / 2, sh / 2, 0.0, 0.0, 0.5, 0.5, initialLightScale, initialLightScale);
 
