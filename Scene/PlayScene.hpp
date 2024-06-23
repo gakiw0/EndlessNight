@@ -45,7 +45,8 @@ private:
         COIN,
         HEAL,
         DAMAGEFLASK,
-        SPEEDFLASK
+        SPEEDFLASK,
+        LIGHT,
     };
     enum TileType
     {

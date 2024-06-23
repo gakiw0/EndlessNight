@@ -10,6 +10,8 @@
 Bullet::Bullet(float x, float y, float rotation, float speed, float dmg)
     : Sprite("play/bullet-1.png", x, y, 0, 0, 0.5, 0.5, 0, 255, 255, 255, 255), speed(speed), damage(dmg)
 {
+  scaleX = 0.5f;
+  scaleY = 0.5f;
   this->Velocity.x = std::cos(rotation) * speed;
   this->Velocity.y = std::sin(rotation) * speed;
   this->Rotation = rotation - ALLEGRO_PI / 2;

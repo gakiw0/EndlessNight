@@ -59,11 +59,12 @@ void PlayScene::Initialize()
     ReadMap();
     AddNewObject(miniMap = new MiniMap());
 
-    ItemProbabilities.push_back(0.2); // NONE
-    ItemProbabilities.push_back(0.3); // COIN
-    ItemProbabilities.push_back(0.2); // HEAL
-    ItemProbabilities.push_back(0.2); // DAMAGEFLASK
+    ItemProbabilities.push_back(0.5); // NONE
+    ItemProbabilities.push_back(0.1); // COIN
+    ItemProbabilities.push_back(0.1); // HEAL
+    ItemProbabilities.push_back(0.1); // DAMAGEFLASK
     ItemProbabilities.push_back(0.1); // SPEEDFLASK
+    ItemProbabilities.push_back(0.1); // LIGHT
 
     player1 = new Player(halfW, halfH, 50);
     PlayerGroup->AddNewObject(player1);
@@ -192,6 +193,7 @@ void PlayScene::Update(float deltaTime)
         User::getInstance().setScore(score * 50);
         WriteScoreBoard();
         Engine::GameEngine::GetInstance().ChangeScene("win");
+        return;
     }
 
     // healthLabel->Text = "HP: " + to_string(player1->GetHealth());
@@ -515,6 +517,8 @@ void PlayScene::generateItem(int index, float x, float y)
         break;
     case SPEEDFLASK:
         ItemGroup->AddNewObject(new SpeedFlask(x, y));
+    case LIGHT:
+        ItemGroup->AddNewObject(new Light(x, y));
         break;
     default:
         break;
