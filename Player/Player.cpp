@@ -4,7 +4,7 @@
 #include "Engine/Point.hpp"
 #include "Engine/Resources.hpp"
 #include "Scene/PlayScene.hpp"
-
+#include "Engine/AudioHelper.hpp"
 #include <iostream>
 
 #include <string>
@@ -18,6 +18,7 @@ Player::Player(float x, float y, int hp)
     Anchor = Engine::Point(0.5f, 0.5f);
     CollisionRadius = 10;
     moving = movingU = movingD = movingL = movingR = false;
+    scaleX = -abs(scaleX);
 
     // Initialize the list of image paths for different directions
     rightLeftWalkImages = {
@@ -193,6 +194,7 @@ void Player::Shoot()
         Bullet *bullet = new Bullet(Position.x, Position.y, bulletAngle, 500, bulletDmg);
         getPlayScene()->BulletGroup->AddNewObject(bullet);
     }
+    AudioHelper::PlayAudio("gun.wav");
 }
 
 void Player::HandleOverlapWithObstacle(float deltaTime)

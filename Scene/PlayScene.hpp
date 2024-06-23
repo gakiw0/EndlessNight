@@ -19,7 +19,6 @@
 class PlayScene : public Engine::IScene
 {
 private:
-    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     ALLEGRO_SAMPLE_ID bgmId;
     int sw, sh;
     Engine::Point cameraTopLeft, cameraDownRight;

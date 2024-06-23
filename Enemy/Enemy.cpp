@@ -3,6 +3,7 @@
 #include "Engine/GameEngine.hpp"
 #include "Engine/Resources.hpp"
 #include "Engine/Collider.hpp"
+#include "Engine/AudioHelper.hpp"
 #include <cmath>
 
 Enemy::Enemy(float x, float y)
@@ -102,6 +103,7 @@ void Enemy::Hit(float damage)
     hp -= damage;
     if (hp <= 0)
     {
+        AudioHelper::PlayAudio("zombie.wav");
         int index = getPlayScene()->generateRandomItemValue();
         getPlayScene()->generateItem(index, Position.x, Position.y);
         getPlayScene()->IncreaseKill();

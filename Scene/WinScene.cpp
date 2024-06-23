@@ -22,6 +22,7 @@
 #include "WinScene.hpp"
 #include "Engine/Resources.hpp"
 #include "Engine/User.hpp"
+#include "Scene/LoginOrRegisterScene.hpp"
 
 void WinScene::Initialize()
 {
@@ -58,6 +59,8 @@ void WinScene::Terminate()
 {
 	IScene::Terminate();
 	AudioHelper::StopBGM(bgmId);
+	dynamic_cast<LoginOrRegisterScene *>(Engine::GameEngine::GetInstance().GetScene("loginOrRegister"))->bgmId = AudioHelper::PlayBGM("menu.ogg");
+
 }
 
 void WinScene::Update(float deltaTime)

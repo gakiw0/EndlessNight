@@ -2,6 +2,7 @@
 #include "Engine/GameEngine.hpp"
 #include "UI/Component/Label.hpp" // Or however you manage fonts in your engine
 #include <allegro5/allegro_font.h>
+#include "Scene/LoginOrRegisterScene.hpp"
 
 StoryScene::StoryScene()
     : currentLineIndex(0), textAlpha(0.0f),
@@ -84,7 +85,7 @@ void StoryScene::Draw() const
 
 void StoryScene::Terminate()
 {
-   //AudioHelper::StopSample(bgmInstance);
-   bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
+   AudioHelper::StopBGM(dynamic_cast<LoginOrRegisterScene *>(Engine::GameEngine::GetInstance().GetScene("loginOrRegister"))->bgmId);
+   //bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
    IScene::Terminate();
 }

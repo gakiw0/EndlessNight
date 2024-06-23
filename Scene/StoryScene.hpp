@@ -10,7 +10,6 @@
 
 class StoryScene : public Engine::IScene {
 public:
-    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     StoryScene(); 
     void Initialize() override;
     void Update(float deltaTime) override;
@@ -18,6 +17,7 @@ public:
     void Terminate() override;
 
 private:
+    ALLEGRO_SAMPLE_ID bgmId;
     std::vector<std::string> lines;
     size_t currentLineIndex; 
     float textAlpha;      

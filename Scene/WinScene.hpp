@@ -6,8 +6,8 @@
 
 class WinScene final : public Engine::IScene {
 private:
-	float ticks;
 	ALLEGRO_SAMPLE_ID bgmId;
+	float ticks;
 	//std::shared_ptr<ALLEGRO_FONT> scoreFont;
 	Engine::Label* playerNameLabel;
 	Engine::Label* scoreLabel;

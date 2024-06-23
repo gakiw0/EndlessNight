@@ -7,11 +7,14 @@
 #include "Engine/AutoScroller.hpp"
 #include "UI/Component/Label.hpp"
 #include "Engine/AudioHelper.hpp"
+#include "UI/Component/Image.hpp"
+#include "UI/Component/ImageButton.hpp"
 #include <allegro5/allegro_audio.h>
 
 class LoginOrRegisterScene final : public Engine::IScene
 {
 public:
+    ALLEGRO_SAMPLE_ID bgmId;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     explicit LoginOrRegisterScene() = default;
     void Initialize() override;

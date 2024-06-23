@@ -2,6 +2,7 @@
 #include "Scene/PlayScene.hpp"
 #include "Engine/Collider.hpp"
 #include "Engine/Resources.hpp"
+#include "Engine/AudioHelper.hpp"
 
 Coin::Coin(float x, float y)
     : Item("PixelArt/Coin/coin0.png", x, y), sinceLastCicle(0.0f)
@@ -45,8 +46,9 @@ void Coin::HandleOverlapWithPlayer(float deltaTime)
         Player *player = dynamic_cast<Player *>(it);
         if (Engine::Collider::IsCircleOverlap(Position, CollisionRadius, player->Position, player->CollisionRadius))
         {
-            scene->ItemGroup->RemoveObject(objectIterator);
+            AudioHelper::PlayAudio("gun.wav");
             scene->updateScore();
+            scene->ItemGroup->RemoveObject(objectIterator);
             return;
         }
     }

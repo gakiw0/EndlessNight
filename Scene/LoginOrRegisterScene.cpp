@@ -14,6 +14,7 @@
 #include "LoginOrRegisterScene.hpp"
 #include "UI/Component/TextInput.hpp"
 
+
 void LoginOrRegisterScene::Initialize()
 {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
@@ -42,8 +43,7 @@ void LoginOrRegisterScene::Initialize()
     register1 = new Engine::Label("REGISTER", "onesize.ttf", 48, halfW, halfH * 3 / 2, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(register1);
 
-    bgmInstance = AudioHelper::PlaySample("menu.ogg", true, AudioHelper::BGMVolume);
-    
+    bgmId = AudioHelper::PlayBGM("menu.ogg");
 }
 void LoginOrRegisterScene::Terminate()
 {

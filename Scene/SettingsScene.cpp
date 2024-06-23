@@ -10,6 +10,7 @@
 #include "PlayScene.hpp"
 #include "UI/Component/Slider.hpp"
 #include "SettingsScene.hpp"
+#include "LoginOrRegisterScene.hpp"
 
 
 void SettingsScene::Initialize()
@@ -100,8 +101,10 @@ void SettingsScene::Initialize()
         new Engine::Label("RIGHT", "onesize.ttf", 36, halfW + 248 + 152, halfH + 150 - 6, 255, 255, 255, 255, 0.5,
                           0.5));
 
+    
     // Not safe if release resource while playing, however we only free while change scene, so it's fine.
-    //bgmInstance = AudioHelper::PlaySample("menu.ogg", true, AudioHelper::BGMVolume);
+    AudioHelper::StopBGM(dynamic_cast<LoginOrRegisterScene *>(Engine::GameEngine::GetInstance().GetScene("loginOrRegister"))->bgmId);
+    bgmInstance = AudioHelper::PlaySample("menu.ogg", true, AudioHelper::BGMVolume);
     sliderBGM->SetValue(AudioHelper::BGMVolume);
     sliderBGM->SetValue(AudioHelper::SFXVolume);
 }
@@ -110,6 +113,7 @@ void SettingsScene::Terminate()
 {
     //AudioHelper::StopSample(bgmInstance);
     //bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
+    dynamic_cast<LoginOrRegisterScene *>(Engine::GameEngine::GetInstance().GetScene("loginOrRegister"))->bgmId = AudioHelper::PlayBGM("menu.ogg");
     IScene::Terminate();
 }
 

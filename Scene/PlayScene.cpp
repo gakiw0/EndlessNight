@@ -116,7 +116,6 @@ void PlayScene::Initialize()
     shade = new Engine::Image("UI/dark_blur.png", sw / 2, sh / 2, 0.0, 0.0, 0.5, 0.5, initialLightScale, initialLightScale);
 
     bgmId = AudioHelper::PlayBGM("careening-into-danger.ogg");
-
 }
 
 Engine::Point PlayScene::GetClientSize()
