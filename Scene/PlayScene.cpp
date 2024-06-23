@@ -14,6 +14,7 @@
 #include "Item/Heal.hpp"
 #include "Item/DamageFlask.hpp"
 #include "Item/SpeedFlask.hpp"
+#include "Item/Light.hpp"
 
 using namespace std;
 
@@ -37,6 +38,9 @@ void PlayScene::Initialize()
     cameraDownRight = Engine::Point(MapWidth * BlockSize - sw / 2, MapHeight * BlockSize - sh / 2);
     camera.x = MapWidth * BlockSize / 2;
     camera.y = MapHeight * BlockSize / 2;
+    lightExpandDuration = 10.0f;
+    sinceLightExpandStart = lightExpandDuration + 0.1f;
+
     MapId = 2;
 
     finalScore = 0;
@@ -102,12 +106,12 @@ void PlayScene::Initialize()
     ItemGroup->AddNewObject(new Coin(halfW, halfH + 100));
     ItemGroup->AddNewObject(new Heal(halfW + 100, halfH + 100));
     ItemGroup->AddNewObject(new Heal(halfW + 140, halfH + 100));
-    ItemGroup->AddNewObject(new DamageFlask(halfW + 180, halfH + 100));
-    ItemGroup->AddNewObject(new SpeedFlask(halfW + 220, halfH + 100));
-    ItemGroup->AddNewObject(new SpeedFlask(halfW + 330, halfH + 100));
-    ItemGroup->AddNewObject(new SpeedFlask(halfW + 440, halfH + 100));
-
-    shade = new Engine::Image("UI/dark_blur.png", sw / 2, sh / 2, 0.0, 0.0, 0.5, 0.5, 3.0, 3.0);
+    ItemGroup->AddNewObject(new Light(halfW + 180, halfH + 100));
+    ItemGroup->AddNewObject(new Light(halfW + 220, halfH + 100));
+    ItemGroup->AddNewObject(new Light(halfW + 330, halfH + 100));
+    ItemGroup->AddNewObject(new Light(halfW + 440, halfH + 100));
+    initialLightScale = 3.0f;
+    shade = new Engine::Image("UI/dark_blur.png", sw / 2, sh / 2, 0.0, 0.0, 0.5, 0.5, initialLightScale, initialLightScale);
 }
 
 Engine::Point PlayScene::GetClientSize()
@@ -124,6 +128,16 @@ void PlayScene::Update(float deltaTime)
     { // Change frame every frameDuration seconds
         currentFrame = (currentFrame + 1) % coinFrames.size();
         animationTime = 0.0f;
+    }
+    if (sinceLightExpandStart + deltaTime <= lightExpandDuration)
+    {
+        sinceLightExpandStart += deltaTime;
+    }  
+    else if (sinceLightExpandStart <= lightExpandDuration && sinceLightExpandStart + deltaTime > lightExpandDuration)
+    {
+        sinceLightExpandStart += deltaTime;
+        shade->scaleX = initialLightScale;
+        shade->scaleY = initialLightScale;
     }
 
     if (isHealing)
@@ -149,7 +163,6 @@ void PlayScene::Update(float deltaTime)
             }
         }
     }
-
     camera = camera + player1->Velocity * deltaTime;
     if ((camera.x >= cameraTopLeft.x && camera.x <= cameraDownRight.x) || (camera.y >= cameraTopLeft.y && camera.y <= cameraDownRight.y))
     {
@@ -402,7 +415,7 @@ void PlayScene::ReadMap()
                 break;
             case TILE_TOMBSTONE:
                 mapTilePath += "dirt1.png";
-                mapNonObstaclePath += "tombstone.png";
+                mapObstaclePath += "tombstone.png";
                 break;
             case TILE_POLETILE:
                 mapTilePath += "dirt1.png";
@@ -750,4 +763,14 @@ void PlayScene::WriteScoreBoard()
     std::filesystem::rename(tempFilename, "../Resource/scoreboard.txt");
 
     scoreboard.clear();
+}
+
+void PlayScene::ExpandLight(float boost)
+{
+    if (sinceLightExpandStart > lightExpandDuration)
+    {
+        shade->scaleX *= boost;
+        shade->scaleY *= boost;
+    }
+    sinceLightExpandStart = 0.0f;
 }

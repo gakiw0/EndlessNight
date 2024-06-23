@@ -18,27 +18,31 @@ void RegisterScene::Initialize()
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
     int halfH = h / 2;
-    Engine::ImageButton *btn;
-
     ReadUserData();
 
-    AddNewObject(new Engine::Label("USER ID", "onesize.ttf", 80, halfW, halfH / 2, 255, 255, 255, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("PASSWORD", "onesize.ttf", 80, halfW, h - halfH, 255, 255, 255, 255, 0.5, 0.5));
+    errorLabel = nullptr;
+
+    background = new AutoScroller("stage-select/try23.png", 60.0f);
+    // AddNewObject(background);
+    background->SetZoom(1.0f);
+
+    AddNewObject(userId = new Engine::Label("USER ID", "onesize.ttf", 80, halfW, halfH / 2, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(password = new Engine::Label("PASSWORD", "onesize.ttf", 80, halfW, h - halfH, 255, 255, 255, 255, 0.5, 0.5));
 
     inputID = new Engine::TextInput("onesize.ttf", 60, halfW, halfH * 3 / 4, 600, 80, 255, 255, 255, 255, 0, 255, 255, 255, 0.5, 0.5);
     AddNewControlObject(inputID);
     inputPass = new Engine::TextInput("onesize.ttf", 60, halfW, h - halfH * 3 / 4, 600, 80, 255, 255, 255, 255, 0, 255, 255, 255, 0.5, 0.5);
     AddNewControlObject(inputPass);
 
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h - halfH / 2 - 20, 400, 100);
+    btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 200, h - halfH / 2 - 20, 400, 100);
     btn->SetOnClickCallback(std::bind(&RegisterScene::RegisterOnClick, this, 1));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("REGISTER", "onesize.ttf", 48, halfW, h - halfH / 2 + 30, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(registerLabel = new Engine::Label("LOGIN", "onesize.ttf", 48, halfW, h - halfH / 2 + 30, 255, 255, 255, 255, 0.5, 0.5));
 
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 50, 50, 200, 100);
-    btn->SetOnClickCallback(std::bind(&RegisterScene::BackOnClick, this, 1));
-    AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Back", "onesize.ttf", 48, 150, 100, 0, 0, 0, 255, 0.5, 0.5));
+    btn1 = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", w - 10, h - 80, 192, 64, 1, 0);
+    btn1->SetOnClickCallback(std::bind(&RegisterScene::BackOnClick, this, 2));
+    AddNewControlObject(btn1);
+    AddNewObject(back = new Engine::Label("Back", "onesize.ttf", 24, w - 105, h - 50, 255, 255, 255, 255, 0.5, 0.5));
 }
 void RegisterScene::Terminate()
 {
@@ -72,7 +76,7 @@ void RegisterScene::RegisterOnClick(int stage)
 {
     if (inputID->GetText() == "")
     {
-        if (errorLabel)
+        if (errorLabel != nullptr)
         {
             RemoveObject(errorLabel->GetObjectIterator());
         }
@@ -87,7 +91,7 @@ void RegisterScene::RegisterOnClick(int stage)
     }
     else if (inputPass->GetText() == "")
     {
-        if (errorLabel)
+        if (errorLabel != nullptr)
         {
             RemoveObject(errorLabel->GetObjectIterator());
         }
@@ -115,7 +119,7 @@ void RegisterScene::RegisterOnClick(int stage)
         }
         else
         {
-            if (errorLabel)
+            if (errorLabel != nullptr)
             {
                 RemoveObject(errorLabel->GetObjectIterator());
             }
@@ -129,4 +133,24 @@ void RegisterScene::RegisterOnClick(int stage)
             AddNewObject(errorLabel);
         }
     }
+}
+
+void RegisterScene::Draw() const
+{
+    IScene::Draw();
+    background->Draw();
+    btn1->Draw();
+    btn->Draw();
+    inputID->Draw();
+    inputPass->Draw();
+    registerLabel->Draw();
+    back->Draw();
+    userId->Draw();
+    if (errorLabel)
+        errorLabel->Draw();
+}
+
+void RegisterScene::Update(float deltaTime)
+{
+    background->Update(deltaTime);
 }

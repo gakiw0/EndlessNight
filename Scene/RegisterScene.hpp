@@ -16,11 +16,20 @@ private:
     Engine::TextInput *inputID;
     Engine::TextInput *inputPass;
     Engine::Label *errorLabel;
+    Engine::ImageButton *btn;
+    Engine::ImageButton *btn1;
+    Engine::Label *registerLabel;
+    Engine::Label *back;
+    Engine::Label *userId;
+    Engine::Label *password;
+    AutoScroller *background;
 
 public:
     explicit RegisterScene() = default;
     void Initialize() override;
     void Terminate() override;
+    void Update(float deltaTime) override;
+    void Draw() const override;
     void ReadUserData();
     void RegisterOnClick(int stage);
     void BackOnClick(int stage);

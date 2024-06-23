@@ -11,12 +11,15 @@
 #include "UI/Component/Slider.hpp"
 #include "SettingsScene.hpp"
 
+
 void SettingsScene::Initialize()
 {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
     int halfH = h / 2;
+
+
 
     upKey = Engine::GameEngine::GetInstance().GetKey("MoveUp");
     downKey = Engine::GameEngine::GetInstance().GetKey("MoveDown");

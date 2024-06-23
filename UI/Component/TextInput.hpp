@@ -7,6 +7,7 @@
 
 #include "Engine/IControl.hpp"
 #include "Engine/IObject.hpp"
+#include "Text.hpp"
 
 namespace Engine
 {
@@ -16,6 +17,7 @@ namespace Engine
 	class TextInput : public IObject, public IControl
 	{
 	protected:
+		TextButton *border;
 		// Smart pointer to font.
 		std::shared_ptr<ALLEGRO_FONT> font;
 		std::string text = "";
@@ -97,6 +99,7 @@ namespace Engine
 		bool IsFocused() const;
 		void OnMouseDown(int button, int mx, int my) override;
 		void OnMouseUp(int button, int mx, int my) override;
+		void OnMouseMove(int mx, int my) override;
 		void OnKeyDown(int keycode) override;
 		void OnKeyUp(int keycode) override;
 		void OnChar(int unicode) override;

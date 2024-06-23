@@ -8,8 +8,8 @@
 SpeedFlask::SpeedFlask(float x, float y)
     : Item("PixelArt/SpeedFlask/flasks_3_1.png", x, y)
 {
-    scaleX = 2.0f;
-    scaleY = 2.0f;
+    scaleX = 3.0f;
+    scaleY = 3.0f;
 }
 
 void SpeedFlask::Update(float deltaTime)

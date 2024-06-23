@@ -11,6 +11,7 @@
 #include "Engine/Collider.hpp"
 #include "Engine/Resources.hpp"
 
+
 namespace Engine
 {
     TextInput::TextInput(const std::string &font, int fontSize, float x, float y,
@@ -21,28 +22,15 @@ namespace Engine
         : IObject(x, y, w, h, anchorX, anchorY),
           font(Resources::GetInstance().GetFont(font, fontSize)),
           text_color(al_map_rgba(r, g, b, a)),
-          border_color(al_map_rgba(br, bg, bb, ba)),
-          background_color(al_map_rgba(0, 0, 0, 0)),
           cursor_blink_timer(al_create_timer(0.5f))
     {
         al_start_timer(cursor_blink_timer);
+        border = new Engine::TextButton("stage-select/input1.png", "stage-select/input2.png", x, y, w, 0.0, 0.5, 0.5);
     }
 
     void TextInput::Draw() const
     {
-        // Draw background
-        al_draw_filled_rounded_rectangle(Position.x - Anchor.x * Size.x,
-                                         Position.y - Anchor.y * Size.y,
-                                         Position.x + (1 - Anchor.x) * Size.x,
-                                         Position.y + (1 - Anchor.y) * Size.y,
-                                         5, 5, background_color);
-        // Draw border
-        al_draw_rounded_rectangle(Position.x - Anchor.x * Size.x,
-                                  Position.y - Anchor.y * Size.y,
-                                  Position.x + (1 - Anchor.x) * Size.x,
-                                  Position.y + (1 - Anchor.y) * Size.y,
-                                  5, 5, border_color, 2);
-
+        border->Draw();
         // テキストの幅を取得
         int text_width = GetTextWidth();
         // テキストの高さの取得
@@ -97,6 +85,7 @@ namespace Engine
     bool TextInput::IsFocused() const { return focused; }
     void TextInput::OnMouseDown(int button, int mx, int my)
     {
+        border->OnMouseDown(button, mx, my);
         if (button & 1)
         {
             // マウス座標をオブジェクトの座標系に変換
@@ -127,6 +116,11 @@ namespace Engine
                 show_cursor = false;
             }
         }
+    }
+    
+    void TextInput::OnMouseMove(int mx, int my)
+    {
+        border->OnMouseMove(mx, my);
     }
 
     void TextInput::OnMouseUp(int button, int mx, int my)

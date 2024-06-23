@@ -91,6 +91,7 @@ add_executable(EndlessNights
     Scene/LoginOrRegisterScene.cpp
     Scene/LoginOrRegisterScene.hpp
 
+
     #Players
     Player/Player.hpp
     Player/Player.cpp
@@ -114,6 +115,8 @@ add_executable(EndlessNights
     Item/DamageFlask.cpp
     Item/SpeedFlask.hpp
     Item/SpeedFlask.cpp
+    Item/Light.hpp
+    Item/Light.cpp
 
     # Main
     main.cpp

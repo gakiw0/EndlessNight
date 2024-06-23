@@ -1,25 +1,25 @@
-#include "Item/DamageFlask.hpp"
+#include "Light.hpp"
 #include "Scene/PlayScene.hpp"
 #include "Engine/Collider.hpp"
 #include "Engine/Resources.hpp"
+#include <cmath>
 
-#include <iostream>
-
-DamageFlask::DamageFlask(float x, float y)
-    : Item("PixelArt/DamageFlask/flasks_4_1.png", x, y)
+Light::Light(float x, float y)
+    : Item("PixelArt/Torch/torch.png", x, y)
 {
-    scaleX = 3.0f;
-    scaleY = 3.0f;
+    Rotation = atan2(sin(ALLEGRO_PI / 4), cos(ALLEGRO_PI / 4));
+    scaleX = 1.f;
+    scaleY = 1.0f;
 }
 
-void DamageFlask::Update(float deltaTime)
+void Light::Update(float deltaTime)
 {
     hoverEffect(deltaTime);
     Sprite::Update(deltaTime);
     HandleOverlapWithPlayer(deltaTime);
 }
 
-void DamageFlask::HandleOverlapWithPlayer(float deltaTime)
+void Light::HandleOverlapWithPlayer(float deltaTime)
 {
     PlayScene *scene = getPlayScene();
     for (auto &it : scene->PlayerGroup->GetObjects())
@@ -27,7 +27,7 @@ void DamageFlask::HandleOverlapWithPlayer(float deltaTime)
         Player *player = dynamic_cast<Player *>(it);
         if (Engine::Collider::IsCircleOverlap(Position, CollisionRadius, player->Position, player->CollisionRadius))
         {
-            player->AddBulletDmg(10.0f);
+            scene->ExpandLight(2.0f);
             scene->ItemGroup->RemoveObject(objectIterator);
             return;
         }

@@ -33,6 +33,9 @@ private:
     float animationTime; // Time accumulator for animation
     bool isHealing;      // Add the isHealing flag
     float healAnimationTimer;
+    float sinceLightExpandStart;
+    float lightExpandDuration;
+    float initialLightScale;
     int healFrame;
     MiniMap *miniMap;
 
@@ -111,6 +114,7 @@ public:
     bool RegenState();
     void ReadScoreBoard();
     void WriteScoreBoard();
+    void ExpandLight(float boost);
 };
 
 #endif // PLAYSCENE_HPP
