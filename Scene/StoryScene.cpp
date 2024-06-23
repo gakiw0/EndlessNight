@@ -58,7 +58,7 @@ void StoryScene::Update(float deltaTime)
    if (timeElapsed >= 2.0f)
    {
       Engine::GameEngine::GetInstance().ChangeScene("play");
-      AudioHelper::StopSample(bgmInstance);
+      //AudioHelper::StopSample(bgmInstance);
    }
 }
 
@@ -84,5 +84,7 @@ void StoryScene::Draw() const
 
 void StoryScene::Terminate()
 {
+   //AudioHelper::StopSample(bgmInstance);
+   bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
    IScene::Terminate();
 }

@@ -117,7 +117,7 @@ void StartScene::Terminate()
 
 void StartScene::PlayOnClick(int stage)
 {
-   Engine::GameEngine::GetInstance().ChangeScene("play");
+   Engine::GameEngine::GetInstance().ChangeScene("story");
    // AudioHelper::StopSample(bgmInstance);
 }
 
