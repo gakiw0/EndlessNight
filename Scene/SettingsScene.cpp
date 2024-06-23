@@ -183,7 +183,6 @@ void SettingsScene::OnKeyDown(int keyCode)
         Engine::GameEngine::GetInstance().SetKeyMapping("MoveUp", ALLEGRO_KEY_UNKNOWN);
         if (keyCode >= ALLEGRO_KEY_A && keyCode <= ALLEGRO_KEY_Z && !IsKeyInUse(keyCode))
         {
-            
             Engine::GameEngine::GetInstance().SetKeyMapping("MoveUp", keyCode);
             upKey = Engine::GameEngine::GetInstance().GetKey("MoveUp");
             upLabel->Text = upKey;

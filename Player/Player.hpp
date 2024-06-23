@@ -43,6 +43,7 @@ public:
     void StopMove(int keyCode);
     void AddBulletDmg(float dmg);
     void Heal(float heal);
+    void TemporarySpeedBoost(float boost);
 };
 
 #endif // PLAYER_HPP

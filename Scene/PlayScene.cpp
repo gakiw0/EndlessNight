@@ -10,6 +10,7 @@
 #include "Item/Coin.hpp"
 #include "Item/Heal.hpp"
 #include "Item/DamageFlask.hpp"
+#include "Item/SpeedFlask.hpp"
 
 using namespace std;
 
@@ -56,7 +57,8 @@ void PlayScene::Initialize()
     ItemProbabilities.push_back(0.2); // NONE
     ItemProbabilities.push_back(0.3); // COIN
     ItemProbabilities.push_back(0.2); // HEAL
-    ItemProbabilities.push_back(0.3); // DAMAGEFLASK
+    ItemProbabilities.push_back(0.2); // DAMAGEFLASK
+    ItemProbabilities.push_back(0.1); // SPEEDFLASK
 
     player1 = new Player(halfW, halfH, 50);
     PlayerGroup->AddNewObject(player1);
@@ -102,7 +104,7 @@ void PlayScene::Initialize()
     ItemGroup->AddNewObject(new Coin(halfW, halfH + 100));
     ItemGroup->AddNewObject(new Heal(halfW + 100, halfH + 100));
     ItemGroup->AddNewObject(new Heal(halfW + 140, halfH + 100));
-    ItemGroup->AddNewObject(new Heal(halfW + 180, halfH + 100));
+    ItemGroup->AddNewObject(new SpeedFlask(halfW + 180, halfH + 100));
     ItemGroup->AddNewObject(new DamageFlask(halfW + 220, halfH + 100));
 }
 
@@ -501,6 +503,9 @@ void PlayScene::generateItem(int index, float x, float y)
         break;
     case DAMAGEFLASK:
         ItemGroup->AddNewObject(new DamageFlask(x, y));
+        break;
+    case SPEEDFLASK:
+        ItemGroup->AddNewObject(new SpeedFlask(x,y));
         break;
     default:
         break;

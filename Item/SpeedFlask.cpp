@@ -1,28 +1,28 @@
-#include "Item/DamageFlask.hpp"
+#include "Item/SpeedFlask.hpp"
 #include "Scene/PlayScene.hpp"
 #include "Engine/Collider.hpp"
 #include "Engine/Resources.hpp"
 
 #include <iostream>
 
-DamageFlask::DamageFlask(float x, float y)
-    : Item("PixelArt/DamageFlask/flasks_4_1.png", x, y), sinceLastCicle(0.0f)
+SpeedFlask::SpeedFlask(float x, float y)
+    : Item("PixelArt/SpeedFlask/flasks_3_1.png", x, y), sinceLastCicle(0.0f)
 {
     scaleX = 2.0f;
     scaleY = 2.0f;
 
     imagePath = {
-        "PixelArt/DamageFlask/flasks_4_1.png",
-        "PixelArt/DamageFlask/flasks_4_2.png",
-        "PixelArt/DamageFlask/flasks_4_3.png",
-        "PixelArt/DamageFlask/flasks_4_4.png",
-        "PixelArt/DamageFlask/flasks_4_1.png"};
+        "PixelArt/SpeedFlask/flasks_3_1.png",
+        "PixelArt/SpeedFlask/flasks_3_2.png",
+        "PixelArt/SpeedFlask/flasks_3_3.png",
+        "PixelArt/SpeedFlask/flasks_3_4.png",
+        "PixelArt/SpeedFlask/flasks_3_1.png"};
     frame = static_cast<int>(imagePath.size());
     for (auto imgPath : imagePath)
         bmp = Engine::Resources::GetInstance().GetBitmap(imgPath);
 }
 
-void DamageFlask::Update(float deltaTime)
+void SpeedFlask::Update(float deltaTime)
 {
     sinceLastCicle += deltaTime;
     if (sinceLastCicle >= frameDuration)
@@ -36,7 +36,7 @@ void DamageFlask::Update(float deltaTime)
     HandleOverlapWithPlayer(deltaTime);
 }
 
-void DamageFlask::HandleOverlapWithPlayer(float deltaTime)
+void SpeedFlask::HandleOverlapWithPlayer(float deltaTime)
 {
     PlayScene *scene = getPlayScene();
     for (auto &it : scene->PlayerGroup->GetObjects())
@@ -44,7 +44,7 @@ void DamageFlask::HandleOverlapWithPlayer(float deltaTime)
         Player *player = dynamic_cast<Player *>(it);
         if (Engine::Collider::IsCircleOverlap(Position, CollisionRadius, player->Position, player->CollisionRadius))
         {
-            player->AddBulletDmg(10.0f);
+            player->TemporarySpeedBoost(50.0f);
             scene->ItemGroup->RemoveObject(objectIterator);
             return;
         }

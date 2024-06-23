@@ -300,3 +300,8 @@ void Player::Heal(float heal)
     }
     if(hp > maxhp) hp = maxhp;
 }
+
+void Player::TemporarySpeedBoost(float boost)
+{
+    speed += boost;
+}

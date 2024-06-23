@@ -103,6 +103,8 @@ add_executable(EndlessNights
     Item/Heal.cpp
     Item/DamageFlask.hpp
     Item/DamageFlask.cpp
+    Item/SpeedFlask.hpp
+    Item/SpeedFlask.cpp
 
     # Main
     main.cpp
