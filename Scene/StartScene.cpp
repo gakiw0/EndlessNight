@@ -28,6 +28,7 @@ void StartScene::Initialize()
    background = new AutoScroller("stage-select/reback.png", 20.0f);
    // AddNewObject(background);
    background->SetZoom(1.0f);
+   
 
    std::vector<std::string> imagePaths = {
        "StartZombie/pixil-frame-0.png",

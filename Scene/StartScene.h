@@ -36,6 +36,7 @@ public:
     Engine::Label *settings;
     Engine::Image *border;
     AutoScroller* background;
+    AutoScroller* depthground;
 };
 
 #endif // INC_ENDLESS_NIGHTS_STARTSCENE_H

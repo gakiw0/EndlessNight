@@ -13,6 +13,7 @@ private:
     int range;
     int radius;
     Engine::Image *BackGround;
+    Engine::Image *Border;
     Engine::Image *PlayerLoc;
     Engine::Group *EnemyLocGroup;
     Engine::Group *ItemLocGroup;

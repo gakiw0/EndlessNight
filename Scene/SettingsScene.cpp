@@ -57,7 +57,7 @@ void SettingsScene::Initialize()
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH + 216 + 48, 255, 255, 255, 255, 0.5, 0.5));
 
-    up = new Engine::TextButton("stage-select/border.png", "stage-select/border.png", halfW - 248, halfH - 48, 96, 96);
+    up = new Engine::TextButton("stage-select/border.png", "stage-select/border1.png", halfW - 248, halfH - 48, 96, 96);
     AddNewControlObject(up);
     upLabel = new Engine::Label(upKey, "pirulen.ttf", 36, halfW - 248 + 48, halfH, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(upLabel);
@@ -67,7 +67,7 @@ void SettingsScene::Initialize()
         new Engine::Label("UP", "pirulen.ttf", 36, halfW - 248 - 152, halfH, 255, 255, 255, 255, 0.5,
                           0.5));
 
-    down = new Engine::TextButton("stage-select/border.png", "stage-select/border.png", halfW + 248 - 96, halfH - 48, 96, 96);
+    down = new Engine::TextButton("stage-select/border.png", "stage-select/border1.png", halfW + 248 - 96, halfH - 48, 96, 96);
     AddNewControlObject(down);
     downLabel = new Engine::Label(downKey, "pirulen.ttf", 36, halfW + 248 - 48, halfH, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(downLabel);
@@ -78,7 +78,7 @@ void SettingsScene::Initialize()
                           0.5));
 
 
-    left = new Engine::TextButton("stage-select/border.png", "stage-select/border.png", halfW - 248, halfH + 96, 96, 96);
+    left = new Engine::TextButton("stage-select/border.png", "stage-select/border1.png", halfW - 248, halfH + 96, 96, 96);
     AddNewControlObject(left);
     leftLabel = new Engine::Label(leftKey, "pirulen.ttf", 36, halfW - 248 + 48, halfH + 150 - 6, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(leftLabel);
@@ -89,7 +89,7 @@ void SettingsScene::Initialize()
                           0.5));
 
 
-    right = new Engine::TextButton("stage-select/border.png", "stage-select/border.png", halfW + 248 - 96, halfH + 96, 96, 96);
+    right = new Engine::TextButton("stage-select/border.png", "stage-select/border1.png", halfW + 248 - 96, halfH + 96, 96, 96);
     AddNewControlObject(right);
     rightLabel = new Engine::Label(rightKey, "pirulen.ttf", 36, halfW + 248 - 48, halfH + 150 - 6, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(rightLabel);

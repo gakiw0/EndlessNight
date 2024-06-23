@@ -50,10 +50,10 @@ void WinScene::Initialize()
 	
 
 	Engine::ImageButton *btn;
-	btn = new Engine::ImageButton("play/play2.png", "play/play5.png", halfW - 250, halfH * 7 / 4 - 101.5, 500, 202.5);
+	btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 187.5, halfH * 7 / 4 - 75, 375, 151.875);
 	btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
 	AddNewControlObject(btn);
-	AddNewObject(new Engine::Label("Enter", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
+	AddNewObject(new Engine::Label("Enter", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
 
 	input = new Engine::TextButton("win/unclicked1.png", "win/clicked1.png", halfW - 200, halfH + 100, 400, 100);
 	// btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));

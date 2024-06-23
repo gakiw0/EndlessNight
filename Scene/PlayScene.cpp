@@ -13,7 +13,7 @@
 
 using namespace std;
 
-const int PlayScene::MapWidth = 30, PlayScene::MapHeight = 20;
+const int PlayScene::MapWidth = 35, PlayScene::MapHeight = 25;
 const int PlayScene::BlockSize = 64;
 
 int finalScore;
@@ -81,7 +81,7 @@ void PlayScene::Initialize()
 
     for (const auto &path : imagePaths)
     {
-        auto img = std::make_shared<Engine::Image>(path, 9 * sw / 10, 28, 0, 0, 0.5f, 0.5f, 2.0f, 2.0f);
+        auto img = std::make_shared<Engine::Image>(path, 9 * sw / 10, 300, 0, 0, 0.5f, 0.5f, 2.0f, 2.0f);
         coinFrames.push_back(img);
     }
 
@@ -96,7 +96,7 @@ void PlayScene::Initialize()
             "PixelArt/Heal/heal0.png"};
 
 
-    scoreLabel = new Engine::Label(to_string(score), "pirulen.ttf", 28, sw - 56, 12, 255, 255, 255, 255, 1.0, 0);
+    scoreLabel = new Engine::Label(to_string(score), "pirulen.ttf", 28, sw - 56, 284, 255, 255, 255, 255, 1.0, 0);
     LabelGroup->AddNewObject(scoreLabel);
 
     ItemGroup->AddNewObject(new Coin(halfW, halfH + 100));
