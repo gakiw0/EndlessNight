@@ -9,10 +9,10 @@ StoryScene::StoryScene()
 
 void StoryScene::Initialize()
 {
-      lines = {
-		"HOW LONG WILL THE NIGHT BE?",
-		"NOW....",
-		"WHO KNOWS?"};
+   lines = {
+       "HOW LONG WILL THE NIGHT BE?",
+       "NOW....",
+       "WHO KNOWS?"};
 }
 
 void StoryScene::Update(float deltaTime)
@@ -70,7 +70,7 @@ void StoryScene::Draw() const
       int screenHeight = Engine::GameEngine::GetInstance().GetScreenSize().y;
 
       Engine::Label label(lines[currentLineIndex],
-                          "pirulen.ttf", // Your font name
+                          "onesize.ttf", // Your font name
                           32,
                           screenWidth / 2,
                           screenHeight / 2,

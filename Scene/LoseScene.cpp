@@ -16,7 +16,7 @@ void LoseScene::Initialize()
 	int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
 	int halfW = w / 2;
 	int halfH = h / 2;
-	AddNewObject(new Engine::Label("You Lose!", "pirulen.ttf", 48, halfW, halfH / 4 - 10, 255, 255, 255, 255, 0.5, 0.5));
+	AddNewObject(new Engine::Label("You Lose!", "onesize.ttf", 48, halfW, halfH / 4 - 10, 255, 255, 255, 255, 0.5, 0.5));
 }
 void LoseScene::Terminate()
 {
@@ -25,4 +25,3 @@ void LoseScene::Terminate()
 void LoseScene::Update(float deltaTime)
 {
 }
-

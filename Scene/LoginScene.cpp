@@ -22,24 +22,24 @@ void LoginScene::Initialize()
 
     ReadUserData();
 
-    AddNewObject(new Engine::Label("USER ID", "pirulen.ttf", 80, halfW, halfH / 2, 255, 255, 255, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("PASSWORD", "pirulen.ttf", 80, halfW, h - halfH, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("USER ID", "onesize.ttf", 80, halfW, halfH / 2, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("PASSWORD", "onesize.ttf", 80, halfW, h - halfH, 255, 255, 255, 255, 0.5, 0.5));
 
-    inputID = new Engine::TextInput("pirulen.ttf", 60, halfW, halfH * 3 / 4, 600, 80, 255, 255, 255, 255, 0, 255, 255, 255, 0.5, 0.5);
+    inputID = new Engine::TextInput("onesize.ttf", 60, halfW, halfH * 3 / 4, 600, 80, 255, 255, 255, 255, 0, 255, 255, 255, 0.5, 0.5);
     AddNewControlObject(inputID);
-    inputPass = new Engine::TextInput("pirulen.ttf", 60, halfW, h - halfH * 3 / 4, 600, 80, 255, 255, 255, 255, 0, 255, 255, 255, 0.5, 0.5);
+    inputPass = new Engine::TextInput("onesize.ttf", 60, halfW, h - halfH * 3 / 4, 600, 80, 255, 255, 255, 255, 0, 255, 255, 255, 0.5, 0.5);
     AddNewControlObject(inputPass);
 
     btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 200, h - halfH / 2 - 20, 400, 100);
     btn->SetOnClickCallback(std::bind(&LoginScene::LoginOnClick, this, 1));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("LOGIN", "pirulen.ttf", 48, halfW, h - halfH / 2 + 30, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("LOGIN", "onesize.ttf", 48, halfW, h - halfH / 2 + 30, 255, 255, 255, 255, 0.5, 0.5));
 
-
-    btn1 = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", w - 10, h - 80, 192, 64, 1, 0);;
+    btn1 = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", w - 10, h - 80, 192, 64, 1, 0);
+    ;
     btn1->SetOnClickCallback(std::bind(&LoginScene::BackOnClick, this, 1));
     AddNewControlObject(btn1);
-    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 24, w - 105, h - 50, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Back", "onesize.ttf", 24, w - 105, h - 50, 255, 255, 255, 255, 0.5, 0.5));
 }
 void LoginScene::Terminate()
 {
@@ -83,7 +83,7 @@ void LoginScene::LoginOnClick(int stage)
         int halfW = w / 2;
         int halfH = h / 2;
 
-        errorLabel = new Engine::Label("Type your USER ID", "pirulen.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
+        errorLabel = new Engine::Label("Type your USER ID", "onesize.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
         AddNewObject(errorLabel);
     }
     else if (inputPass->GetText() == "")
@@ -93,7 +93,7 @@ void LoginScene::LoginOnClick(int stage)
         int halfW = w / 2;
         int halfH = h / 2;
 
-        errorLabel = new Engine::Label("Type your Password", "pirulen.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
+        errorLabel = new Engine::Label("Type your Password", "onesize.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
         AddNewObject(errorLabel);
     }
     else
@@ -117,7 +117,7 @@ void LoginScene::LoginOnClick(int stage)
             int halfH = h / 2;
 
             // エラーメッセージ用のラベルを作成し、表示
-            errorLabel = new Engine::Label("User cannot be found,", "pirulen.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
+            errorLabel = new Engine::Label("User cannot be found,", "onesize.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
             AddNewObject(errorLabel);
         }
     }

@@ -28,7 +28,7 @@ void SettingsScene::Initialize()
     AddNewObject(stoneWall);
 
     AddNewObject(
-        new Engine::Label("Settings", "pirulen.ttf", 48, halfW, 120, 255, 255, 255, 255, 0.5,
+        new Engine::Label("Settings", "onesize.ttf", 48, halfW, 120, 255, 255, 255, 255, 0.5,
                           0.5));
 
     Engine::ImageButton *music;
@@ -41,64 +41,61 @@ void SettingsScene::Initialize()
         std::bind(&SettingsScene::BGMSlideOnValueChanged, this, std::placeholders::_1));
     AddNewControlObject(sliderBGM);
     // AddNewObject(
-    //     new Engine::Label("BGM: ", "pirulen.ttf", 28, 40 + halfW - 60 - 95, halfH - 50, 255, 255, 255, 255, 0.5,
+    //     new Engine::Label("BGM: ", "onesize.ttf", 28, 40 + halfW - 60 - 95, halfH - 50, 255, 255, 255, 255, 0.5,
     //                       0.5));
     // sliderSFX = new Slider(40 + halfW - 95, halfH + 50 - 2, 190, 4);
     // sliderSFX->SetOnValueChangedCallback(
     //     std::bind(&SettingsScene::SFXSlideOnValueChanged, this, std::placeholders::_1));
     // AddNewControlObject(sliderSFX);
     // AddNewObject(
-    //     new Engine::Label("SFX: ", "pirulen.ttf", 28, 40 + halfW - 60 - 95, halfH + 50, 255, 255, 255, 255, 0.5,
+    //     new Engine::Label("SFX: ", "onesize.ttf", 28, 40 + halfW - 60 - 95, halfH + 50, 255, 255, 255, 255, 0.5,
     //                       0.5));
 
     Engine::ImageButton *btn;
     btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 144, halfH + 216, 288, 96);
     btn->SetOnClickCallback(std::bind(&SettingsScene::BackOnClick, this, 2));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH + 216 + 48, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Back", "onesize.ttf", 48, halfW, halfH + 216 + 48, 255, 255, 255, 255, 0.5, 0.5));
 
     up = new Engine::TextButton("stage-select/border.png", "stage-select/border1.png", halfW - 248, halfH - 48, 96, 96);
     AddNewControlObject(up);
-    upLabel = new Engine::Label(upKey, "pirulen.ttf", 36, halfW - 248 + 48, halfH, 255, 255, 255, 255, 0.5, 0.5);
+    upLabel = new Engine::Label(upKey, "onesize.ttf", 36, halfW - 248 + 48, halfH, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(upLabel);
-    Engine::ImageButton *upborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png", w/4 - 144, halfH - 48, 288, 96);
+    Engine::ImageButton *upborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png", w / 4 - 144, halfH - 48, 288, 96);
     AddNewObject(upborder);
     AddNewObject(
-        new Engine::Label("UP", "pirulen.ttf", 36, halfW - 248 - 152, halfH, 255, 255, 255, 255, 0.5,
+        new Engine::Label("UP", "onesize.ttf", 36, halfW - 248 - 152, halfH, 255, 255, 255, 255, 0.5,
                           0.5));
 
     down = new Engine::TextButton("stage-select/border.png", "stage-select/border1.png", halfW + 248 - 96, halfH - 48, 96, 96);
     AddNewControlObject(down);
-    downLabel = new Engine::Label(downKey, "pirulen.ttf", 36, halfW + 248 - 48, halfH, 255, 255, 255, 255, 0.5, 0.5);
+    downLabel = new Engine::Label(downKey, "onesize.ttf", 36, halfW + 248 - 48, halfH, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(downLabel);
-    Engine::ImageButton *downborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png", 3 * w/4 - 144, halfH - 48, 288, 96);
+    Engine::ImageButton *downborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png", 3 * w / 4 - 144, halfH - 48, 288, 96);
     AddNewObject(downborder);
     AddNewObject(
-        new Engine::Label("DOWN", "pirulen.ttf", 36, halfW + 248 + 152, halfH, 255, 255, 255, 255, 0.5,
+        new Engine::Label("DOWN", "onesize.ttf", 36, halfW + 248 + 152, halfH, 255, 255, 255, 255, 0.5,
                           0.5));
-
 
     left = new Engine::TextButton("stage-select/border.png", "stage-select/border1.png", halfW - 248, halfH + 96, 96, 96);
     AddNewControlObject(left);
-    leftLabel = new Engine::Label(leftKey, "pirulen.ttf", 36, halfW - 248 + 48, halfH + 150 - 6, 255, 255, 255, 255, 0.5, 0.5);
+    leftLabel = new Engine::Label(leftKey, "onesize.ttf", 36, halfW - 248 + 48, halfH + 150 - 6, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(leftLabel);
-    Engine::ImageButton *leftborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png", w/4 - 144, halfH + 96, 288, 96);
+    Engine::ImageButton *leftborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png", w / 4 - 144, halfH + 96, 288, 96);
     AddNewObject(leftborder);
     AddNewObject(
-        new Engine::Label("LEFT", "pirulen.ttf", 36, halfW - 248 - 152, halfH + 150 - 6, 255, 255, 255, 255, 0.5,
+        new Engine::Label("LEFT", "onesize.ttf", 36, halfW - 248 - 152, halfH + 150 - 6, 255, 255, 255, 255, 0.5,
                           0.5));
-
 
     right = new Engine::TextButton("stage-select/border.png", "stage-select/border1.png", halfW + 248 - 96, halfH + 96, 96, 96);
     AddNewControlObject(right);
-    rightLabel = new Engine::Label(rightKey, "pirulen.ttf", 36, halfW + 248 - 48, halfH + 150 - 6, 255, 255, 255, 255, 0.5, 0.5);
+    rightLabel = new Engine::Label(rightKey, "onesize.ttf", 36, halfW + 248 - 48, halfH + 150 - 6, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(rightLabel);
-    Engine::ImageButton *rightborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png",3 * w/4 - 144, halfH + 96, 288, 96);
+    Engine::ImageButton *rightborder = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton1.png", 3 * w / 4 - 144, halfH + 96, 288, 96);
     AddNewObject(rightborder);
     AddNewObject(
-        new Engine::Label("RIGHT", "pirulen.ttf", 36, halfW + 248 + 152, halfH + 150 - 6, 255, 255, 255, 255, 0.5,
+        new Engine::Label("RIGHT", "onesize.ttf", 36, halfW + 248 + 152, halfH + 150 - 6, 255, 255, 255, 255, 0.5,
                           0.5));
-
 
     // Not safe if release resource while playing, however we only free while change scene, so it's fine.
     bgmInstance = AudioHelper::PlaySample("select.ogg", true, AudioHelper::BGMVolume);

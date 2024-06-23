@@ -22,23 +22,23 @@ void RegisterScene::Initialize()
 
     ReadUserData();
 
-    AddNewObject(new Engine::Label("USER ID", "pirulen.ttf", 80, halfW, halfH / 2, 255, 255, 255, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("PASSWORD", "pirulen.ttf", 80, halfW, h - halfH, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("USER ID", "onesize.ttf", 80, halfW, halfH / 2, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("PASSWORD", "onesize.ttf", 80, halfW, h - halfH, 255, 255, 255, 255, 0.5, 0.5));
 
-    inputID = new Engine::TextInput("pirulen.ttf", 60, halfW, halfH * 3 / 4, 600, 80, 255, 255, 255, 255, 0, 255, 255, 255, 0.5, 0.5);
+    inputID = new Engine::TextInput("onesize.ttf", 60, halfW, halfH * 3 / 4, 600, 80, 255, 255, 255, 255, 0, 255, 255, 255, 0.5, 0.5);
     AddNewControlObject(inputID);
-    inputPass = new Engine::TextInput("pirulen.ttf", 60, halfW, h - halfH * 3 / 4, 600, 80, 255, 255, 255, 255, 0, 255, 255, 255, 0.5, 0.5);
+    inputPass = new Engine::TextInput("onesize.ttf", 60, halfW, h - halfH * 3 / 4, 600, 80, 255, 255, 255, 255, 0, 255, 255, 255, 0.5, 0.5);
     AddNewControlObject(inputPass);
 
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h - halfH / 2 - 20, 400, 100);
     btn->SetOnClickCallback(std::bind(&RegisterScene::RegisterOnClick, this, 1));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("REGISTER", "pirulen.ttf", 48, halfW, h - halfH / 2 + 30, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("REGISTER", "onesize.ttf", 48, halfW, h - halfH / 2 + 30, 0, 0, 0, 255, 0.5, 0.5));
 
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 50, 50, 200, 100);
     btn->SetOnClickCallback(std::bind(&RegisterScene::BackOnClick, this, 1));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, 150, 100, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Back", "onesize.ttf", 48, 150, 100, 0, 0, 0, 255, 0.5, 0.5));
 }
 void RegisterScene::Terminate()
 {
@@ -82,7 +82,7 @@ void RegisterScene::RegisterOnClick(int stage)
         int halfH = h / 2;
 
         // エラーメッセージ用のラベルを作成し、表示
-        errorLabel = new Engine::Label("Type your USER ID", "pirulen.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
+        errorLabel = new Engine::Label("Type your USER ID", "onesize.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
         AddNewObject(errorLabel);
     }
     else if (inputPass->GetText() == "")
@@ -97,7 +97,7 @@ void RegisterScene::RegisterOnClick(int stage)
         int halfH = h / 2;
 
         // エラーメッセージ用のラベルを作成し、表示
-        errorLabel = new Engine::Label("Type your Password", "pirulen.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
+        errorLabel = new Engine::Label("Type your Password", "onesize.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
         AddNewObject(errorLabel);
     }
     else
@@ -125,7 +125,7 @@ void RegisterScene::RegisterOnClick(int stage)
             int halfH = h / 2;
 
             // エラーメッセージ用のラベルを作成し、表示
-            errorLabel = new Engine::Label("This userID has already been used.", "pirulen.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
+            errorLabel = new Engine::Label("This userID has already been used.", "onesize.ttf", 40, halfW, h - halfH / 4, 255, 0, 0, 255, 0.5, 0.5);
             AddNewObject(errorLabel);
         }
     }

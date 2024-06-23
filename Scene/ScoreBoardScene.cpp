@@ -18,36 +18,36 @@ void ScoreBoardScene::Initialize()
    numMap = 2;
    currMap = 1;
 
-   AddNewObject(UITitle = new Engine::Label("Leaderboards", "pirulen.ttf", 48, halfW, 75, 0, 255, 255, 255, 0.5, 0.5));
+   AddNewObject(UITitle = new Engine::Label("Leaderboards", "onesize.ttf", 48, halfW, 75, 0, 255, 255, 255, 0.5, 0.5));
 
    // Backボタン
    btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 200, h - 150, 400, 100);
    btn->SetOnClickCallback(std::bind(&ScoreBoardScene::BackOnClick, this, 1));
    AddNewControlObject(btn);
-   AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, h - 100, 255, 255, 255, 255, 0.5, 0.5));
+   AddNewObject(new Engine::Label("Back", "onesize.ttf", 48, halfW, h - 100, 255, 255, 255, 255, 0.5, 0.5));
 
    // Prevボタン
    btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 750, h - 150, 400, 100);
    btn->SetOnClickCallback(std::bind(&ScoreBoardScene::PrevPageOnClick, this));
    AddNewControlObject(btn);
-   AddNewObject(new Engine::Label("Prev", "pirulen.ttf", 48, halfW - 550, h - 100, 255, 255, 255, 255, 0.5, 0.5));
+   AddNewObject(new Engine::Label("Prev", "onesize.ttf", 48, halfW - 550, h - 100, 255, 255, 255, 255, 0.5, 0.5));
 
    // Nextボタン
    btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW + 350, h - 150, 400, 100);
    btn->SetOnClickCallback(std::bind(&ScoreBoardScene::NextPageOnClick, this));
    AddNewControlObject(btn);
-   AddNewObject(new Engine::Label("Next", "pirulen.ttf", 48, halfW + 550, h - 100, 255, 255, 255, 255, 0.5, 0.5));
+   AddNewObject(new Engine::Label("Next", "onesize.ttf", 48, halfW + 550, h - 100, 255, 255, 255, 255, 0.5, 0.5));
 
    // btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 750, 50, 100, 100);
    // btn->SetOnClickCallback(std::bind(&ScoreBoardScene::PrevMapOnClick, this));
    // AddNewControlObject(btn);
-   // AddNewObject(new Engine::Label("<", "pirulen.ttf", 48, halfW - 700, 100, 0, 0, 0, 255, 0.5, 0.5));
+   // AddNewObject(new Engine::Label("<", "onesize.ttf", 48, halfW - 700, 100, 0, 0, 0, 255, 0.5, 0.5));
 
    // Nextボタン
    // btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW + 650, 50, 100, 100);
    // btn->SetOnClickCallback(std::bind(&ScoreBoardScene::NextMapOnClick, this));
    // AddNewControlObject(btn);
-   // AddNewObject(new Engine::Label(">", "pirulen.ttf", 48, halfW + 700, 100, 0, 0, 0, 255, 0.5, 0.5));
+   // AddNewObject(new Engine::Label(">", "onesize.ttf", 48, halfW + 700, 100, 0, 0, 0, 255, 0.5, 0.5));
 
    ReadScoreBoards();
    // スコアボードのラベルを初期化
@@ -173,12 +173,12 @@ void ScoreBoardScene::UpdateScoreBoardDisplay()
       int fontSize = defaultFontSize;
 
       int x = 50;
-      Engine::Label *userNameLabel = new Engine::Label(data.userName, "pirulen.ttf", fontSize, x, startY, 255, 255, 255, 255, 0.0, 0.5);
+      Engine::Label *userNameLabel = new Engine::Label(data.userName, "onesize.ttf", fontSize, x, startY, 255, 255, 255, 255, 0.0, 0.5);
       AddNewObject(userNameLabel);
       scoreboardLabels.push_back(userNameLabel);
 
       x = halfW;
-      Engine::Label *scoreLabel = new Engine::Label(std::to_string(data.score), "pirulen.ttf", fontSize, x, startY, 255, 255, 255, 255, 0.5, 0.5);
+      Engine::Label *scoreLabel = new Engine::Label(std::to_string(data.score), "onesize.ttf", fontSize, x, startY, 255, 255, 255, 255, 0.5, 0.5);
       AddNewObject(scoreLabel);
       scoreboardLabels.push_back(scoreLabel);
 
@@ -189,7 +189,7 @@ void ScoreBoardScene::UpdateScoreBoardDisplay()
       std::strftime(dateTimeStr, sizeof(dateTimeStr), "%Y-%m-%d %H:%M", &tm);
 
       x = w - 500; // 日付と時刻の位置を調整
-      Engine::Label *dateTimeLabel = new Engine::Label(dateTimeStr, "pirulen.ttf", defaultFontSize, x, startY, 255, 255, 255, 255, 0.0, 0.5);
+      Engine::Label *dateTimeLabel = new Engine::Label(dateTimeStr, "onesize.ttf", defaultFontSize, x, startY, 255, 255, 255, 255, 0.0, 0.5);
       AddNewObject(dateTimeLabel);
       scoreboardLabels.push_back(dateTimeLabel);
 

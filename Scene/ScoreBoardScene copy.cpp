@@ -56,7 +56,7 @@
 //    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
 //    int halfW = w / 2;
 //    int halfH = h / 2;
-//    AddNewObject(new Engine::Label("SCOREBOARD", "pirulen.ttf", 56, halfW, halfH / 6 + 10, 255, 255, 255, 255, 0.5, 0.5));
+//    AddNewObject(new Engine::Label("SCOREBOARD", "onesize.ttf", 56, halfW, halfH / 6 + 10, 255, 255, 255, 255, 0.5, 0.5));
 
 //    scores = ReadScores("Resource/scoreboard.txt");
 //    currentPage = 0;
@@ -64,7 +64,7 @@
 
 //    for (int i = 0; i < 3 * SCORES_PER_PAGE; ++i)
 //    {
-//       Engine::Label *scoreLabel = new Engine::Label("", "pirulen.ttf", 32,
+//       Engine::Label *scoreLabel = new Engine::Label("", "onesize.ttf", 32,
 //                                                     halfW, halfH / 4 + 50 + i * 50,
 //                                                     255, 255, 255, 255, 0.5, 0.5);
 //       scoreLabels.push_back(scoreLabel);
@@ -74,22 +74,22 @@
 //    ShowPage(currentPage);
 
 //    Engine::ImageButton *btn;
-   
+
 //    btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 187.5, halfH * 7 / 4 - 75, 375, 151.875);
 //    btn->SetOnClickCallback(std::bind(&ScoreBoardScene::BackOnClick, this, 2));
 //    AddNewControlObject(btn);
-//    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
+//    AddNewObject(new Engine::Label("Back", "onesize.ttf", 48, halfW, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
 
 //    nextButton = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW + 500, halfH * 7 / 4 - 50, 250, 101.25);
 //    nextButton->SetOnClickCallback(std::bind(&ScoreBoardScene::NextPageOnClick, this));
 //    AddNewControlObject(nextButton);
-//    AddNewObject(new Engine::Label("Next", "pirulen.ttf", 24, halfW + 625, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
+//    AddNewObject(new Engine::Label("Next", "onesize.ttf", 24, halfW + 625, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
 
 //    // Previous Page Button
 //    prevButton = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 750, halfH * 7 / 4 - 50, 250, 101.25);
 //    prevButton->SetOnClickCallback(std::bind(&ScoreBoardScene::PrevPageOnClick, this));
 //    AddNewControlObject(prevButton);
-//    AddNewObject(new Engine::Label("Prev", "pirulen.ttf", 24, halfW - 625, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
+//    AddNewObject(new Engine::Label("Prev", "onesize.ttf", 24, halfW - 625, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
 // }
 
 // void ScoreBoardScene::Terminate()

@@ -67,7 +67,7 @@ void PlayScene::Initialize()
     ConstructHeart();
     // Initialize one Enemy at specific location
 
-    // healthLabel = new Engine::Label("HP: " + to_string(player1->GetHealth()), "pirulen.ttf", 60, 0, 0, 255, 255, 255, 255, 0, 0);
+    // healthLabel = new Engine::Label("HP: " + to_string(player1->GetHealth()), "onesize.ttf", 60, 0, 0, 255, 255, 255, 255, 0, 0);
     // LabelGroup->AddNewObject(healthLabel);
 
     std::vector<std::string> imagePaths = {
@@ -96,7 +96,7 @@ void PlayScene::Initialize()
         "PixelArt/Heal/heal6.png",
         "PixelArt/Heal/heal0.png"};
 
-    scoreLabel = new Engine::Label(to_string(score), "pirulen.ttf", 28, sw - 56, 284, 255, 255, 255, 255, 1.0, 0);
+    scoreLabel = new Engine::Label(to_string(score), "onesize.ttf", 28, sw - 56, 284, 255, 255, 255, 255, 1.0, 0);
     LabelGroup->AddNewObject(scoreLabel);
 
     ItemGroup->AddNewObject(new Coin(halfW, halfH + 100));

@@ -48,7 +48,7 @@ void StartScene::Initialize()
    btn1->SetOnClickCallback(std::bind(&StartScene::PlayOnClick, this, 1));
    AddNewControlObject(btn1);
 
-   play = new Engine::Label("Play", "pirulen.ttf", 48, halfW, halfH + 50, 255, 255, 255, 255, 0.5, 0.5);
+   play = new Engine::Label("Play", "onesize.ttf", 48, halfW, halfH + 50, 255, 255, 255, 255, 0.5, 0.5);
    AddNewObject(play);
 
    // border = new Engine::Image("stage-select/border.png", w - 96, 32);
@@ -66,7 +66,7 @@ void StartScene::Initialize()
    btn3->SetOnClickCallback(std::bind(&StartScene::ScoreBoardOnClick, this, 4));
    AddNewControlObject(btn3);
 
-   logout = new Engine::Label("Logout", "pirulen.ttf", 24, w - 105, h - 50, 255, 255, 255, 255, 0.5, 0.5);
+   logout = new Engine::Label("Logout", "onesize.ttf", 24, w - 105, h - 50, 255, 255, 255, 255, 0.5, 0.5);
    AddNewObject(logout);
 }
 

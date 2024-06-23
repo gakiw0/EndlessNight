@@ -28,18 +28,18 @@ void LoginOrRegisterScene::Initialize()
     title1 = new Engine::Image("stage-select/title.png", halfW - 300, 60, 600, 300);
     AddNewObject(title1);
 
-    // AddNewObject(new Engine::Label("Endless Nights", "pirulen.ttf", 120, halfW, halfH / 3 + 50, 10, 255, 255, 255, 0.5, 0.5));
+    // AddNewObject(new Engine::Label("Endless Nights", "onesize.ttf", 120, halfW, halfH / 3 + 50, 10, 255, 255, 255, 0.5, 0.5));
 
     btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 200, halfH / 2 + 200, 400, 100);
     btn->SetOnClickCallback(std::bind(&LoginOrRegisterScene::LoginOnClick, this, 1));
     AddNewControlObject(btn);
-    login = new Engine::Label("LOGIN", "pirulen.ttf", 48, halfW, halfH / 2 + 250, 255, 255, 255, 255, 0.5, 0.5);
+    login = new Engine::Label("LOGIN", "onesize.ttf", 48, halfW, halfH / 2 + 250, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(login);
 
     btn1 = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 200, halfH * 3 / 2 - 50, 400, 100);
     btn1->SetOnClickCallback(std::bind(&LoginOrRegisterScene::RegisterOnClick, this, 2));
     AddNewControlObject(btn1);
-    register1 = new Engine::Label("REGISTER", "pirulen.ttf", 48, halfW, halfH * 3 / 2, 255, 255, 255, 255, 0.5, 0.5);
+    register1 = new Engine::Label("REGISTER", "onesize.ttf", 48, halfW, halfH * 3 / 2, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(register1);
 }
 void LoginOrRegisterScene::Terminate()
