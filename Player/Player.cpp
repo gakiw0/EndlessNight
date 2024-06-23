@@ -171,9 +171,27 @@ float Player::GetSpeed() const
 
 void Player::Shoot()
 {
-    // Create a new bullet and set its direction based on the player's current rotation
-    Bullet *bullet = new Bullet(Position.x, Position.y, imgRotation, 500, bulletDmg);
-    getPlayScene()->BulletGroup->AddNewObject(bullet);
+    float shootRotation = imgRotation;
+    int num = 2 * getPlayScene()->getScore() / 10 + 1;
+
+    // 角度を広げる範囲（ラジアン単位）
+    float angleRange = ALLEGRO_PI / 120 * (num - 1); // ±30度
+
+    // 角度の増加量
+    float angleIncrement = angleRange != 0 ? angleRange * 2 / (num - 1) : 0;
+
+    // 初期角度（中央から開始）
+    float startAngle = shootRotation - angleRange;
+
+    for (int i = 0; i < num; ++i)
+    {
+        // 各弾丸の角度を計算
+        float bulletAngle = startAngle + i * angleIncrement;
+
+        // 新しい弾丸を作成して、方向を設定
+        Bullet *bullet = new Bullet(Position.x, Position.y, bulletAngle, 500, bulletDmg);
+        getPlayScene()->BulletGroup->AddNewObject(bullet);
+    }
 }
 
 void Player::HandleOverlapWithObstacle(float deltaTime)

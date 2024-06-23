@@ -107,10 +107,10 @@ void PlayScene::Initialize()
     ItemGroup->AddNewObject(new Coin(halfW, halfH + 100));
     ItemGroup->AddNewObject(new Heal(halfW + 100, halfH + 100));
     ItemGroup->AddNewObject(new Heal(halfW + 140, halfH + 100));
-    ItemGroup->AddNewObject(new Light(halfW + 180, halfH + 100));
-    ItemGroup->AddNewObject(new Light(halfW + 220, halfH + 100));
-    ItemGroup->AddNewObject(new Light(halfW + 330, halfH + 100));
-    ItemGroup->AddNewObject(new Light(halfW + 440, halfH + 100));
+    ItemGroup->AddNewObject(new Coin(halfW + 180, halfH + 100));
+    ItemGroup->AddNewObject(new Coin(halfW + 220, halfH + 100));
+    ItemGroup->AddNewObject(new Coin(halfW + 330, halfH + 100));
+    ItemGroup->AddNewObject(new Coin(halfW + 440, halfH + 100));
     initialLightScale = 3.0f;
     shade = new Engine::Image("UI/dark_blur.png", sw / 2, sh / 2, 0.0, 0.0, 0.5, 0.5, initialLightScale, initialLightScale);
 }
@@ -517,6 +517,7 @@ void PlayScene::generateItem(int index, float x, float y)
         break;
     case SPEEDFLASK:
         ItemGroup->AddNewObject(new SpeedFlask(x, y));
+        break;
     case LIGHT:
         ItemGroup->AddNewObject(new Light(x, y));
         break;
@@ -777,4 +778,9 @@ void PlayScene::ExpandLight(float boost)
         shade->scaleY *= boost;
     }
     sinceLightExpandStart = 0.0f;
+}
+
+int PlayScene::getScore()
+{
+    return score;
 }

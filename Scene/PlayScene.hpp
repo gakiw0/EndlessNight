@@ -116,6 +116,7 @@ public:
     void ReadScoreBoard();
     void WriteScoreBoard();
     void ExpandLight(float boost);
+    int getScore();
 };
 
 #endif // PLAYSCENE_HPP
