@@ -1,4 +1,5 @@
 #include "AutoScroller.hpp"
+#include "Engine/GameEngine.hpp"
 #include <allegro5/allegro_image.h>
 #include <iostream>
 
@@ -50,17 +51,31 @@ void AutoScroller::Draw()
 {
    if (image)
    {
+      int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+      int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
       float scaledWidth = width * zoom;
       float scaledHeight = height * zoom;
+      float sh = h;
+      float sw = h * width / height;
+
+      // al_draw_scaled_bitmap(image,
+      //                       0, 0, width, height,
+      //                       offsetX, 0, scaledWidth, scaledHeight,
+      //                       0);
+
+      // al_draw_scaled_bitmap(image,
+      //                       0, 0, width, height,
+      //                       offsetX + scaledWidth, 0, scaledWidth, scaledHeight,
+      //                       0);
 
       al_draw_scaled_bitmap(image,
                             0, 0, width, height,
-                            offsetX, 0, scaledWidth, scaledHeight,
+                            offsetX, 0, sw, sh,
                             0);
 
       al_draw_scaled_bitmap(image,
                             0, 0, width, height,
-                            offsetX + scaledWidth, 0, scaledWidth, scaledHeight,
+                            offsetX + sw, 0, sw, sh,
                             0);
    }
 }

@@ -25,10 +25,9 @@ void StartScene::Initialize()
    int halfW = w / 2;
    int halfH = h / 2;
 
-   background = new AutoScroller("stage-select/reback.png", 20.0f);
+   background = new AutoScroller("stage-select/moon.png", 30.0f);
    // AddNewObject(background);
    background->SetZoom(1.0f);
-   
 
    std::vector<std::string> imagePaths = {
        "StartZombie/pixil-frame-0.png",
@@ -38,7 +37,7 @@ void StartScene::Initialize()
 
    for (const auto &path : imagePaths)
    {
-      auto img = std::make_shared<Engine::Image>(path, halfW, halfH / 2 + 30, 0, 0, 0.5f, 0.5f, 2.5f, 2.5f);
+      auto img = std::make_shared<Engine::Image>(path, halfW, halfH + 275, 0, 0, 0.5f, 0.5f, 2.0f, 2.0f);
       zombieFrames.push_back(img);
    }
 
@@ -56,13 +55,16 @@ void StartScene::Initialize()
    btn->SetOnClickCallback(std::bind(&StartScene::SettingsOnClick, this, 2));
    AddNewControlObject(btn);
 
-   // settings = new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH * 3 / 2 + 25 - move, 0, 0, 0, 255, 0.5, 0.5);
-   // AddNewObject(settings);
-   
-
-   btn2 = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW, halfH, 250, 100, 0.5, 0.5);
+   btn2 = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", w - 10, h - 80, 192, 64, 1, 0);
    btn2->SetOnClickCallback(std::bind(&StartScene::LogoutOnClick, this, 3));
    AddNewControlObject(btn2);
+
+   btn3 = new Engine::ImageButton("stage-select/settings3.png", "stage-select/settings4.png", w - 84, 10, 64, 64, 1, 0);
+   btn3->SetOnClickCallback(std::bind(&StartScene::ScoreBoardOnClick, this, 4));
+   AddNewControlObject(btn3);
+
+   logout = new Engine::Label("Logout", "pirulen.ttf", 24, w - 105, h - 50, 255, 255, 255, 255, 0.5, 0.5);
+   AddNewObject(logout);
 }
 
 void StartScene::Update(float deltaTime)
@@ -89,11 +91,10 @@ void StartScene::Draw() const
    }
 
    btn1->Draw();
-   // play->Draw();
-   // border->Draw();
    btn->Draw();
    btn2->Draw();
-   
+   btn3->Draw();
+   logout->Draw();
 }
 
 void StartScene::Terminate()
@@ -114,6 +115,11 @@ void StartScene::SettingsOnClick(int stage)
    Engine::GameEngine::GetInstance().ChangeScene("settings");
 }
 
+void StartScene::ScoreBoardOnClick(int stage)
+{
+   Engine::GameEngine::GetInstance().ChangeScene("scoreboard");
+}
+
 void StartScene::OnMouseDown(int button, int mx, int my)
 {
    IScene::OnMouseDown(button, mx, my);
@@ -121,7 +127,7 @@ void StartScene::OnMouseDown(int button, int mx, int my)
 
 void StartScene::LogoutOnClick(int stage)
 {
-    User::getInstance().setName("");
-    User::getInstance().setPassword("");
-    Engine::GameEngine::GetInstance().ChangeScene("loginOrRegister");
+   User::getInstance().setName("");
+   User::getInstance().setPassword("");
+   Engine::GameEngine::GetInstance().ChangeScene("loginOrRegister");
 }

@@ -29,13 +29,15 @@ public:
     void Terminate() override;
     void PlayOnClick(int stage);
     void SettingsOnClick(int stage);
+    void ScoreBoardOnClick(int stage);
     void OnMouseDown(int button, int mx, int my) override;
     void LogoutOnClick(int stage);
     Engine::ImageButton *btn;
     Engine::ImageButton *btn1;
     Engine::ImageButton *btn2;
+    Engine::ImageButton *btn3;
     Engine::Label *play;
-    Engine::Label *settings;
+    Engine::Label *logout;
     Engine::Image *border;
     AutoScroller* background;
     AutoScroller* depthground;

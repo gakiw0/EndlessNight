@@ -18,6 +18,7 @@ void LoginScene::Initialize()
     int halfW = w / 2;
     int halfH = h / 2;
     Engine::ImageButton *btn;
+    Engine::ImageButton *btn1;
 
     ReadUserData();
 
@@ -29,15 +30,16 @@ void LoginScene::Initialize()
     inputPass = new Engine::TextInput("pirulen.ttf", 60, halfW, h - halfH * 3 / 4, 600, 80, 255, 255, 255, 255, 0, 255, 255, 255, 0.5, 0.5);
     AddNewControlObject(inputPass);
 
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h - halfH / 2 - 20, 400, 100);
+    btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 200, h - halfH / 2 - 20, 400, 100);
     btn->SetOnClickCallback(std::bind(&LoginScene::LoginOnClick, this, 1));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("LOGIN", "pirulen.ttf", 48, halfW, h - halfH / 2 + 30, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("LOGIN", "pirulen.ttf", 48, halfW, h - halfH / 2 + 30, 255, 255, 255, 255, 0.5, 0.5));
 
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 50, 50, 200, 100);
-    btn->SetOnClickCallback(std::bind(&LoginScene::BackOnClick, this, 1));
-    AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, 150, 100, 0, 0, 0, 255, 0.5, 0.5));
+
+    btn1 = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", w - 10, h - 80, 192, 64, 1, 0);;
+    btn1->SetOnClickCallback(std::bind(&LoginScene::BackOnClick, this, 1));
+    AddNewControlObject(btn1);
+    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 24, w - 105, h - 50, 255, 255, 255, 255, 0.5, 0.5));
 }
 void LoginScene::Terminate()
 {
