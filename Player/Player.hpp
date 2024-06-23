@@ -11,6 +11,7 @@ class PlayScene;
 class Player : public Engine::Sprite
 {
 private:
+    int maxhp; 
     int hp;    // Player's HP
     int frame; // Animation frame index
     bool moving;
@@ -35,11 +36,13 @@ public:
     void TakeDamage(int damage);
     int GetHealth() const;
     float GetSpeed() const;
+    int GetMaxHP() const;
     void Shoot();
     void HandleOverlapWithObstacle(float deltaTime);
     void StartMove(int keyCode);
     void StopMove(int keyCode);
     void AddBulletDmg(float dmg);
+    void Heal(float heal);
 };
 
 #endif // PLAYER_HPP

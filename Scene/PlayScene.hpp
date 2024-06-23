@@ -7,6 +7,7 @@
 #include "Bullet/Bullet.hpp"
 #include "Engine/Point.hpp"
 #include "UI/Component/ImageButton.hpp"
+#include "Engine/Animation.hpp"
 #include <vector>
 #include <string>
 #include <map>
@@ -25,13 +26,19 @@ private:
     int score;
     Engine::Label *scoreLabel;
     std::vector<std::shared_ptr<Engine::Image>> coinFrames;
+    std::vector<std::shared_ptr<Engine::Image>> healFrames;
     int currentFrame; // Current frame of animation
     float animationTime; // Time accumulator for animation
+    bool isHealing; // Add the isHealing flag
+    float healAnimationTimer; 
+    int healFrame; 
 
     enum ItemType
     {
         NONE,
-        COIN
+        COIN,
+        HEAL,
+        DAMAGEFLASK
     };
     enum TileType
     {
@@ -65,6 +72,7 @@ private:
     };
     std::vector<double> ItemProbabilities;
     std::vector<Engine::ImageButton *> heartImages;
+    std::vector<Animation*> healAnimations;
 
 public:
     static const int MapWidth, MapHeight;
@@ -95,6 +103,9 @@ public:
     void updateScore();
     void ConstructHeart();
     void DestroyHeart();
+    void HealAnim();
+    bool RegenState();
+    
 };
 
 #endif // PLAYSCENE_HPP

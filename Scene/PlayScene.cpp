@@ -8,6 +8,9 @@
 #include "Enemy/Enemy.hpp" // Include the Enemy header
 #include "Player/Player.hpp"
 #include "Item/Coin.hpp"
+#include "Item/Heal.hpp"
+#include "Item/DamageFlask.hpp"
+
 using namespace std;
 
 const int PlayScene::MapWidth = 30, PlayScene::MapHeight = 20;
@@ -35,6 +38,7 @@ void PlayScene::Initialize()
     remainingTime = 60.0f;
     finalScore = 0;
     score = 0;
+    isHealing = false;
 
     AddNewObject(BulletGroup = new Group());
     AddNewObject(EnemyGroup = new Group());
@@ -47,8 +51,10 @@ void PlayScene::Initialize()
     AddNewControlObject(UILife = new Group());
     ReadMap();
 
-    ItemProbabilities.push_back(0.5); // NONE
-    ItemProbabilities.push_back(0.5); // COIN
+    ItemProbabilities.push_back(0.2); // NONE
+    ItemProbabilities.push_back(0.3); // COIN
+    ItemProbabilities.push_back(0.2); // HEAL
+    ItemProbabilities.push_back(0.3); // DAMAGEFLASK
 
     player1 = new Player(halfW, halfH, 50);
     PlayerGroup->AddNewObject(player1);
@@ -61,8 +67,6 @@ void PlayScene::Initialize()
     // healthLabel = new Engine::Label("HP: " + to_string(player1->GetHealth()), "pirulen.ttf", 60, 0, 0, 255, 255, 255, 255, 0, 0);
     // LabelGroup->AddNewObject(healthLabel);
 
-    Engine::Image *coinUI;
-    // coinUI = new Engine::Image("PixelArt/Coin/coin0.png", )
     std::vector<std::string> imagePaths = {
         "PixelArt/Coin/coin0.png",
         "PixelArt/Coin/coin1.png",
@@ -79,10 +83,25 @@ void PlayScene::Initialize()
         coinFrames.push_back(img);
     }
 
+    std::vector<std::string> imagePaths1 = {
+            "PixelArt/Heal/heal0.png",
+            "PixelArt/Heal/heal1.png",
+            "PixelArt/Heal/heal2.png",
+            "PixelArt/Heal/heal3.png",
+            "PixelArt/Heal/heal4.png",
+            "PixelArt/Heal/heal5.png",
+            "PixelArt/Heal/heal6.png",
+            "PixelArt/Heal/heal0.png"};
+
+
     scoreLabel = new Engine::Label(to_string(score), "pirulen.ttf", 28, sw - 56, 12, 255, 255, 255, 255, 1.0, 0);
     LabelGroup->AddNewObject(scoreLabel);
 
     ItemGroup->AddNewObject(new Coin(halfW, halfH + 100));
+    ItemGroup->AddNewObject(new Heal(halfW + 100, halfH + 100));
+    ItemGroup->AddNewObject(new Heal(halfW + 140, halfH + 100));
+    ItemGroup->AddNewObject(new Heal(halfW + 180, halfH + 100));
+    ItemGroup->AddNewObject(new DamageFlask(halfW + 220, halfH + 100));
 }
 
 Engine::Point PlayScene::GetClientSize()
@@ -99,6 +118,31 @@ void PlayScene::Update(float deltaTime)
     { // Change frame every frameDuration seconds
         currentFrame = (currentFrame + 1) % coinFrames.size();
         animationTime = 0.0f;
+    }
+
+    if (isHealing)
+    {
+        healAnimationTimer += deltaTime;
+        if (healAnimationTimer >= 0.1f)
+        {
+            healAnimationTimer = 0.0f;
+
+            // Draw the current frame
+            if (healFrame < healFrames.size())
+            {
+                healFrames[healFrame]->Draw();
+            }   
+            
+
+            healFrame++;
+
+            // Check if the animation is finished
+            if (healFrame >= healFrames.size())
+            {
+                isHealing = false;  // Stop the animation after one play
+                healFrames.clear(); // Clear the animation frames
+            }
+        }
     }
 
     camera = camera + player1->Velocity * deltaTime;
@@ -156,6 +200,10 @@ void PlayScene::Draw() const
     if (!coinFrames.empty())
     {
         coinFrames[currentFrame]->Draw();
+    }
+    if (!healFrames.empty())
+    {
+        healFrames[healFrame]->Draw();
     }
 }
 
@@ -443,6 +491,12 @@ void PlayScene::generateItem(int index, float x, float y)
     case COIN:
         ItemGroup->AddNewObject(new Coin(x, y));
         break;
+    case HEAL:
+        ItemGroup->AddNewObject(new Heal(x, y));
+        break;
+    case DAMAGEFLASK:
+        ItemGroup->AddNewObject(new DamageFlask(x, y));
+        break;
     default:
         break;
     }
@@ -458,9 +512,18 @@ void PlayScene::ConstructHeart()
 {
     Engine::ImageButton *lifebtn;
     int health = player1->GetHealth();
+    int max = player1->GetMaxHP() / 5;
+    int count = 1;
+
     for (int i = 0; i < health / 5; i++)
     {
-        lifebtn = new Engine::ImageButton("play/heart.png", "play/heart.png", i * 48 + 4, 6, 56, 56);
+        if (count <= 10)
+        {
+            lifebtn = new Engine::ImageButton("PixelArt/Heart/heart0.png", "PixelArt/Heart/heart0.png", i * 48 + 4, 6, 36, 36);
+        }
+        else
+            lifebtn = new Engine::ImageButton("PixelArt/Heart/heart0.png", "PixelArt/Heart/heart0.png", (i) * 48 - (10 * 48) + 4, 6 + 42, 36, 36);
+        count++;
         UILife->AddNewControlObject(lifebtn);
         heartImages.push_back(lifebtn);
     }
@@ -477,4 +540,133 @@ void PlayScene::updateScore()
 {
     ++score;
     finalScore += 50;
+}
+
+// void PlayScene::HealAnim()
+// {
+//     if (!isHealing)
+//     {
+//         std::vector<std::string> imagePaths = {
+//             "PixelArt/Heal/heal0.png",
+//             "PixelArt/Heal/heal1.png",
+//             "PixelArt/Heal/heal2.png",
+//             "PixelArt/Heal/heal3.png",
+//             "PixelArt/Heal/heal4.png",
+//             "PixelArt/Heal/heal5.png",
+//             "PixelArt/Heal/heal6.png",
+//             "PixelArt/Heal/heal0.png"};
+
+//         Engine::ImageButton *heartbtn;
+//         int currenthealth = player1->GetHealth() / 5;
+//         int max = player1->GetMaxHP() / 5;
+//         int count = 1;
+//         if (currenthealth <= max - 2 && currenthealth > 0)
+//         {
+//             for (int i = 0; i < 2; i++)
+//             {
+
+//                 if (currenthealth < 10)
+//                 {
+//                     for (const auto &path : imagePaths)
+//                     {
+//                         auto img = std::make_shared<Engine::Image>(path, (currenthealth + i) * 48 + 4, 6, 36, 36);
+//                         healFrames.push_back(img);
+//                     }
+//                     healAnimationTimer = 0.0f;
+//                     healFrame = 0;
+//                     isHealing = true;
+//                     heartbtn = new Engine::ImageButton("PixelArt/Heart/heart0.png", "PixelArt/Heart/heart0.png", (currenthealth + i) * 48 + 4, 6, 36, 36);
+//                 }
+//                 else
+//                 {
+//                     for (const auto &path : imagePaths)
+//                     {
+//                         auto img = std::make_shared<Engine::Image>(path, (currenthealth + i) * 48 - (10 * 48) + 4, 6 + 42, 36, 36);
+//                         healFrames.push_back(img);
+//                     }
+//                     healAnimationTimer = 0.0f;
+//                     healFrame = 0;
+//                     isHealing = true;
+//                     heartbtn = new Engine::ImageButton("PixelArt/Heart/heart0.png", "PixelArt/Heart/heart0.png", (currenthealth + i) * 48 - (10 * 48) + 4, 6 + 42, 36, 36);
+//                 }
+//                 UILife->AddNewControlObject(heartbtn);
+//                 heartImages.push_back(heartbtn);
+//             }
+//         }
+//         else if(currenthealth == max - 1)
+//         {
+//             for (const auto &path : imagePaths)
+//             {
+//                 auto img = std::make_shared<Engine::Image>(path, (currenthealth) * 48 - (10 * 48) + 4, 6 + 42, 36, 36);
+//                 healFrames.push_back(img);
+//             }
+//             healAnimationTimer = 0.0f;
+//             healFrame = 0;
+//             isHealing = true;
+//             heartbtn = new Engine::ImageButton("PixelArt/Heart/heart0.png", "PixelArt/Heart/heart0.png", (currenthealth) * 48 - (10 * 48) + 4, 6 + 42, 36, 36);
+//             UILife->AddNewControlObject(heartbtn);
+//             heartImages.push_back(heartbtn);
+//         }
+//     }
+//}
+
+void PlayScene::HealAnim()
+{
+    if (!isHealing)
+    {
+        // Image paths for healing animation frames
+        std::vector<std::string> imagePaths = {
+            "PixelArt/Heal/heal0.png",
+            "PixelArt/Heal/heal1.png",
+            "PixelArt/Heal/heal2.png",
+            "PixelArt/Heal/heal3.png",
+            "PixelArt/Heal/heal4.png",
+            "PixelArt/Heal/heal5.png",
+            "PixelArt/Heal/heal6.png",
+            "PixelArt/Heal/heal0.png"};
+
+        int currentHealth = player1->GetHealth() / 5;
+        int maxHealth = player1->GetMaxHP() / 5;
+        float yOffset = 6;
+        float yOffsetMax = 6 + 42;
+
+        // Determine number of healing animations to create
+        int healCount = (currentHealth <= maxHealth - 2 && currentHealth > 0) ? 2 : (currentHealth == maxHealth - 1 ? 1 : 0);
+
+        for (int i = 0; i < healCount; ++i)
+        {
+            // Determine x and y positions for the healing animation
+            float xPos = (currentHealth + i) * 48 + 4;
+            if (currentHealth + i >= 10)
+            {
+                xPos -= 10 * 48;
+                yOffset = yOffsetMax;
+            }
+
+            // Create healing frames
+            for (const auto &path : imagePaths)
+            {
+                auto img = std::make_shared<Engine::Image>(path, xPos, yOffset, 36, 36);
+                healFrames.push_back(img);
+            }
+
+            // Create and add the heart button
+            Engine::ImageButton *heartBtn = new Engine::ImageButton("PixelArt/Heart/heart0.png", "PixelArt/Heart/heart0.png", xPos, yOffset, 36, 36);
+            UILife->AddNewControlObject(heartBtn);
+            heartImages.push_back(heartBtn);
+        }
+
+        if (healCount > 0)
+        {
+            // Initialize animation properties
+            healAnimationTimer = 0.0f;
+            healFrame = 0;
+            isHealing = true;
+        }
+    }
+}
+
+bool PlayScene::RegenState()
+{
+    return isHealing;
 }

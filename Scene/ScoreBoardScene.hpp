@@ -20,6 +20,8 @@ private:
 	int currentPage;
 	int totalPages;
 	std::vector<Engine::Label*> scoreLabels; // Track score labels for clearing
+	Engine::ImageButton* nextButton;
+   Engine::ImageButton* prevButton;
 public:
 	explicit ScoreBoardScene() = default;
 	void Initialize() override;

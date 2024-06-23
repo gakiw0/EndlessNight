@@ -17,7 +17,6 @@ private:
     std::vector<std::shared_ptr<Engine::Image>> zombieFrames; // Vector to store zombie animation frames
     std::shared_ptr<Engine::ImageButton> btnStart;
     std::shared_ptr<Engine::Label> title;
-    //ZombieAnim* zombieAnim;
     int currentFrame; // Current frame of animation
     float animationTime; // Time accumulator for animation
     float frameDuration;

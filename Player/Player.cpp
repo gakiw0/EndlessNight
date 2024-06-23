@@ -12,7 +12,7 @@
 using namespace std;
 
 Player::Player(float x, float y, int hp)
-    : Engine::Sprite("PixelArt/RightLeftWalk/pixil-frame-0.png", x, y, 0, 0, 0.5f, 0.5f, 0, 0, 0, 255, 255, 255, 255), hp(hp), bulletDmg(50), frame(0), elapsedTime(0), timeSinceLastShot(0), shootCooldown(0.5f)
+    : Engine::Sprite("PixelArt/RightLeftWalk/pixil-frame-0.png", x, y, 0, 0, 0.5f, 0.5f, 0, 0, 0, 255, 255, 255, 255), maxhp(75), hp(hp), bulletDmg(50), frame(0), elapsedTime(0), timeSinceLastShot(0), shootCooldown(0.5f)
 {
     Anchor = Engine::Point(0.5f, 0.5f);
     CollisionRadius = 10;
@@ -137,13 +137,21 @@ void Player::Update(float deltaTime)
 
 void Player::TakeDamage(int damage)
 {
-    hp -= damage;
-    getPlayScene()->DestroyHeart();
+    if (getPlayScene()->RegenState() == false)
+    {
+        hp -= damage;
+        getPlayScene()->DestroyHeart();
+    }
 }
 
 int Player::GetHealth() const
 {
     return hp;
+}
+
+int Player::GetMaxHP() const
+{
+    return maxhp;
 }
 
 float Player::GetSpeed() const
@@ -282,4 +290,13 @@ void Player::StopMove(int keyCode)
 void Player::AddBulletDmg(float dmg)
 {
     bulletDmg += dmg;
+}
+
+void Player::Heal(float heal)
+{
+    if (hp < maxhp)
+    {
+        hp += heal;
+    }
+    if(hp > maxhp) hp = maxhp;
 }

@@ -23,15 +23,12 @@ int main(int argc, char **argv) {
 		  "WHO KNOWS?"
     };
    game.AddNewScene("story", new StoryScene(storyText));
-
 	game.AddNewScene("start", new StartScene());
 	game.AddNewScene("settings", new SettingsScene());
 	game.AddNewScene("play", new PlayScene());	
 	game.AddNewScene("win", new WinScene());
 	game.AddNewScene("lose", new LoseScene());
 	game.AddNewScene("scoreboard", new ScoreBoardScene());
-	
-
 	game.Start("start", 60, 1600, 832);
 	
 	return 0;

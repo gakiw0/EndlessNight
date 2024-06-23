@@ -75,21 +75,21 @@ void ScoreBoardScene::Initialize()
 
    Engine::ImageButton *btn;
    
-   btn = new Engine::ImageButton("play/play2.png", "play/play5.png", halfW - 250, halfH * 7 / 4 - 100, 500, 202.5);
+   btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 187.5, halfH * 7 / 4 - 75, 375, 151.875);
    btn->SetOnClickCallback(std::bind(&ScoreBoardScene::BackOnClick, this, 2));
    AddNewControlObject(btn);
-   AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
+   AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
 
-   btn = new Engine::ImageButton("play/play2.png", "play/play5.png", halfW + 500, halfH * 7 / 4 - 50, 250, 101.25);
-   btn->SetOnClickCallback(std::bind(&ScoreBoardScene::NextPageOnClick, this));
-   AddNewControlObject(btn);
-   AddNewObject(new Engine::Label("Next", "pirulen.ttf", 24, halfW + 625, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
+   nextButton = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW + 500, halfH * 7 / 4 - 50, 250, 101.25);
+   nextButton->SetOnClickCallback(std::bind(&ScoreBoardScene::NextPageOnClick, this));
+   AddNewControlObject(nextButton);
+   AddNewObject(new Engine::Label("Next", "pirulen.ttf", 24, halfW + 625, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
 
    // Previous Page Button
-   btn = new Engine::ImageButton("play/play2.png", "play/play5.png", halfW - 750, halfH * 7 / 4 - 50, 250, 101.25);
-   btn->SetOnClickCallback(std::bind(&ScoreBoardScene::PrevPageOnClick, this));
-   AddNewControlObject(btn);
-   AddNewObject(new Engine::Label("Prev", "pirulen.ttf", 24, halfW - 625, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
+   prevButton = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 750, halfH * 7 / 4 - 50, 250, 101.25);
+   prevButton->SetOnClickCallback(std::bind(&ScoreBoardScene::PrevPageOnClick, this));
+   AddNewControlObject(prevButton);
+   AddNewObject(new Engine::Label("Prev", "pirulen.ttf", 24, halfW - 625, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
 }
 
 void ScoreBoardScene::Terminate()
@@ -100,7 +100,6 @@ void ScoreBoardScene::Terminate()
 
 void ScoreBoardScene::BackOnClick(int stage)
 {
-   
    Engine::GameEngine::GetInstance().ChangeScene("start");
 }
 

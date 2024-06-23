@@ -44,6 +44,8 @@ add_executable(EndlessNights
     Engine/Sprite.hpp
     Engine/AutoScroller.hpp
     Engine/AutoScroller.cpp
+    Engine/Animation.hpp
+    Engine/Animation.cpp
 
     # UI Components
     UI/Component/Image.cpp
@@ -58,9 +60,9 @@ add_executable(EndlessNights
     UI/Component/Text.hpp
     UI/Component/Pause.cpp
     UI/Component/Pause.hpp
+    
 
     # UI Animations
-   
 
     # Scenes
     Scene/PlayScene.cpp
@@ -95,6 +97,10 @@ add_executable(EndlessNights
     Item/Item.cpp
     Item/Coin.hpp
     Item/Coin.cpp
+    Item/Heal.hpp
+    Item/Heal.cpp
+    Item/DamageFlask.hpp
+    Item/DamageFlask.cpp
 
     # Main
     main.cpp

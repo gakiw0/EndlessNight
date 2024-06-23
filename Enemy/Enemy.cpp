@@ -121,7 +121,8 @@ void Enemy::HandleOverlapWithPlayer(float deltaTime)
             {
                 Velocity.x *= 5;
                 Velocity.y *= 5;
-                player->TakeDamage(damage);
+                if (scene->RegenState() == false)
+                    player->TakeDamage(damage);
                 timeSinceLastAttack = 0;
             }
             Velocity.x = -Velocity.x;
