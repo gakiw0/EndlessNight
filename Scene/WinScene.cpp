@@ -36,7 +36,7 @@ void WinScene::Initialize()
 	// AddNewObject(new Engine::Image("win/benjamin-sad.png", halfW, halfH, 0, 0, 0.5, 0.5));
 	// AddNewObject(new Engine::Label("You Win!", "onesize.ttf", 48, halfW, halfH / 4 - 10, 255, 255, 255, 255, 0.5, 0.5));
 	// AddNewObject(new Engine::Label("Enter Your Name", "onesize.ttf", 30, halfW, halfH / 4 + 66 + 300, 255, 255, 255, 255, 0.5, 0.5));
-	AddNewObject(new Engine::Label("Score", "onesize.ttf", 30, halfW, halfH / 4 + 135, 255, 255, 255, 255, 0.5, 0.5));
+	AddNewObject(new Engine::Label("Score", "onesize.ttf", 96, halfW, halfH / 4 + 135, 255, 255, 255, 255, 0.5, 0.5));
 
 	scoreLabel = new Engine::Label("", "onesize.ttf", 72, halfW, halfH / 4 + 200, 255, 255, 255, 255, 0.5, 0.5);
 	AddNewObject(scoreLabel);
@@ -48,7 +48,7 @@ void WinScene::Initialize()
 	AddNewControlObject(btn);
 	AddNewObject(new Engine::Label("Back", "onesize.ttf", 48, halfW, halfH * 6 / 4, 255, 255, 255, 255, 0.5, 0.5));
 
-	bgmId = AudioHelper::PlayAudio("win.wav");
+	bgmId = AudioHelper::PlayAudio("end.wav");
 
 	playerNameLabel = new Engine::Label("", "onesize.ttf", 36, halfW, halfH + 150, 255, 255, 255, 255, 0.5, 0.5);
 	AddNewObject(playerNameLabel);

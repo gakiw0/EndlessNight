@@ -7,6 +7,8 @@
 #include "Engine/GameEngine.hpp"
 #include "Engine/IScene.hpp"
 #include "UI/Component/Text.hpp"
+#include "Engine/AudioHelper.hpp"
+#include <allegro5/allegro_audio.h>
 
 class SettingsScene final : public Engine::IScene {
 private:

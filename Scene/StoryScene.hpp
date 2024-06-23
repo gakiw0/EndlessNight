@@ -5,9 +5,12 @@
 #include "UI/Component/Label.hpp"
 #include <vector>
 #include <string>
+#include "Engine/AudioHelper.hpp"
+#include <allegro5/allegro_audio.h>
 
 class StoryScene : public Engine::IScene {
 public:
+    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     StoryScene(); 
     void Initialize() override;
     void Update(float deltaTime) override;

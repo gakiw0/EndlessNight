@@ -43,9 +43,12 @@ void RegisterScene::Initialize()
     btn1->SetOnClickCallback(std::bind(&RegisterScene::BackOnClick, this, 2));
     AddNewControlObject(btn1);
     AddNewObject(back = new Engine::Label("Back", "onesize.ttf", 24, w - 105, h - 50, 255, 255, 255, 255, 0.5, 0.5));
+
+    //bgmInstance = AudioHelper::PlaySample("menu.ogg", true, AudioHelper::BGMVolume);
 }
 void RegisterScene::Terminate()
 {
+    //bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
     IScene::Terminate();
 }
 

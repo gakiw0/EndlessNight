@@ -68,6 +68,10 @@ void StartScene::Initialize()
 
    logout = new Engine::Label("Logout", "onesize.ttf", 24, w - 105, h - 50, 255, 255, 255, 255, 0.5, 0.5);
    AddNewObject(logout);
+   // if(!bgmInstance)
+   // {
+   //    bgmInstance = AudioHelper::PlaySample("menu.ogg", true, AudioHelper::BGMVolume);
+   // }
 }
 
 void StartScene::Update(float deltaTime)
@@ -105,6 +109,7 @@ void StartScene::Draw() const
 void StartScene::Terminate()
 {
    delete background;
+   //bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
    IScene::Terminate();
 
    // ZombieAnimation's destructor will handle frame cleanup
@@ -113,6 +118,7 @@ void StartScene::Terminate()
 void StartScene::PlayOnClick(int stage)
 {
    Engine::GameEngine::GetInstance().ChangeScene("play");
+   // AudioHelper::StopSample(bgmInstance);
 }
 
 void StartScene::SettingsOnClick(int stage)

@@ -58,6 +58,7 @@ void StoryScene::Update(float deltaTime)
    if (timeElapsed >= 2.0f)
    {
       Engine::GameEngine::GetInstance().ChangeScene("play");
+      AudioHelper::StopSample(bgmInstance);
    }
 }
 

@@ -10,11 +10,14 @@
 #include "Engine/User.hpp"
 #include "Engine/AutoScroller.hpp"
 #include "UI/Component/ImageButton.hpp"
+#include "Engine/AudioHelper.hpp"
+#include <allegro5/allegro_audio.h>
 
 
 class LoginScene final : public Engine::IScene
 {
 private:
+    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     std::vector<User> UserDatas;
     Engine::TextInput *inputID;
     Engine::TextInput *inputPass;

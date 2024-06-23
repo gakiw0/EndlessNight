@@ -20,6 +20,7 @@ void LoseScene::Initialize()
 }
 void LoseScene::Terminate()
 {
+	//bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
 	IScene::Terminate();
 }
 void LoseScene::Update(float deltaTime)

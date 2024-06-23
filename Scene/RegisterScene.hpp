@@ -8,10 +8,13 @@
 #include "UI/Component/Label.hpp"
 #include "UI/Component/TextInput.hpp"
 #include "Scene/LoginScene.hpp"
+#include "Engine/AudioHelper.hpp"
+#include <allegro5/allegro_audio.h>
 
 class RegisterScene final : public Engine::IScene
 {
 private:
+    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     std::vector<std::string> UserIDs;
     Engine::TextInput *inputID;
     Engine::TextInput *inputPass;

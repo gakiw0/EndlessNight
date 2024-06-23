@@ -41,9 +41,13 @@ void LoginOrRegisterScene::Initialize()
     AddNewControlObject(btn1);
     register1 = new Engine::Label("REGISTER", "onesize.ttf", 48, halfW, halfH * 3 / 2, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(register1);
+
+    bgmInstance = AudioHelper::PlaySample("menu.ogg", true, AudioHelper::BGMVolume);
+    
 }
 void LoginOrRegisterScene::Terminate()
 {
+    //bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
     IScene::Terminate();
 }
 void LoginOrRegisterScene::LoginOnClick(int stage)

@@ -101,15 +101,15 @@ void SettingsScene::Initialize()
                           0.5));
 
     // Not safe if release resource while playing, however we only free while change scene, so it's fine.
-    bgmInstance = AudioHelper::PlaySample("select.ogg", true, AudioHelper::BGMVolume);
+    //bgmInstance = AudioHelper::PlaySample("menu.ogg", true, AudioHelper::BGMVolume);
     sliderBGM->SetValue(AudioHelper::BGMVolume);
     sliderBGM->SetValue(AudioHelper::SFXVolume);
 }
 
 void SettingsScene::Terminate()
 {
-    AudioHelper::StopSample(bgmInstance);
-    bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
+    //AudioHelper::StopSample(bgmInstance);
+    //bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
     IScene::Terminate();
 }
 

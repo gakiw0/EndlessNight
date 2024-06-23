@@ -15,6 +15,7 @@
 #include "Item/DamageFlask.hpp"
 #include "Item/SpeedFlask.hpp"
 #include "Item/Light.hpp"
+#include "Engine/AudioHelper.hpp"
 
 using namespace std;
 
@@ -105,7 +106,7 @@ void PlayScene::Initialize()
     LabelGroup->AddNewObject(scoreLabel);
 
     ItemGroup->AddNewObject(new Coin(halfW, halfH + 100));
-    ItemGroup->AddNewObject(new Heal(halfW + 100, halfH + 100));
+    ItemGroup->AddNewObject(new Heal(halfW + 40, halfH + 100));
     ItemGroup->AddNewObject(new Heal(halfW + 140, halfH + 100));
     ItemGroup->AddNewObject(new Coin(halfW + 180, halfH + 100));
     ItemGroup->AddNewObject(new Coin(halfW + 220, halfH + 100));
@@ -113,6 +114,9 @@ void PlayScene::Initialize()
     ItemGroup->AddNewObject(new Coin(halfW + 440, halfH + 100));
     initialLightScale = 3.0f;
     shade = new Engine::Image("UI/dark_blur.png", sw / 2, sh / 2, 0.0, 0.0, 0.5, 0.5, initialLightScale, initialLightScale);
+
+    bgmId = AudioHelper::PlayBGM("careening-into-danger.ogg");
+
 }
 
 Engine::Point PlayScene::GetClientSize()
@@ -269,6 +273,7 @@ void PlayScene::OnKeyUp(int keyCode)
 void PlayScene::Terminate()
 {
     heartImages.clear();
+    AudioHelper::StopBGM(bgmId);
     IScene::Terminate();
 }
 

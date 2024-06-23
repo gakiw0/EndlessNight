@@ -13,13 +13,19 @@
 #include "Scene/LoginOrRegisterScene.hpp"
 #include "Scene/LoginScene.hpp"
 #include "Scene/RegisterScene.hpp"
+#include "Engine/AudioHelper.hpp"
+#include <allegro5/allegro_audio.h>
+
 
 #include <iostream>
+
+std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
 
 int main(int argc, char **argv)
 {
 	Engine::LOG::SetConfig(true);
 	Engine::GameEngine &game = Engine::GameEngine::GetInstance();
+	
 
 	game.AddNewScene("story", new StoryScene());
 

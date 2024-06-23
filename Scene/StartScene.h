@@ -11,9 +11,12 @@
 #include "UI/Component/Label.hpp"
 #include "UI/Component/Image.hpp"
 #include "Engine/AutoScroller.hpp"
+#include "Engine/AudioHelper.hpp"
+#include <allegro5/allegro_audio.h>
 
 class StartScene final : public Engine::IScene {
 private:
+    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     std::vector<std::shared_ptr<Engine::Image>> zombieFrames; // Vector to store zombie animation frames
     std::shared_ptr<Engine::ImageButton> btnStart;
     std::shared_ptr<Engine::Label> title;

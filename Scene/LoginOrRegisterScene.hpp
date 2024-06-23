@@ -6,10 +6,13 @@
 #include "Engine/IScene.hpp"
 #include "Engine/AutoScroller.hpp"
 #include "UI/Component/Label.hpp"
+#include "Engine/AudioHelper.hpp"
+#include <allegro5/allegro_audio.h>
 
 class LoginOrRegisterScene final : public Engine::IScene
 {
 public:
+    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     explicit LoginOrRegisterScene() = default;
     void Initialize() override;
     void Terminate() override;
