@@ -172,7 +172,8 @@ float Player::GetSpeed() const
 void Player::Shoot()
 {
     float shootRotation = imgRotation;
-    int num = 2 * getPlayScene()->getScore() / 10 + 1;
+    int num = getPlayScene()->getScore() / 10;
+    num = num * 2 + 1;
 
     // 角度を広げる範囲（ラジアン単位）
     float angleRange = ALLEGRO_PI / 120 * (num - 1); // ±30度

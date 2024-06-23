@@ -36,7 +36,7 @@ void MiniMap::Update(float deltaTime)
         Engine::Point dist = enemy->Position - player->Position;
         if (abs(dist.x) < range && abs(dist.y) < range)
         {
-            EnemyLocGroup->AddNewObject(new Engine::Image("play/enemy_loc.png", Position.x + (+dist.x) * radius / range, Position.y + (+dist.y) * radius / range, 0.0f, 0.0f, 0.5f, 0.5f));
+            EnemyLocGroup->AddNewObject(new Engine::Image("play/enemy_loc.png", Position.x + (+dist.x) * radius / range, Position.y + (+dist.y) * radius / range, 0.0f, 0.0f, 0.5f, 0.5f, 0.5f, 0.5f));
         }
     }
     for (auto item : getPlayScene()->ItemGroup->GetObjects())
@@ -44,7 +44,7 @@ void MiniMap::Update(float deltaTime)
         Engine::Point dist = item->Position - player->Position;
         if (abs(dist.x) < range && abs(dist.y) < range)
         {
-            ItemLocGroup->AddNewObject(new Engine::Image("play/drop_loc.png", Position.x + (+dist.x) * radius / range, Position.y + (+dist.y) * radius / range, 0.0f, 0.0f, 0.5f, 0.5f));
+            ItemLocGroup->AddNewObject(new Engine::Image("play/drop_loc.png", Position.x + (+dist.x) * radius / range, Position.y + (+dist.y) * radius / range, 0.0f, 0.0f, 0.5f, 0.5f, 0.5f, 0.5f));
         }
     }
 }
