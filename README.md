@@ -31,8 +31,8 @@ Collect coins to increase your score and firepower, and strategically utilize po
 
 ## Screenshots
 
-![Main Mene](screenshots/mainmenu.png)
-![Game Scene](screenshots/gamescene.png)
+![Main Mene](Screenshots/mainmenu.png)
+![Game Scene](Screenshots/gamescene.png)
 
 ## Controls
 
