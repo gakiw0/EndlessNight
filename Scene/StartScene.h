@@ -39,6 +39,7 @@ public:
     Engine::Label *play;
     Engine::Label *logout;
     Engine::Image *border;
+    Engine::Image *title1;
     AutoScroller* background;
     AutoScroller* depthground;
 };

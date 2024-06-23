@@ -18,25 +18,25 @@ void ScoreBoardScene::Initialize()
    numMap = 2;
    currMap = 1;
 
-   AddNewObject(UITitle = new Engine::Label("Stage " + to_string(currMap), "pirulen.ttf", 48, halfW, 50, 0, 255, 0, 255, 0.5, 0.5));
+   AddNewObject(UITitle = new Engine::Label("Leaderboards", "pirulen.ttf", 48, halfW, 75, 0, 255, 255, 255, 0.5, 0.5));
 
    // Backボタン
-   btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h - 150, 400, 100);
+   btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 200, h - 150, 400, 100);
    btn->SetOnClickCallback(std::bind(&ScoreBoardScene::BackOnClick, this, 1));
    AddNewControlObject(btn);
-   AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, h - 100, 0, 0, 0, 255, 0.5, 0.5));
+   AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, h - 100, 255, 255, 255, 255, 0.5, 0.5));
 
    // Prevボタン
-   btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 750, h - 150, 400, 100);
+   btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 750, h - 150, 400, 100);
    btn->SetOnClickCallback(std::bind(&ScoreBoardScene::PrevPageOnClick, this));
    AddNewControlObject(btn);
-   AddNewObject(new Engine::Label("Prev", "pirulen.ttf", 48, halfW - 550, h - 100, 0, 0, 0, 255, 0.5, 0.5));
+   AddNewObject(new Engine::Label("Prev", "pirulen.ttf", 48, halfW - 550, h - 100, 255, 255, 255, 255, 0.5, 0.5));
 
    // Nextボタン
-   btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW + 350, h - 150, 400, 100);
+   btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW + 350, h - 150, 400, 100);
    btn->SetOnClickCallback(std::bind(&ScoreBoardScene::NextPageOnClick, this));
    AddNewControlObject(btn);
-   AddNewObject(new Engine::Label("Next", "pirulen.ttf", 48, halfW + 550, h - 100, 0, 0, 0, 255, 0.5, 0.5));
+   AddNewObject(new Engine::Label("Next", "pirulen.ttf", 48, halfW + 550, h - 100, 255, 255, 255, 255, 0.5, 0.5));
 
    // btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 750, 50, 100, 100);
    // btn->SetOnClickCallback(std::bind(&ScoreBoardScene::PrevMapOnClick, this));
@@ -172,22 +172,6 @@ void ScoreBoardScene::UpdateScoreBoardDisplay()
       const auto &data = scoreboards[currMap - 1][i];
       int fontSize = defaultFontSize;
 
-      if (displayStart == 0)
-      {
-         if (i == 0)
-         {
-            fontSize = 60;
-         }
-         else if (i == 1)
-         {
-            fontSize = 50;
-         }
-         else if (i == 2)
-         {
-            fontSize = 40;
-         }
-      }
-
       int x = 50;
       Engine::Label *userNameLabel = new Engine::Label(data.userName, "pirulen.ttf", fontSize, x, startY, 255, 255, 255, 255, 0.0, 0.5);
       AddNewObject(userNameLabel);
@@ -204,8 +188,8 @@ void ScoreBoardScene::UpdateScoreBoardDisplay()
       char dateTimeStr[24];
       std::strftime(dateTimeStr, sizeof(dateTimeStr), "%Y-%m-%d %H:%M", &tm);
 
-      x = w - 50; // 日付と時刻の位置を調整
-      Engine::Label *dateTimeLabel = new Engine::Label(dateTimeStr, "pirulen.ttf", defaultFontSize, x, startY, 255, 255, 255, 255, 1.0, 0.5);
+      x = w - 500; // 日付と時刻の位置を調整
+      Engine::Label *dateTimeLabel = new Engine::Label(dateTimeStr, "pirulen.ttf", defaultFontSize, x, startY, 255, 255, 255, 255, 0.0, 0.5);
       AddNewObject(dateTimeLabel);
       scoreboardLabels.push_back(dateTimeLabel);
 

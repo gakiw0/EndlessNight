@@ -25,7 +25,7 @@ void StartScene::Initialize()
    int halfW = w / 2;
    int halfH = h / 2;
 
-   background = new AutoScroller("stage-select/moon.png", 30.0f);
+   background = new AutoScroller("stage-select/moon.png", 60.0f);
    // AddNewObject(background);
    background->SetZoom(1.0f);
 
@@ -41,12 +41,15 @@ void StartScene::Initialize()
       zombieFrames.push_back(img);
    }
 
-   btn1 = new Engine::ImageButton("stage-select/Play_Unpressed.png", "stage-select/Play_Pressed.png", halfW, halfH, 562, 220, 0.5, 0.5);
+   title1 = new Engine::Image("stage-select/title.png", halfW - 300, 20, 600, 300);
+   AddNewObject(title1);
+
+   btn1 = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW, halfH + 50, 450, 150, 0.5, 0.5);
    btn1->SetOnClickCallback(std::bind(&StartScene::PlayOnClick, this, 1));
    AddNewControlObject(btn1);
 
-   // play = new Engine::Label("Play", "pirulen.ttf", 96, halfW, halfH / 2 + 196, 0, 0, 0, 255, 0.5, 0.5);
-   // AddNewObject(play);
+   play = new Engine::Label("Play", "pirulen.ttf", 48, halfW, halfH + 50, 255, 255, 255, 255, 0.5, 0.5);
+   AddNewObject(play);
 
    // border = new Engine::Image("stage-select/border.png", w - 96, 32);
    // AddNewObject(border);
@@ -59,7 +62,7 @@ void StartScene::Initialize()
    btn2->SetOnClickCallback(std::bind(&StartScene::LogoutOnClick, this, 3));
    AddNewControlObject(btn2);
 
-   btn3 = new Engine::ImageButton("stage-select/settings3.png", "stage-select/settings4.png", w - 84, 10, 64, 64, 1, 0);
+   btn3 = new Engine::ImageButton("settings/score1.png", "settings/score2.png", w - 84, 10, 64, 64, 1, 0);
    btn3->SetOnClickCallback(std::bind(&StartScene::ScoreBoardOnClick, this, 4));
    AddNewControlObject(btn3);
 
@@ -85,12 +88,14 @@ void StartScene::Draw() const
 {
    IScene::Draw();
    background->Draw();
+   title1->Draw();
    if (!zombieFrames.empty())
    {
       zombieFrames[currentFrame]->Draw();
    }
 
    btn1->Draw();
+   play->Draw();
    btn->Draw();
    btn2->Draw();
    btn3->Draw();

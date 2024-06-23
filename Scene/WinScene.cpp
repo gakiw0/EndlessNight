@@ -35,7 +35,7 @@ void WinScene::Initialize()
 	tempscore = 0;
 
 	// AddNewObject(new Engine::Image("win/benjamin-sad.png", halfW, halfH, 0, 0, 0.5, 0.5));
-	AddNewObject(new Engine::Label("You Win!", "pirulen.ttf", 48, halfW, halfH / 4 - 10, 255, 255, 255, 255, 0.5, 0.5));
+	//AddNewObject(new Engine::Label("You Win!", "pirulen.ttf", 48, halfW, halfH / 4 - 10, 255, 255, 255, 255, 0.5, 0.5));
 	// AddNewObject(new Engine::Label("Enter Your Name", "pirulen.ttf", 30, halfW, halfH / 4 + 66 + 300, 255, 255, 255, 255, 0.5, 0.5));
 	AddNewObject(new Engine::Label("Score", "pirulen.ttf", 30, halfW, halfH / 4 + 135, 255, 255, 255, 255, 0.5, 0.5));
 
@@ -45,21 +45,12 @@ void WinScene::Initialize()
 	
 
 	Engine::ImageButton *btn;
-	btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 187.5, halfH * 7 / 4 - 75, 375, 151.875);
+	btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 187.5, halfH * 6 / 4 - 75, 375, 151.875);
 	btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
 	AddNewControlObject(btn);
-	AddNewObject(new Engine::Label("Enter", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 255, 255, 255, 255, 0.5, 0.5));
-
-	// input = new Engine::TextButton("win/unclicked1.png", "win/clicked1.png", halfW - 200, halfH + 100, 400, 100);
-	// btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
-	// AddNewControlObject(input);
-	// AddNewObject(new Engine::Label("Enter", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
+	AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 6 / 4, 255, 255, 255, 255, 0.5, 0.5));
 
 	bgmId = AudioHelper::PlayAudio("win.wav");
-
-	// scoreFont = Engine::Resources::GetInstance().GetFont("pirulen.ttf", 24);
-	// playerNameLabel = new Engine::Label("", "pirulen.ttf", 24, halfW, halfH / 2 + 65, 0, 0, 0, 255, 0.5, 0.5);
-	// AddNewObject(playerNameLabel);
 
 	playerNameLabel = new Engine::Label("", "pirulen.ttf", 36, halfW, halfH + 150, 255, 255, 255, 255, 0.5, 0.5);
 	AddNewObject(playerNameLabel);
@@ -84,13 +75,12 @@ void WinScene::Update(float deltaTime)
 	if (tempscore < finalScore)
 	{
 		// printf("k");
-		tempscore += 1;
+		tempscore += 10;
 		scoreLabel->Text = std::to_string(tempscore);
 	}
 	else
 		scoreLabel->Text = std::to_string(finalScore);
 
-	
 }
 void WinScene::BackOnClick(int stage)
 {
