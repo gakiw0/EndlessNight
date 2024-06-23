@@ -199,6 +199,7 @@ namespace Engine {
 		/// <returns>A linked-list of all controls contained.</returns>
 		std::list<IControl*> GetControls();
 
+		void OnChar(int unicode) override;
 	};
 }
 #endif // GROUP_HPP

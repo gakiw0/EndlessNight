@@ -3,13 +3,16 @@
 #include "UI/Component/Label.hpp" // Or however you manage fonts in your engine
 #include <allegro5/allegro_font.h>
 
-StoryScene::StoryScene(const std::vector<std::string> &storyLines)
-    : lines(storyLines), currentLineIndex(0), textAlpha(0.0f),
+StoryScene::StoryScene()
+    : currentLineIndex(0), textAlpha(0.0f),
       fadeSpeed(0.5f), fadingIn(true), timeElapsed(0.0f) {}
 
 void StoryScene::Initialize()
 {
-   
+      lines = {
+		"HOW LONG WILL THE NIGHT BE?",
+		"NOW....",
+		"WHO KNOWS?"};
 }
 
 void StoryScene::Update(float deltaTime)

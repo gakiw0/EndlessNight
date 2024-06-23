@@ -60,7 +60,8 @@ add_executable(EndlessNights
     UI/Component/Text.hpp
     UI/Component/Pause.cpp
     UI/Component/Pause.hpp
-    
+    UI/Component/MiniMap.cpp
+    UI/Component/MiniMap.hpp
 
     # UI Animations
 
@@ -79,6 +80,7 @@ add_executable(EndlessNights
     Scene/StoryScene.cpp
     Scene/ScoreBoardScene.hpp
     Scene/ScoreBoardScene.cpp
+
 
     #Players
     Player/Player.hpp

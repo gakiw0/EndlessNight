@@ -8,6 +8,7 @@
 #include "Engine/Point.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "Engine/Animation.hpp"
+#include "UI/Component/MiniMap.hpp"
 #include <vector>
 #include <string>
 #include <map>
@@ -32,6 +33,7 @@ private:
     bool isHealing; // Add the isHealing flag
     float healAnimationTimer; 
     int healFrame; 
+    MiniMap *miniMap;
 
     enum ItemType
     {

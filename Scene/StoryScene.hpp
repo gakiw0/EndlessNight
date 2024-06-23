@@ -8,7 +8,7 @@
 
 class StoryScene : public Engine::IScene {
 public:
-    StoryScene(const std::vector<std::string>& storyLines); 
+    StoryScene(); 
     void Initialize() override;
     void Update(float deltaTime) override;
     void Draw() const override;

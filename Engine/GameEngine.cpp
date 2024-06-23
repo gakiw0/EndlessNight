@@ -155,6 +155,13 @@ namespace Engine
 			case ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY:
 				LOG(VERBOSE) << "Mouse enter display.";
 				break;
+			case ALLEGRO_EVENT_KEY_CHAR:
+				if (std::isalnum(event.keyboard.unichar))
+				{
+					LOG(VERBOSE) << "Key character '" << (char)event.keyboard.unichar << "' input";
+					activeScene->OnChar(event.keyboard.unichar);
+				}
+				break;
 			default:
 				// Ignore events that we're not interested in.
 				break;

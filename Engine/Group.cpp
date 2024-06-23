@@ -183,5 +183,11 @@ namespace Engine
 			list.push_back(it.second);
 		return list;
 	}
+	void Group::OnChar(int unicode) {
+		for (auto it = controls.begin(); it != controls.end();) {
+			auto preIt = it++;
+			preIt->second->OnChar(unicode);
+		}
+	}
 
 }

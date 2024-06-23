@@ -50,6 +50,8 @@ void PlayScene::Initialize()
     AddNewObject(ItemGroup = new Group());
     AddNewControlObject(UILife = new Group());
     ReadMap();
+    AddNewObject(miniMap = new MiniMap());
+    
 
     ItemProbabilities.push_back(0.2); // NONE
     ItemProbabilities.push_back(0.3); // COIN
@@ -156,6 +158,7 @@ void PlayScene::Update(float deltaTime)
         NonObstacleGroup->MoveCamera(cameraD);
         TileMapGroup->MoveCamera(cameraD);
         ItemGroup->MoveCamera(cameraD);
+        
         PlayerGroup->MoveCamera(cameraD);
     }
     remainingTime -= deltaTime;
@@ -195,6 +198,7 @@ void PlayScene::Draw() const
     PlayerGroup->Draw();
     EnemyGroup->Draw();
     NonObstacleGroup->Draw();
+    miniMap->Draw();
     LabelGroup->Draw();
     UILife->Draw();
     if (!coinFrames.empty())
@@ -395,7 +399,8 @@ void PlayScene::ReadMap()
                 mapTilePath += "grass3.png";
                 break;
             case TILE_BUSH:
-                mapTilePath += "bush.png";
+                mapTilePath += "dirt1.png";
+                mapNonObstaclePath += "bush.png";
                 break;
             case TILE_TOMBSTONE:
                 mapTilePath += "dirt1.png";

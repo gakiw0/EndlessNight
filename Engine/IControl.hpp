@@ -67,6 +67,8 @@ namespace Engine {
 		/// <param name="my">Mouse y coordinate in window space.</param>
 		/// <param name="delta">Mouse z scroll delta value.</param>
 		virtual void OnMouseScroll(int mx, int my, int delta);
+
+		virtual void OnChar(int unicode);
 	};
 }
 #endif // ICONTROL_HPP

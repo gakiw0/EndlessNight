@@ -90,6 +90,16 @@
     "xtree": "cpp",
     "xutility": "cpp",
     "filesystem": "cpp",
-    "execution": "cpp"
+    "execution": "cpp",
+    "codecvt": "cpp",
+    "condition_variable": "cpp",
+    "csignal": "cpp",
+    "future": "cpp",
+    "regex": "cpp",
+    "set": "cpp",
+    "stack": "cpp",
+    "stop_token": "cpp",
+    "thread": "cpp",
+    "unordered_set": "cpp"
   }
 }
