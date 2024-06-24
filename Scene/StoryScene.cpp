@@ -10,6 +10,10 @@ StoryScene::StoryScene()
 
 void StoryScene::Initialize()
 {
+   currentLineIndex = 0.0f;
+   timeElapsed = 0.0f;
+   fadingIn = true;
+   textAlpha = 0.0f;
    lines = {
        "HOW LONG WILL THE NIGHT BE?",
        "NOW....",
