@@ -105,6 +105,35 @@ void PlayScene::Initialize()
     scoreLabel = new Engine::Label(to_string(score), "onesize.ttf", 28, sw - 56, 284, 255, 255, 255, 255, 1.0, 0);
     LabelGroup->AddNewObject(scoreLabel);
 
+    // ItemGroup->AddNewObject(new Coin(halfW + 250, halfH + 100));
+    // ItemGroup->AddNewObject(new Coin(halfW + 300, halfH + 100));
+    // ItemGroup->AddNewObject(new Coin(halfW + 350, halfH + 100));
+    // ItemGroup->AddNewObject(new Coin(halfW + 400, halfH + 100));
+    // ItemGroup->AddNewObject(new Coin(halfW + 450, halfH + 100));
+    // ItemGroup->AddNewObject(new Coin(halfW + 500, halfH + 100));
+    // ItemGroup->AddNewObject(new Coin(halfW + 550, halfH + 100));
+    // ItemGroup->AddNewObject(new Coin(halfW + 600, halfH + 100));
+    // ItemGroup->AddNewObject(new Coin(halfW + 650, halfH + 100));
+    // ItemGroup->AddNewObject(new Coin(halfW + 700, halfH + 100));
+
+    // ItemGroup->AddNewObject(new SpeedFlask(halfW + 250, halfH + 100));
+
+    // ItemGroup->AddNewObject(new Heal(halfW + 250, halfH + 100));
+
+    // ItemGroup->AddNewObject(new DamageFlask(halfW + 250, halfH + 100));
+    // ItemGroup->AddNewObject(new DamageFlask(halfW + 300, halfH + 100));
+    // ItemGroup->AddNewObject(new DamageFlask(halfW + 350, halfH + 100));
+    // ItemGroup->AddNewObject(new DamageFlask(halfW + 400, halfH + 100));
+    // ItemGroup->AddNewObject(new DamageFlask(halfW + 450, halfH + 100));
+
+    // ItemGroup->AddNewObject(new Light(halfW + 250, halfH + 100));
+
+    
+
+
+
+
+
     initialLightScale = 3.0f;
     shade = new Engine::Image("UI/dark_blur.png", sw / 2, sh / 2, 0.0, 0.0, 0.5, 0.5, initialLightScale, initialLightScale);
 
@@ -129,7 +158,7 @@ void PlayScene::Update(float deltaTime)
     if (sinceLightExpandStart + deltaTime <= lightExpandDuration)
     {
         sinceLightExpandStart += deltaTime;
-    }  
+    }
     else if (sinceLightExpandStart <= lightExpandDuration && sinceLightExpandStart + deltaTime > lightExpandDuration)
     {
         sinceLightExpandStart += deltaTime;

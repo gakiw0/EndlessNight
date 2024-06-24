@@ -37,7 +37,7 @@ void RegisterScene::Initialize()
     btn = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", halfW - 200, h - halfH / 2 - 20, 400, 100);
     btn->SetOnClickCallback(std::bind(&RegisterScene::RegisterOnClick, this, 1));
     AddNewControlObject(btn);
-    AddNewObject(registerLabel = new Engine::Label("LOGIN", "onesize.ttf", 48, halfW, h - halfH / 2 + 30, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(registerLabel = new Engine::Label("REGISTER", "onesize.ttf", 48, halfW, h - halfH / 2 + 30, 255, 255, 255, 255, 0.5, 0.5));
 
     btn1 = new Engine::ImageButton("settings/backbutton1.png", "settings/backbutton2.png", w - 10, h - 80, 192, 64, 1, 0);
     btn1->SetOnClickCallback(std::bind(&RegisterScene::BackOnClick, this, 2));

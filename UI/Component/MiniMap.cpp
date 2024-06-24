@@ -23,7 +23,7 @@ MiniMap::MiniMap()
     getPlayScene()->AddNewObject(Border = new Engine::Image("play/minimap_border.png", Position.x, Position.y, Size.x + 5, Size.y + 5, 0.5f, 0.5f));
     getPlayScene()->AddNewObject(BackGround = new Engine::Image("play/minimap.png", Position.x, Position.y, Size.x, Size.y, 0.5f, 0.5f));
     getPlayScene()->AddNewObject(PlayerLoc = new Engine::Image("play/player_loc.png", Position.x, Position.y, 0, 0, 0.5f, 0.5f));
-   // getPlayScene()->AddNewObject(BackGround = new Engine::Image("play/minimap_border.png", Position.x, Position.y, Size.x + 5, Size.y + 5, 0.5f, 0.5f));
+    // getPlayScene()->AddNewObject(BackGround = new Engine::Image("play/minimap_border.png", Position.x, Position.y, Size.x + 5, Size.y + 5, 0.5f, 0.5f));
 }
 
 void MiniMap::Update(float deltaTime)

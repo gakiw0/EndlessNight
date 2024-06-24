@@ -27,6 +27,7 @@ int main(int argc, char **argv)
 	Engine::LOG::SetConfig(true);
 	Engine::GameEngine &game = Engine::GameEngine::GetInstance();
 	
+	
 	game.AddNewScene("story", new StoryScene());
 	game.AddNewScene("start", new StartScene());
 	game.AddNewScene("settings", new SettingsScene());

@@ -43,6 +43,7 @@ void LoginOrRegisterScene::Initialize()
     register1 = new Engine::Label("REGISTER", "onesize.ttf", 48, halfW, halfH * 3 / 2, 255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(register1);
 
+    AudioHelper::StopBGM(bgmId);
     bgmId = AudioHelper::PlayBGM("menu.ogg");
 }
 void LoginOrRegisterScene::Terminate()

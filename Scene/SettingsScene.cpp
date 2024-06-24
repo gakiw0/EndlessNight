@@ -111,8 +111,9 @@ void SettingsScene::Initialize()
 
 void SettingsScene::Terminate()
 {
-    //AudioHelper::StopSample(bgmInstance);
+    AudioHelper::StopSample(bgmInstance);
     //bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
+
     dynamic_cast<LoginOrRegisterScene *>(Engine::GameEngine::GetInstance().GetScene("loginOrRegister"))->bgmId = AudioHelper::PlayBGM("menu.ogg");
     IScene::Terminate();
 }

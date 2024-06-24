@@ -325,6 +325,7 @@ namespace Engine
 		{
 			return keyMappings.at(action);
 		}
+		return -1;
 	}
 
 	void GameEngine::SetKeyMapping(const std::string &action, int keyCode)
